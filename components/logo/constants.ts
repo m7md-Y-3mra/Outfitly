@@ -1,6 +1,6 @@
 export const SIZE_CONFIG = {
-  sm: "w-10 h-10",
-  md: "w-12 h-12",
-  lg: "w-16 h-16",
-  xl: "w-24 h-24",
+  sm: 40,   // px height
+  md: 48,
+  lg: 56,
+  xl: 64,
 } as const;
