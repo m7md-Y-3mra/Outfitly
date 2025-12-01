@@ -25,34 +25,21 @@ type CustomTextFieldProps = Omit<
   isPassword?: boolean;
   style?: IStyle;
   variant?: InputVariant;
-  icon?: React.ReactNode; // 👈 الأيقونة
+  icon?: React.ReactNode; 
 };
 
 const baseLabelClasses =
   "text-sm font-medium text-foreground tracking-wide";
 
 const baseInputClasses = [
-  // shape & size
   "w-full pr-4 py-4 rounded-xl h-auto",
-
-  // background
   "bg-[#FAF1ED] dark:bg-[#1C1C20]",
-
-  // border (نفس اللي في الديزاين)
   "border-2 border-[#F2E8E3] dark:border-[#35353D]",
-
-  // text + placeholder
   "text-[#4C1420] dark:text-white",
   "placeholder-[#4C1420]/40 dark:placeholder-white/40",
-
-  // focus
   "focus:outline-none",
   "focus:border-[#671425] dark:focus:border-[#8B1D35]",
-
-  // transition
   "transition-all duration-300",
-
-  // extras
   "selection:bg-primary selection:text-primary-foreground",
   "file:text-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium",
   "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
@@ -117,7 +104,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
       )}
 
       <div className="relative">
-        {/* 👇 الأيقونة على اليسار */}
+        
         {icon && !isCheckbox && (
           <span
             className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#4C1420]/50 dark:text-white/60"

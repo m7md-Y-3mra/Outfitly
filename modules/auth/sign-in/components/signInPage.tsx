@@ -47,8 +47,8 @@ export function SignInPage() {
           className="w-full max-w-md"
         >
           {/* Logo/Brand */}
-          <div className="text-center mb-8">
-            <Logo size="xl" animated={true} linkTo="/" />
+          <div className="text-center mt-8">
+            <Logo size="sm" animated={true} linkTo="/" />
           </div>
 
           {/* Login Card */}
