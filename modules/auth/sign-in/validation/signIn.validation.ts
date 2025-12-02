@@ -6,4 +6,4 @@ const signInValidationScehma = userValidationSchema.pick({
   password: true,
 });
 
-export const formikAuthSchema = toFormikValidationSchema(signInValidationScehma);
+export const formikSignInSchema = toFormikValidationSchema(signInValidationScehma);

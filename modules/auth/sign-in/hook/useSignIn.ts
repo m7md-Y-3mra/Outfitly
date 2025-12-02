@@ -1,6 +1,6 @@
 "use client";
 import { useFormik } from "formik";
-import { formikAuthSchema } from "../validation/auth.validation";
+import { formikSignInSchema } from "../validation/signIn.validation";
 import { INITIAL_VALUES } from "../constants";
 import { TFormValues } from "../types";
 
@@ -19,7 +19,7 @@ const useSignIn = () => {
     onSubmit: (values, { resetForm, setSubmitting }) => {
       handleSignIn(values, resetForm, setSubmitting);
     },
-    validationSchema: formikAuthSchema,
+    validationSchema: formikSignInSchema,
     validateOnMount: false,
     validateOnChange: false,
     validateOnBlur: false,
