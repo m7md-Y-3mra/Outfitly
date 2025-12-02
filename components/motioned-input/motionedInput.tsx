@@ -22,26 +22,24 @@ type CustomTextFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "n
   isPassword?: boolean;
   style?: IStyle;
   variant?: InputVariant;
+  icon?: React.ReactNode;
 };
 
 const baseLabelClasses = "text-sm font-medium text-foreground tracking-wide";
 
 const baseInputClasses = [
-  "file:text-foreground placeholder:text-muted-foreground",
+  "w-full pr-4 py-4 rounded-xl h-auto",
+  "bg-[#FAF1ED] dark:bg-[#1C1C20]",
+  "border-2 border-[#F2E8E3] dark:border-[#35353D]",
+  "text-[#4C1420] dark:text-white",
+  "placeholder-[#4C1420]/40 dark:placeholder-white/40",
+  "focus:outline-none",
+  "focus:border-[#671425] dark:focus:border-[#8B1D35]",
+  "transition-all duration-300",
   "selection:bg-primary selection:text-primary-foreground",
-  "dark:bg-input/30 bg-input-background",
-  "border border-input",
-  "flex h-9 w-full min-w-0 rounded-md",
-  "px-3 py-1 text-base md:text-sm",
-  "transition-[color,box-shadow]",
-  "outline-none",
-  "file:inline-flex file:h-7 file:border-0 file:bg-transparent",
-  "file:text-sm file:font-medium",
+  "file:text-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium",
   "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
 ].join(" ");
-
-const focusInputClasses =
-  "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]";
 
 const invalidInputClasses =
   "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive";
@@ -68,9 +66,9 @@ const errorTextClasses =
   "mt-1 rounded-md border border-destructive/30 bg-destructive/5 px-2 py-1 text-xs text-destructive";
 
 const inputVariantClasses: Record<InputVariant, string> = {
-  filled: "bg-input-background",
-  outline: "bg-transparent border border-input",
-  subtle: "bg-muted border-transparent hover:border-input/60",
+  filled: "",
+  outline: "",
+  subtle: "",
 };
 
 const CustomTextField: React.FC<CustomTextFieldProps> = ({
@@ -80,13 +78,13 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
   type,
   style,
   variant = "filled",
+  icon,
   ...rest
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [field, meta, helpers] = useField(name);
 
   const hasError = meta.touched && !!meta.error;
-
   const isCheckbox = type === "checkbox";
 
   return (
@@ -98,6 +96,12 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
       )}
 
       <div className="relative">
+        {icon && !isCheckbox && (
+          <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#4C1420]/50 dark:text-white/60">
+            {icon}
+          </span>
+        )}
+
         {isCheckbox ? (
           <div className="flex items-center gap-3">
             <Checkbox
@@ -124,7 +128,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
             aria-invalid={hasError || undefined}
             className={clsx(
               baseInputClasses,
-              focusInputClasses,
+              icon ? "pl-12" : "pl-4", // 👈 padding حسب وجود الأيقونة
               invalidInputClasses,
               inputVariantClasses[variant],
               style?.input,
@@ -141,7 +145,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
             className={passwordToggleButtonClasses}
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            {showPassword ? <EyeOff className="h-6 w-6" /> : <Eye className="h-6 w-6" />}
           </Button>
         )}
       </div>

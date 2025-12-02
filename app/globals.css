@@ -297,3 +297,12 @@ html {
   background-size: 200% 200%;
   animation: gradient-shift 8s ease infinite;
 }
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
