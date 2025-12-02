@@ -12,7 +12,8 @@
     "migrate": "prisma migrate deploy",
     "studio": "npx prisma studio",
     "format": "prettier --write .",
-    "check-format": "prettier --check ."
+    "check-format": "prettier --check .",
+    "seed": "prisma db seed"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.0.1",
