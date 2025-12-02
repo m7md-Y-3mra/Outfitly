@@ -1,30 +1,71 @@
-@import "tailwindcss";
-@import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* ========================================
+     OUTFITLY BRAND COLORS - LIGHT MODE
+     ======================================== */
+  
+  /* Primary Brand Colors */
+  --outfitly-primary: #671425;
+  --outfitly-primary-hover: #6A1526;
+  --outfitly-primary-active: #4C1420;
+  
+  /* Background Colors */
+  --outfitly-bg-primary: #FAF1ED;
+  --outfitly-bg-secondary: #F2E8E3;
+  --outfitly-bg-white: #FFFFFF;
+  
+  /* Text Colors */
+  --outfitly-text-primary: #4C1420;
+  --outfitly-text-secondary: #671425;
+  --outfitly-text-light: #FAF1ED;
+  
+  /* Gradient Colors */
+  --outfitly-gradient-start: #671425;
+  --outfitly-gradient-mid: #8B1D35;
+  --outfitly-gradient-end: #A8254A;
+  
+  /* Additional UI Colors */
+  --outfitly-border-light: rgba(103, 20, 37, 0.1);
+  --outfitly-border-medium: rgba(103, 20, 37, 0.3);
+  --outfitly-shadow: rgba(103, 20, 37, 0.15);
+  
+  /* Accent Colors for Notifications/Icons */
+  --outfitly-accent-pink: #e91e63;
+  --outfitly-accent-blue: #3b82f6;
+  --outfitly-accent-purple: #8b5cf6;
+  --outfitly-accent-cyan: #0ea5e9;
+  --outfitly-accent-orange: #f59e0b;
+  --outfitly-accent-green: #10b981;
+  
+  /* ========================================
+     SHADCN UI COMPATIBILITY
+     ======================================== */
+  
   --font-size: 16px;
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
+  --background: #FAF1ED;
+  --foreground: #4C1420;
+  --card: #FFFFFF;
+  --card-foreground: #4C1420;
+  --popover: #FFFFFF;
+  --popover-foreground: #4C1420;
+  --primary: #671425;
+  --primary-foreground: #FAF1ED;
+  --secondary: #F2E8E3;
+  --secondary-foreground: #4C1420;
+  --muted: #F2E8E3;
+  --muted-foreground: #4C1420;
+  --accent: #6A1526;
+  --accent-foreground: #FAF1ED;
+  --destructive: #d4183d;
   --destructive-foreground: #ffffff;
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  --border: rgba(103, 20, 37, 0.1);
+  --input: transparent;
   --input-background: #F2E8E3;
   --switch-background: #cbced4;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: oklch(0.708 0 0);
+  --ring: #671425;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -33,36 +74,76 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary: #030213;
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
+  /* ========================================
+     OUTFITLY BRAND COLORS - DARK MODE
+     ======================================== */
+  
+  /* Primary Brand Colors */
+  --outfitly-primary: #671425;
+  --outfitly-primary-hover: #8B1D35;
+  --outfitly-primary-active: #A8254A;
+  
+  /* Background Colors */
+  --outfitly-bg-primary: #1a1a1a;
+  --outfitly-bg-secondary: #2A2A30;
+  --outfitly-bg-tertiary: #35353D;
+  
+  /* Text Colors */
+  --outfitly-text-primary: #FAF1ED;
+  --outfitly-text-secondary: #F2E8E3;
+  --outfitly-text-muted: #C4B5AD;
+  
+  /* Gradient Colors */
+  --outfitly-gradient-start: #671425;
+  --outfitly-gradient-mid: #8B1D35;
+  --outfitly-gradient-end: #A8254A;
+  
+  /* Additional UI Colors */
+  --outfitly-border-light: rgba(103, 20, 37, 0.3);
+  --outfitly-border-medium: rgba(103, 20, 37, 0.5);
+  --outfitly-shadow: rgba(0, 0, 0, 0.4);
+  
+  /* Accent Colors for Notifications/Icons (same in dark mode) */
+  --outfitly-accent-pink: #e91e63;
+  --outfitly-accent-blue: #3b82f6;
+  --outfitly-accent-purple: #8b5cf6;
+  --outfitly-accent-cyan: #0ea5e9;
+  --outfitly-accent-orange: #f59e0b;
+  --outfitly-accent-green: #10b981;
+  
+  /* ========================================
+     SHADCN UI COMPATIBILITY - DARK MODE
+     ======================================== */
+  
+  --background: #1a1a1a;
+  --foreground: #FAF1ED;
+  --card: #2A2A30;
+  --card-foreground: #FAF1ED;
+  --popover: #2A2A30;
+  --popover-foreground: #FAF1ED;
+  --primary: #671425;
+  --primary-foreground: #FAF1ED;
+  --secondary: #35353D;
+  --secondary-foreground: #FAF1ED;
+  --muted: #35353D;
+  --muted-foreground: #C4B5AD;
+  --accent: #671425;
+  --accent-foreground: #FAF1ED;
+  --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --border: rgba(103, 20, 37, 0.3);
+  --input: #35353D;
+  --input-background: #35353D;
+  --ring: oklch(0.439 0 0);
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --chart-1: oklch(0.488 0.243 264.376);
@@ -76,8 +157,8 @@
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
 }
 
 @theme inline {
