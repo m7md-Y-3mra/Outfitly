@@ -26,19 +26,19 @@ model User {
   updatedAt     DateTime  @updatedAt
 
   // Relations
-  addresses         UserAddress[]
-  orders            Order[]
-  cartItems         CartItem[]
-  outfits           Outfit[]
-  favoriteOutfits   Outfit[]     @relation("FavoriteOutfits")
-  likedOutfits      Outfit[]     @relation("LikedOutfits")
-  wardrobeItems     WardrobeItem[]
+  addresses       UserAddress[]
+  orders          Order[]
+  cartItems       CartItem[]
+  outfits         Outfit[]
+  favoriteOutfits Outfit[]       @relation("FavoriteOutfits")
+  likedOutfits    Outfit[]       @relation("LikedOutfits")
+  wardrobeItems   WardrobeItem[]
 
   productReviews ProductReview[]
 }
 
 model UserAddress {
-  id           String @id @default(uuid())
+  id           String  @id @default(uuid())
   addressLine1 String
   addressLine2 String?
   city         String
@@ -54,36 +54,36 @@ model UserAddress {
 }
 
 model Product {
-  id            String   @id @default(uuid())
-  name          String
-  slug          String   @unique
-  description   String?
-  basePrice     Decimal  @db.Decimal(10, 2)
-  salePrice     Decimal? @db.Decimal(10, 2)
-  gender        String?  // male, female, unisex
-  season        String?  // spring, summer, fall, winter, all-year
-  logoUrl       String?
-  brandId       String
-  categoryId    String?
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  basePrice   Decimal  @db.Decimal(10, 2)
+  salePrice   Decimal? @db.Decimal(10, 2)
+  gender      String? // male, female, unisex
+  season      String? // spring, summer, fall, winter, all-year
+  logoUrl     String?
+  brandId     String
+  categoryId  String?
 
-  brand    Brand    @relation(fields: [brandId], references: [id])
+  brand    Brand     @relation(fields: [brandId], references: [id])
   category Category? @relation(fields: [categoryId], references: [id])
 
-  variants      ProductVariant[]
-  images        ProductImage[]
-  orderItems    OrderItem[]
-  cartItems     CartItem[]
+  variants       ProductVariant[]
+  images         ProductImage[]
+  orderItems     OrderItem[]
+  cartItems      CartItem[]
+  productReviews ProductReview[]
 
   @@index([brandId])
   @@index([categoryId])
   @@index([slug])
-  productReviews ProductReview[]
 }
 
 model Brand {
-  id   String @id @default(uuid())
-  name String @unique
-  slug String @unique
+  id      String  @id @default(uuid())
+  name    String  @unique
+  slug    String  @unique
   logoUrl String?
 
   products Product[]
@@ -98,30 +98,30 @@ model Category {
 }
 
 model ProductVariant {
-  id          String @id @default(uuid())
-  sku         String @unique
-  size        String
-  colorId     String
-  quantity    Int    @default(0)
+  id              String  @id @default(uuid())
+  sku             String  @unique
+  size            String
+  colorId         String
+  quantity        Int     @default(0)
   additionalPrice Decimal @default(0.00) @db.Decimal(8, 2)
-  productId   String
+  productId       String
 
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
   color   ProductColor @relation(fields: [colorId], references: [id])
 
-  orderItems OrderItem[]
-  cartItems  CartItem[]
+  orderItems    OrderItem[]
+  cartItems     CartItem[]
   wardrobeItems WardrobeItem[]
+  outfitItems   OutfitItem[]
 
   @@index([productId])
   @@index([sku])
-  outfitItems OutfitItem[]
 }
 
 model ProductColor {
-  id       String @id @default(uuid())
-  name     String
-  hexCode  String // e.g., #FF0000
+  id      String @id @default(uuid())
+  name    String
+  hexCode String // e.g., #FF0000
 
   variants ProductVariant[]
 }
@@ -140,13 +140,13 @@ model ProductImage {
 }
 
 model ProductReview {
-  id        String   @id @default(uuid())
-  rating    Int      @db.SmallInt // 1-5
-  title     String?
-  comment   String?
-  isVerifiedPurchase Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 String   @id @default(uuid())
+  rating             Int      @db.SmallInt // 1-5
+  title              String?
+  comment            String?
+  isVerifiedPurchase Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   productId String
   userId    String
@@ -159,38 +159,38 @@ model ProductReview {
 }
 
 model Order {
-  id           String   @id @default(uuid())
-  subtotal     Decimal  @db.Decimal(10, 2)
-  taxAmount    Decimal  @db.Decimal(10, 2)
-  shippingAmount Decimal @db.Decimal(10, 2)
-  totalAmount  Decimal  @db.Decimal(10, 2)
-  status       String   // pending, paid, shipped, delivered, cancelled
+  id              String   @id @default(uuid())
+  subtotal        Decimal  @db.Decimal(10, 2)
+  taxAmount       Decimal  @db.Decimal(10, 2)
+  shippingAmount  Decimal  @db.Decimal(10, 2)
+  totalAmount     Decimal  @db.Decimal(10, 2)
+  status          String // pending, paid, shipped, delivered, cancelled
   billingAddress  String?
   shippingAddress String?
-  createdAt    DateTime @default(now())
+  createdAt       DateTime @default(now())
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  items OrderItem[]
+  items       OrderItem[]
   transaction Transaction?
 
   @@index([userId])
 }
 
 model OrderItem {
-  id         String @id @default(uuid())
+  id         String  @id @default(uuid())
   quantity   Int
   unitPrice  Decimal @db.Decimal(10, 2)
   totalPrice Decimal @db.Decimal(10, 2)
 
-  orderId         String
-  productId       String
+  orderId          String
+  productId        String
   productVariantId String
 
-  order    Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product  Product        @relation(fields: [productId], references: [id])
-  variant  ProductVariant @relation(fields: [productVariantId], references: [id])
+  order   Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product        @relation(fields: [productId], references: [id])
+  variant ProductVariant @relation(fields: [productVariantId], references: [id])
 
   @@index([orderId])
   @@index([productId])
@@ -198,9 +198,9 @@ model OrderItem {
 }
 
 model Transaction {
-  id        String @id @default(uuid())
-  orderId   String @unique
-  amount    Decimal @db.Decimal(10, 2)
+  id        String   @id @default(uuid())
+  orderId   String   @unique
+  amount    Decimal  @db.Decimal(10, 2)
   status    String // success, failed, pending
   gateway   String // stripe, paypal, etc.
   createdAt DateTime @default(now())
@@ -209,17 +209,17 @@ model Transaction {
 }
 
 model CartItem {
-  id         String @id @default(uuid())
-  quantity   Int    @default(1)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        String   @id @default(uuid())
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  userId          String
-  productId       String
+  userId           String
+  productId        String
   productVariantId String?
 
-  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product Product        @relation(fields: [productId], references: [id])
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product         @relation(fields: [productId], references: [id])
   variant ProductVariant? @relation(fields: [productVariantId], references: [id])
 
   @@index([userId])
@@ -230,7 +230,7 @@ model CartItem {
 // === Personal Styling / Outfit Feature ===
 
 model Occasion {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String // e.g., Wedding, Office, Casual, Party, Beach
   description String?
   iconUrl     String?
@@ -239,47 +239,47 @@ model Occasion {
 }
 
 model Outfit {
-  id           String   @id @default(uuid())
-  name         String
-  description  String?
-  imageUrl     String?
-  isAiGenerated Boolean @default(false)
-  visibility   String   @default("private") // public, private, friends
-  createdAt    DateTime @default(now())
+  id            String   @id @default(uuid())
+  name          String
+  description   String?
+  imageUrl      String?
+  isAiGenerated Boolean  @default(false)
+  visibility    String   @default("private") // public, private, friends
+  createdAt     DateTime @default(now())
 
   userId     String
   occasionId String?
 
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  occasion  Occasion?  @relation(fields: [occasionId], references: [id])
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  occasion Occasion? @relation(fields: [occasionId], references: [id])
 
-  items        OutfitItem[]
-  favoritedBy  User[] @relation("FavoriteOutfits")
-  likedBy      User[] @relation("LikedOutfits")
+  items       OutfitItem[]
+  favoritedBy User[]       @relation("FavoriteOutfits")
+  likedBy     User[]       @relation("LikedOutfits")
 
   @@index([userId])
   @@index([occasionId])
 }
 
 model OutfitItemType {
-  id   String @id @default(uuid())
-  name String @unique // e.g., Top, Bottom, Shoes, Outerwear, Accessory, Dress
+  id   String  @id @default(uuid())
+  name String  @unique // e.g., Top, Bottom, Shoes, Outerwear, Accessory, Dress
   icon String?
 
   items OutfitItem[]
 }
 
 model OutfitItem {
-  id               String @id @default(uuid())
+  id               String  @id @default(uuid())
   outfitId         String
   wardrobeItemId   String?
   productVariantId String?
   typeId           String
 
-  outfit       Outfit         @relation(fields: [outfitId], references: [id], onDelete: Cascade)
-  wardrobeItem WardrobeItem?  @relation(fields: [wardrobeItemId], references: [id])
+  outfit       Outfit          @relation(fields: [outfitId], references: [id], onDelete: Cascade)
+  wardrobeItem WardrobeItem?   @relation(fields: [wardrobeItemId], references: [id])
   product      ProductVariant? @relation(fields: [productVariantId], references: [id])
-  type         OutfitItemType @relation(fields: [typeId], references: [id])
+  type         OutfitItemType  @relation(fields: [typeId], references: [id])
 
   @@index([outfitId])
   @@index([wardrobeItemId])
@@ -287,14 +287,34 @@ model OutfitItem {
   @@index([typeId])
 }
 
-model WardrobeItem {
-  id         String @id @default(uuid())
-  userId     String
-  variantId  String?
-  source     String   @default("manual") // purchased, manual, ai-suggested
-  addedAt    DateTime @default(now())
+/**
+ * productId?: string;
+ * name: string;
+ * brand?: string;
+ * categoryId: string;
+ * colorId?: string;
+ * size?: string;
+ * season?: string[];
+ * purchasedDate?: string;
+ * notes?: string;
+ * imageUrls: string[];
+ */
 
-  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+model WardrobeItem {
+  id            String   @id @default(uuid())
+  userId        String
+  variantId     String?
+  name          String
+  color         String
+  size          String
+  brand         String
+  season        String
+  notes         String
+  source        String   @default("manual") // purchased, manual, ai-suggested
+  addedAt       DateTime @default(now())
+  purchasedDate DateTime
+
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   variant ProductVariant? @relation(fields: [variantId], references: [id])
 
   outfitItems OutfitItem[]
@@ -305,12 +325,12 @@ model WardrobeItem {
 }
 
 model WardrobeItemImage {
-  id           String @id @default(uuid())
+  id             String  @id @default(uuid())
   wardrobeItemId String
-  imageUrl     String
-  altText      String?
-  isPrimary    Boolean @default(false)
-  displayOrder Int     @default(0)
+  imageUrl       String
+  altText        String?
+  isPrimary      Boolean @default(false)
+  displayOrder   Int     @default(0)
 
   wardrobeItem WardrobeItem @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
 
