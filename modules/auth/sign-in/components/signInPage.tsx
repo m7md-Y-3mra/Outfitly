@@ -4,7 +4,7 @@ import SignInCard from "./signInCard";
 import { Logo } from "@/components/logo/logo";
 import { SocialLoginButtons } from "./socialSignIn";
 
-export function SignInPage() {
+export default function SignInPage() {
   return (
     <div className="min-h-screen transition-colors duration-300 bg-gradient-to-br from-[var(--outfitly-bg-primary)] via-[var(--outfitly-bg-secondary)] to-[var(--outfitly-bg-primary)] relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

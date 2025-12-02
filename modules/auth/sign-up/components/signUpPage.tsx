@@ -3,7 +3,7 @@ import { Logo } from "@/components/logo/logo";
 import { SignUpCard } from "./signUpCard";
 import { motion } from "framer-motion";
 
-export function SignUpPage() {
+export default function SignUpPage() {
   return (
     <div className="min-h-screen transition-colors duration-300 bg-gradient-to-br from-[var(--outfitly-bg-primary)] via-[var(--outfitly-bg-secondary)] to-[var(--outfitly-bg-primary)] relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
