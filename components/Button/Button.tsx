@@ -1,7 +1,7 @@
 import { FC, ButtonHTMLAttributes } from "react";
 import { motion, MotionProps } from "framer-motion";
-import { ButtonProps } from "./types";
-import { sizeClasses, variantDefaults } from "./constants";
+import { ButtonProps } from "./button.types";
+import { sizeClasses, variantDefaults } from "./button.constants";
 
 type MotionButtonProps = ButtonProps & ButtonHTMLAttributes<HTMLButtonElement> & MotionProps;
 
