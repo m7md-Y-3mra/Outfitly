@@ -3,9 +3,11 @@ import CustomError from "./CustomError";
 import z, { ZodError } from "zod";
 import { HttpStatusError } from "@/types/status-code.type";
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-export function handleError(actionFn: Function) {
-  return async (...args: unknown[]): Promise<ApiResponseError> => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function actionHandler<T extends (...args: any[]) => Promise<any>>(actionFn: T) {
+  return async (
+    ...args: Parameters<T>
+  ): Promise<Awaited<ReturnType<T>> | ApiResponseError> => {
     try {
       return await actionFn(...args);
     } catch (err: unknown) {
@@ -18,12 +20,12 @@ export function handleError(actionFn: Function) {
       }
 
       if (err instanceof ZodError) {
-        const errors = z.flattenError(err, (issue) => issue.message).fieldErrors;
+        const errors = z.flattenError(err, issue => issue.message).fieldErrors;
         return {
           success: false,
           message: "validation error",
           statusCode: HttpStatusError.BadRequest,
-          errors: errors,
+          errors,
         };
       }
 
