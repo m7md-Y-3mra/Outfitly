@@ -18,7 +18,7 @@ const useSignUp = () => {
       password: values.password,
     };
     const data = await signUpAction(userData);
-    if(data.success) {
+    if (data.success) {
       toast.success("User created successfully");
     }
     console.log(data);

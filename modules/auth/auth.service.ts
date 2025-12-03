@@ -1,4 +1,3 @@
-
 import { TCreateUser } from "../user/user.types";
 import userService from "../user/user.service";
 import { ITokenPayload, TSignUpResult } from "@/@types";
@@ -20,7 +19,6 @@ class AuthService {
 
       return { success: true, user: createdUser };
     } catch (err: unknown) {
-    
       console.error(err);
       throw err;
     }
