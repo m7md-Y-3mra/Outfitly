@@ -1,31 +1,31 @@
 import { ITokenPayload, TVerifyTokenResult } from "@/@types";
 import { SignJWT, jwtVerify } from "jose";
 
-const secretKey = process.env.SESSION_SECRET; 
+const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-export const generateToken = async (payload: ITokenPayload, expirationTime: string = '1d') => {
-        const t =  new SignJWT(payload)
-                    .setProtectedHeader({ alg: "HS256" })
-                    .setIssuedAt()
-                    .setExpirationTime(expirationTime)
-    const token = await t.sign(encodedKey); 
+export const generateToken = async (payload: ITokenPayload, expirationTime: string = "1d") => {
+  const t = new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime(expirationTime);
+  const token = await t.sign(encodedKey);
 
-    return token;
-}
+  return token;
+};
 
 export const verifyToken = async (token: string): Promise<TVerifyTokenResult> => {
-    try {
-        const { payload } = await jwtVerify(token, encodedKey, {
-            algorithms: ["HS256"]
-        });
-        return { success: true, payload: payload as ITokenPayload };
-    } catch(error: unknown) {
-                if (error instanceof Error) {
-            if (error.message.includes('expired')) {
-                return { success: false, error: 'expired' };
-            }
-        }
-        return { success: false, error: 'invalid' };
+  try {
+    const { payload } = await jwtVerify(token, encodedKey, {
+      algorithms: ["HS256"],
+    });
+    return { success: true, payload: payload as ITokenPayload };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      if (error.message.includes("expired")) {
+        return { success: false, error: "expired" };
+      }
     }
-}
+    return { success: false, error: "invalid" };
+  }
+};

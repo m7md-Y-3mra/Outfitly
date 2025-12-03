@@ -6,8 +6,10 @@ export interface IStyle {
 }
 
 export interface ITokenPayload extends JwtPayload {
-    sub: User["id"];
-    fullName: User["fullName"];
-    email: User["email"];
+  sub: User["id"];
+  fullName: User["fullName"];
+  email: User["email"];
 }
-export type TVerifyTokenResult = { success: true, payload: ITokenPayload } | { success: false; error: string; };
+export type TVerifyTokenResult =
+  | { success: true; payload: ITokenPayload }
+  | { success: false; error: string };
