@@ -1,4 +1,4 @@
-import { removeFields } from "@/shared/utils/object.utils";
+import { removeFields } from "@/utils/object.utils";
 import userRepo from "./user.repo";
 import { TCreateUser } from "./user.types";
 import { createUserValidationSchema } from "./validation/createUser.validation";

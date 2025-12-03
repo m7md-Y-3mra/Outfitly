@@ -3,6 +3,8 @@ import { useFormik } from "formik";
 import { formikSignInSchema } from "../validation/signIn.validation";
 import { INITIAL_VALUES } from "../signIn.constants";
 import { TFormValues } from "../signIn.types";
+import { signInAction } from "../../auth.actions";
+
 
 const useSignIn = () => {
   const handleSignIn = async (
@@ -10,9 +12,10 @@ const useSignIn = () => {
     resetForm: () => void,
     setSubmitting: (submitting: boolean) => void,
   ) => {
+    const data = await signInAction(values);
+    console.log(data);
     setSubmitting(false);
     resetForm();
-    console.log(values);
   };
   const formik = useFormik<TFormValues>({
     initialValues: INITIAL_VALUES,

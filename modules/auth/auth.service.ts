@@ -1,9 +1,10 @@
+
 import { TCreateUser } from "../user/user.types";
 import userService from "../user/user.service";
 import { ITokenPayload, TSignUpResult } from "@/@types";
 import { hashPassword, verifyPassword } from "@/lib/argon2.util";
 import { generateToken, verifyToken } from "@/lib/jwt.util";
-import { removeFields } from "@/shared/utils/object.utils";
+import { removeFields } from "@/utils/object.utils";
 
 class AuthService {
   async signUp(data: TCreateUser): Promise<TSignUpResult> {
@@ -19,9 +20,9 @@ class AuthService {
 
       return { success: true, user: createdUser };
     } catch (err: unknown) {
-      //TODO: handling the errors in unified way
+    
       console.error(err);
-      return { success: false, error: "Internal server error" };
+      throw err;
     }
   }
 
@@ -41,11 +42,10 @@ class AuthService {
       };
       const token = await generateToken(tokenPayload);
       const userForClient = removeFields(user, ["password"]);
-      return { success: true, token, data: userForClient };
+      return { token, user: userForClient };
     } catch (err: unknown) {
-      //TODO: handling the errors in unified way
       console.error(err);
-      return { success: false, error: "Invalid credentials" };
+      throw err;
     }
   }
 
@@ -77,12 +77,10 @@ class AuthService {
       const userForClient = removeFields(user, ["password"]);
 
       return {
-        success: true,
         token: newToken,
-        data: userForClient,
+        user: userForClient,
       };
     } catch (err: unknown) {
-      // TODO: handle errors
       console.error("Revalidate error:", err);
       throw err;
     }
