@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
-
+import { PageHeader } from "@/components/page-header";
 import type { AppProps } from 'next/app'
 import { ThemeProvider } from '../contexts/ThemeContext'
 
@@ -16,6 +16,13 @@ export default function Home({ Component, pageProps }: AppProps) {
     </div>
   );
 }
+
+{/*page-header usage example :
+    
+  <PageHeader title="s"    backTo="/wardrobe"     subtitle="See and manage all your outfits in one place" 
+
+  
+  */}
 {/* Button Examples -with variables-
 "use client";
 
