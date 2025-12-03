@@ -13,7 +13,7 @@ export function handleError(actionFn: Function) {
         return {
           success: false,
           message: err.message,
-          statusCode: err.statusCode
+          statusCode: err.statusCode,
         };
       }
 
@@ -23,8 +23,8 @@ export function handleError(actionFn: Function) {
           success: false,
           message: "validation error",
           statusCode: HttpStatusError.BadRequest,
-          errors: errors
-        }
+          errors: errors,
+        };
       }
 
       console.error("Unexpected Server Action Error:", err);

@@ -14,14 +14,14 @@ export type ApiResponseSuccess<T> = {
   message: string;
   data: T;
   meta?: Meta;
-  statusCode: 200
-}
+  statusCode: 200;
+};
 
 export type ApiResponseError = {
   success: false;
   message: string;
   errors?: Record<string, string>;
-  statusCode: ErrorStatusCode
+  statusCode: ErrorStatusCode;
 };
 
 export type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError;
