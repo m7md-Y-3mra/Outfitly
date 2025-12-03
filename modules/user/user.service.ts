@@ -11,22 +11,31 @@ class UserService {
       const userForClientSide = removeFields(createdUser, ["password"]);
       return userForClientSide;
     } catch (err: unknown) {
-      console.error(err);
+      console.error("UserService.create error:", err);
+      throw err;
     }
   }
 
   async findUserByEmail(email: string) {
     try {
       const user = await userRepo.findUserByEmail(email);
-      if (!user) {
-        throw new Error("User not found");
-      }
-      const userForClientSide = removeFields(user, ["password"]);
-      return userForClientSide;
+      return user;
     } catch (err: unknown) {
-      console.error(err);
+      console.error("UserService.findUserByEmail error:", err);
+      throw err;
+    }
+  }
+
+  async findById(id: string) {
+    try {
+      const user = await userRepo.findById(id);
+      return user;
+    } catch (err: unknown) {
+      console.error("UserService.findById error:", err);
+      throw err;
     }
   }
 }
+
 const userService = new UserService();
 export default userService;

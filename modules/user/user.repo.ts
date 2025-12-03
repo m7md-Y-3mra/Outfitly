@@ -15,6 +15,14 @@ class UserRepo {
       },
     });
   }
+
+  async findById(id: string) {
+    return await prisma.user.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    });
+  }
 }
 const userRepo = new UserRepo();
 export default userRepo;
