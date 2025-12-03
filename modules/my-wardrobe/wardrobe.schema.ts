@@ -1,6 +1,7 @@
 import { z, ZodType } from "zod";
 import { WardrobeItemSourceEnum } from "./types";
 import { CreateWardrobeItemDTO } from "./types/dto.types";
+import { WardrobeItem } from "@/app/generated/prisma/browser";
 
 // Base WardrobeItem schema
 const WardrobeItemBaseSchema = z.object({
@@ -18,9 +19,9 @@ const WardrobeItemBaseSchema = z.object({
 
   source: z.enum(Object.values(WardrobeItemSourceEnum)).default("manual"),
 
-  addedAt: z.date().optional(), // Prisma defaults now()
+  addedAt: z.date(), // Prisma defaults now()
   purchasedDate: z.date(),
-});
+}) satisfies ZodType<WardrobeItem>;
 
 // CREATE schema
 export const CreateWardrobeItemDTOSchema = WardrobeItemBaseSchema.pick({
