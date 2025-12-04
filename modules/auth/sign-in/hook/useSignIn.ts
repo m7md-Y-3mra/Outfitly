@@ -12,7 +12,7 @@ const useSignIn = () => {
     setSubmitting: (submitting: boolean) => void,
   ) => {
     const data = await signInAction(values);
-    console.log(data);
+
     setSubmitting(false);
     resetForm();
   };
