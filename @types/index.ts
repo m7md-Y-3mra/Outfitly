@@ -10,10 +10,14 @@ export interface ITokenPayload extends JwtPayload {
   fullName: User["fullName"];
   email: User["email"];
 }
-export type TVerifyTokenResult =
-  | { success: true; payload: ITokenPayload }
-  | { success: false; error: string };
+export type TVerifyTokenResult = { success: true; payload: ITokenPayload }
 
-export type TSignUpResult =
-  | { success: true; user: Omit<User, "password"> }
-  | { success: false; error: string };
+export type TSignUpResult = { data: Omit<User, "password"> }
+export type TSignInResult = TSignUpResult & {
+  token: string;
+}
+
+export type TSuccessConfig = {
+  statusCode?: 200 | 201 | 204;
+  message?: string;
+};

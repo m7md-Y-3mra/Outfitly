@@ -1,7 +1,7 @@
-import { ApiResponseError } from "@/types/response.type";
+import { ApiResponseError, ApiResponseSuccess } from "@/@types/response.type";
 import CustomError from "./CustomError";
 import z, { ZodError } from "zod";
-import { HttpStatusError } from "@/types/status-code.type";
+import { HttpStatusError } from "@/@types/status-code.type";
 import {
   PrismaClientKnownRequestError,
   PrismaClientValidationError,
@@ -10,14 +10,25 @@ import {
   PrismaClientUnknownRequestError,
 } from "@prisma/client/runtime/client";
 import { prismaKnownErrorMessage } from "./prisma.utils";
+import { TSuccessConfig } from "@/@types";
+import { errors as JoseErrors } from "jose";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function actionHandler<Args extends unknown[], Return>(
   actionFn: (...args: Args) => Promise<Return>,
+  config?: TSuccessConfig
 ) {
-  return async (...args: Args): Promise<Return | ApiResponseError> => {
+  return async (
+    ...args: Args
+  ): Promise<ApiResponseSuccess<Return> | ApiResponseError> => {
     try {
-      return await actionFn(...args);
+      const data = await actionFn(...args);
+
+      return {
+        success: true,
+        statusCode: config?.statusCode ?? 200,
+        message: config?.message ?? "Operation successful",
+        data,
+      } as ApiResponseSuccess<Return>;
     } catch (err: unknown) {
       // ---------------------------
       // 🔥 Prisma Error Handling
@@ -68,12 +79,38 @@ export function actionHandler<Args extends unknown[], Return>(
       // ---------------------------
 
       if (err instanceof ZodError) {
-        const errors = z.flattenError(err, (issue) => issue.message).fieldErrors;
+        const errors = z.flattenError(err, (issue) => issue.message)
+          .fieldErrors;
+
         return {
           success: false,
           statusCode: HttpStatusError.BadRequest,
           message: "Validation error",
           errors,
+        };
+      }
+
+      // ---------------------------
+      // 🔥 JWT / Token errors (jose)
+      // ---------------------------
+
+      if (err instanceof JoseErrors.JWTExpired) {
+        return {
+          success: false,
+          statusCode: HttpStatusError.Unauthorized,
+          message: "Session expired. Please sign in again.",
+        };
+      }
+
+      if (
+        err instanceof JoseErrors.JWTInvalid ||
+        err instanceof JoseErrors.JOSEError || // base class for many jose errors
+        err instanceof JoseErrors.JWTClaimValidationFailed
+      ) {
+        return {
+          success: false,
+          statusCode: HttpStatusError.Unauthorized,
+          message: "Invalid session. Please sign in again.",
         };
       }
 

@@ -9,6 +9,11 @@ export interface Meta {
   };
 }
 
+type لSuccessConfig = {
+  statusCode?: 200 | 201 | 204;
+  message?: string;
+};
+
 export type ApiResponseSuccess<T> = {
   success: true;
   message: string;
