@@ -15,17 +15,10 @@ export const generateToken = async (payload: ITokenPayload, expirationTime: stri
 };
 
 export const verifyToken = async (token: string): Promise<TVerifyTokenResult> => {
-  try {
+  
     const { payload } = await jwtVerify(token, encodedKey, {
       algorithms: ["HS256"],
     });
     return { success: true, payload: payload as ITokenPayload };
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      if (error.message.includes("expired")) {
-        return { success: false, error: "expired" };
-      }
-    }
-    return { success: false, error: "invalid" };
-  }
+  
 };

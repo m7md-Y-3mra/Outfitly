@@ -1,23 +1,14 @@
 "use server";
+import { actionHandler } from "@/utils/action-handler.utils";
+import { signIn, signUp } from "./auth.service";
 
-import authService from "@/modules/auth/auth.service";
-import { TCreateUser } from "@/modules/user/user.types";
+export const signInAction = actionHandler(signIn, {
+    statusCode: 200,
+    message: "Sign in successful!",
+})
 
-export const signInAction = async (data: Pick<TCreateUser, "email" | "password">) => {
-  const { token, user } = await authService.signIn(data);
+export const signUpAction = actionHandler(signUp, {
+  statusCode: 201,
+  message: "Sign up successful!",
+});
 
-  return {
-    success: true as const,
-    token,
-    data: user,
-  };
-};
-
-export const signUpAction = async (data: TCreateUser) => {
-  const user = await authService.signUp(data);
-
-  return {
-    success: true as const,
-    data: user,
-  };
-};
