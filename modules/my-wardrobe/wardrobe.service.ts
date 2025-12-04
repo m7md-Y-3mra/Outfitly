@@ -17,5 +17,5 @@ export const createWardrobeItemService = async (
   await findCategoryById(rest.categoryId);
 
   const wardrobeItem = await createWardrobeItemRepo(rest, imageUrls);
-  return wardrobeItem
+  return wardrobeItem;
 };

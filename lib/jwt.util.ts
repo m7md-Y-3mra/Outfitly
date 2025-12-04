@@ -15,10 +15,8 @@ export const generateToken = async (payload: ITokenPayload, expirationTime: stri
 };
 
 export const verifyToken = async (token: string): Promise<TVerifyTokenResult> => {
-  
-    const { payload } = await jwtVerify(token, encodedKey, {
-      algorithms: ["HS256"],
-    });
-    return { success: true, payload: payload as ITokenPayload };
-  
+  const { payload } = await jwtVerify(token, encodedKey, {
+    algorithms: ["HS256"],
+  });
+  return { success: true, payload: payload as ITokenPayload };
 };
