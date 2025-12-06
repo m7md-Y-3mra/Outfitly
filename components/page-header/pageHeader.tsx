@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-import { PAGE_HEADER_CLASSES } from "./page-header.constants";
-import { getRadialPattern } from "./page-header.utils";
-import { usePageHeader } from "./use-page-header";
+import { PAGE_HEADER_CLASSES } from "./pageHeader.constants";
+import { getRadialPattern } from "./pageHeader.utils";
+import { usePageHeader } from "./usePageHeader";
 
-import type { pageHeaderProps } from "./page-header.types";
+import type { pageHeaderProps } from "./pageHeader.types";
 
 export function PageHeader({ title, subtitle, className = "", backTo }: pageHeaderProps) {
   const router = useRouter();
