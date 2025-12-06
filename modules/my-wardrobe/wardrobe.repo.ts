@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { WardrobeItemWithoutAddedAtAndId } from "./types";
 import { WardrobeItemImage } from "@/app/generated/prisma/client";
 import { MAX_IMAGES } from "./constant";
+import { GetUserWardrobeItemDTO } from "./types/dto.types";
 
 export const createWardrobeItemRepo = async (
   data: WardrobeItemWithoutAddedAtAndId,
@@ -104,4 +105,87 @@ export const findWardrobeItemById = async (id: string) => {
       id,
     },
   });
+};
+
+export const getUserWardrobe = async ({
+  userId,
+  category = "ALL",
+  sortBy = "newest",
+  search = "",
+  take = 20,
+  skip = 0,
+}: GetUserWardrobeItemDTO) => {
+  const where = {
+    userId,
+    ...(category && category !== "ALL" && { category }),
+    ...(search && {
+      name: {
+        contains: search.trim(),
+        mode: "insensitive" as const,
+      },
+    }),
+  };
+
+  const orderBy: {
+    addedAt: "asc" | "desc";
+  } | {
+    name: "asc" | "desc";
+  } = (() => {
+    switch (sortBy) {
+      case "newest": return { addedAt: "desc" };
+      case "oldest": return { addedAt: "asc" };
+      case "name-asc": return { name: "asc" };
+      case "name-desc": return { name: "desc" };
+      default: return { addedAt: "desc" };
+    }
+  })();
+
+  const [items, total] = await prisma.$transaction([
+    prisma.wardrobeItem.findMany({
+      where,
+      select: {
+        id: true,
+        name: true,
+        category: true,
+        color: true,
+        addedAt: true,
+        // Only the primary image (or first one)
+        images: {
+          where: { isPrimary: true },
+          take: 1,
+          select: {
+            imageUrl: true,
+            altText: true,
+          },
+          orderBy: { displayOrder: "asc" }, // fallback if multiple primaries exist
+        },
+      },
+      orderBy,
+      take,
+      skip,
+    }),
+
+    prisma.wardrobeItem.count({ where }),
+  ]);
+
+  // Flatten: make primaryImage easily accessible
+  const formattedItems = items.map((item) => {
+    const { images, ...rest } = item;
+    const primaryImage = images[0] ?? null;
+
+    return {
+      ...rest,
+      primaryImageUrl: primaryImage?.imageUrl ?? null,
+      primaryImageAlt: primaryImage?.altText ?? item.name,
+      // remove the images array from output
+    };
+  });
+
+  return {
+    items: formattedItems,
+    total,
+    hasMore: skip + formattedItems.length < total,
+    currentPage: Math.floor(skip / take) + 1,
+    totalPages: Math.ceil(total / take),
+  };
 };
