@@ -17,7 +17,9 @@ const useSignIn = () => {
     setSubmitting(false);
 
     if (!data.success) {
-      toast.error(data.message);
+      console.log(data.statusCode);
+      if (data.statusCode == 400) toast.error("Invalid Credentials!");
+      else toast.error("Internal Server Error!");
       return;
     }
 

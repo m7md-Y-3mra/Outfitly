@@ -43,7 +43,7 @@ export default function SignInPage() {
           className="w-full max-w-md"
         >
           <div className="text-center">
-            <Logo size="sm" animated={true} linkTo="/" />
+            <Logo size="xl" animated={true} linkTo="/" />
           </div>
 
           <SignInCard />

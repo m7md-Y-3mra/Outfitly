@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { footerLinks, socialLinks } from "./footer.constants";
+import { footerLinks } from "./footer.constants";
 import { useFooter } from "./useFooter";
 
 export const Footer = () => {
