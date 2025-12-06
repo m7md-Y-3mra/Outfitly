@@ -46,16 +46,16 @@ export const Button: FC<MotionButtonProps> = ({
           )}
 
           {loading ? loadingText || children : children}
-          </span>
-          {/* Hover Shine */}
-          {!loading && (
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: "100%" }}
-              transition={{ duration: 0.6 }}
-            />
-          )}
+        </span>
+        {/* Hover Shine */}
+        {!loading && (
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
+            initial={{ x: "-100%" }}
+            whileHover={{ x: "100%" }}
+            transition={{ duration: 0.6 }}
+          />
+        )}
 
         {/* Loading shimmer */}
         {loading && (
@@ -65,7 +65,7 @@ export const Button: FC<MotionButtonProps> = ({
             transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
           />
         )}
-        
+
         {icon && <span>{icon}</span>}
         {badge && <span>{badge}</span>}
       </motion.button>

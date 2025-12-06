@@ -10,12 +10,7 @@ import { usePageHeader } from "./use-page-header";
 
 import type { pageHeaderProps } from "./page-header.types";
 
-export function PageHeader({
-  title,
-  subtitle,
-  className = "",
-  backTo,
-}: pageHeaderProps) {
+export function PageHeader({ title, subtitle, className = "", backTo }: pageHeaderProps) {
   const router = useRouter();
   const { isDark } = usePageHeader();
 
@@ -64,8 +59,7 @@ export function PageHeader({
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative mb-2 text-transparent font-extrabold uppercase"
               style={{
-                textShadow:
-                  "0 4px 20px rgba(0,0,0,0.3), 0 0 40px rgba(255,255,255,0.1)",
+                textShadow: "0 4px 20px rgba(0,0,0,0.3), 0 0 40px rgba(255,255,255,0.1)",
                 letterSpacing: "0.02em",
                 fontSize: "clamp(2.5rem, 8vw, 5rem)",
                 lineHeight: "1.1",

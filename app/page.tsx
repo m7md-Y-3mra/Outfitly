@@ -1,26 +1,25 @@
-"use client"
+"use client";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { PageHeader } from "@/components/page-header";
-import type { AppProps } from 'next/app'
-import { ThemeProvider } from '../contexts/ThemeContext'
+import type { AppProps } from "next/app";
+import { ThemeProvider } from "../contexts/ThemeContext";
 import { Button } from "@/components/button";
-
 
 export default function Home({ Component, pageProps }: AppProps) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-       <ThemeProvider>
-          <Navbar/>
+      <ThemeProvider>
+        <Navbar />
 
-          <Footer/>     
-       </ThemeProvider>
-
+        <Footer />
+      </ThemeProvider>
     </div>
   );
 }
 
-{/*Example usage of using loading props in Button component : 
+{
+  /*Example usage of using loading props in Button component : 
   
   "use client";
 import Image from "next/image";
@@ -54,14 +53,18 @@ export default function Home({ Component, pageProps }: AppProps) {
   );
 }
   
-  */}
-{/*page-header usage example :
+  */
+}
+{
+  /*page-header usage example :
     
   <PageHeader title="s"    backTo="/wardrobe"     subtitle="See and manage all your outfits in one place" 
 
   
-  */}
-{/* Button Examples -with variables-
+  */
+}
+{
+  /* Button Examples -with variables-
 "use client";
 
 import { useState } from "react";
@@ -245,8 +248,8 @@ export default function Home() {
 */
 }
 
-
-{/*Button usage Examples -without variables-
+{
+  /*Button usage Examples -without variables-
   
   
   
@@ -426,4 +429,5 @@ export default function Home() {
 }
 
   
-  */}
+  */
+}

@@ -5,5 +5,5 @@ export const PAGE_HEADER_CLASSES = {
     "absolute inset-0 bg-gradient-to-r " +
     "from-[var(--outfitly-gradient-start)] " +
     "via-[var(--outfitly-gradient-mid)] " +
-    "to-[var(--outfitly-gradient-end)]"
+    "to-[var(--outfitly-gradient-end)]",
 };

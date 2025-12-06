@@ -7,4 +7,3 @@ export interface SocialLink {
 }
 
 export type FooterLinks = Record<string, string[]>;
-

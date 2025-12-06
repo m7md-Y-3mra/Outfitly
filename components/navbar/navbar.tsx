@@ -11,14 +11,7 @@ import { useNavbar } from "./useNavbar";
 
 export function Navbar() {
   const { theme, toggleTheme } = useTheme();
-  const {
-    isOpen,
-    toggleMenu,
-    closeMenu,
-    isActive,
-    NAV_LINKS,
-    NAVBAR_COLORS,
-  } = useNavbar();
+  const { isOpen, toggleMenu, closeMenu, isActive, NAV_LINKS, NAVBAR_COLORS } = useNavbar();
 
   return (
     <motion.nav
@@ -170,7 +163,11 @@ export function Navbar() {
 
               <div className="pt-4 space-y-3">
                 <Link href="/login">
-                  <Button variant="ghost" className="w-full" style={{ color: NAVBAR_COLORS.primary }}>
+                  <Button
+                    variant="ghost"
+                    className="w-full"
+                    style={{ color: NAVBAR_COLORS.primary }}
+                  >
                     Sign In
                   </Button>
                 </Link>

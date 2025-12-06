@@ -19,8 +19,7 @@ export const variantDefaults = {
   },
 
   secondary: {
-    className:
-      "hover:scale-110 hover:shadow-2xl bg-transparent backdrop-blur-md",
+    className: "hover:scale-110 hover:shadow-2xl bg-transparent backdrop-blur-md",
     style: {
       border: "2px solid var(--input-background)", // #FAF1ED
       color: "var(--input-background)", // same original

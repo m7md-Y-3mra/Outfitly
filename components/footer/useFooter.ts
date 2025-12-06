@@ -2,8 +2,8 @@
 
 export const useFooter = () => {
   //const { theme } = useTheme();
- // const isDark = theme === "dark";
-    const isDark= 'dark'
+  // const isDark = theme === "dark";
+  const isDark = "dark";
   return {
     isDark,
     colors: {

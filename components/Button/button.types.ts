@@ -12,8 +12,7 @@ export type ButtonVariant =
   | "motion";
 
 // Extend ALL native <button> props
-export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   size?: ButtonSize;
   variant?: ButtonVariant;
@@ -22,6 +21,6 @@ export interface ButtonProps
   selected?: boolean;
   loading?: boolean;
   loadingText?: string;
-  
+
   // category buttons
 }

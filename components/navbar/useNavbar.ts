@@ -11,10 +11,7 @@ export function useNavbar() {
   const toggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
   const closeMenu = useCallback(() => setIsOpen(false), []);
 
-  const isActive = useCallback(
-    (href: string) => pathname === href,
-    [pathname]
-  );
+  const isActive = useCallback((href: string) => pathname === href, [pathname]);
 
   return {
     isOpen,
