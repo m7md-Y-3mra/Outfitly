@@ -12,7 +12,7 @@ export interface ITokenPayload extends JwtPayload {
 }
 export type TVerifyTokenResult = { success: true; payload: ITokenPayload };
 
-export type TSignUpResult = { data: Omit<User, "password"> };
+export type TSignUpResult = { user: Omit<User, "password"> };
 export type TSignInResult = TSignUpResult & {
   token: string;
 };

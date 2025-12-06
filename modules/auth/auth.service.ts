@@ -4,6 +4,8 @@ import { ITokenPayload, TSignInResult, TSignUpResult } from "@/@types";
 import { hashPassword, verifyPassword } from "@/lib/argon2.util";
 import { generateToken, verifyToken } from "@/lib/jwt.util";
 import { removeFields } from "@/utils/object.utils";
+import { cookies } from "next/headers";
+import CustomError from "@/utils/CustomError";
 
 export async function signUp(data: TCreateUser): Promise<TSignUpResult> {
   const hashedPassword = await hashPassword(data.password);
@@ -15,7 +17,7 @@ export async function signUp(data: TCreateUser): Promise<TSignUpResult> {
 
   const createdUser = await userService.create(dataWithHashedPass);
 
-  return { data: createdUser };
+  return { user: createdUser };
 }
 
 export async function signIn(
@@ -39,11 +41,11 @@ export async function signIn(
 
   const token = await generateToken(tokenPayload);
   const userForClient = removeFields(user, ["password"]);
-  const data = { token, data: userForClient };
-  return data;
+  (await cookies()).set("user-token", token);
+  return { token, user: userForClient };
 }
 
-export async function revalidate(token: string): Promise<TSignInResult> {
+export async function revalidateUser(token: string): Promise<TSignInResult> {
   const result = await verifyToken(token);
 
   const payload = result.payload;
@@ -61,6 +63,22 @@ export async function revalidate(token: string): Promise<TSignInResult> {
 
   return {
     token: newToken,
-    data: userForClient,
+    user: userForClient,
   };
+
 }
+
+export const getAuthedUserAndRefresh = async() => {
+      const cookiesStore = await cookies();
+      const token =  cookiesStore.get('user-token')?.value;
+
+      if(!token) {
+          throw new CustomError({message: 'No token found', statusCode: 401});
+      }
+
+      const verifiedUser = await revalidateUser(token);
+      
+      cookiesStore.set('user-token', verifiedUser.token); 
+      
+      return verifiedUser;
+  }
