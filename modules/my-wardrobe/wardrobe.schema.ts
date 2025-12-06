@@ -1,5 +1,5 @@
 import { z, ZodType } from "zod";
-import { WardrobeItemSourceEnum, WardrobeItemWithImages } from "./types";
+import { WardrobeItemSourceEnum } from "./types";
 import { CreateWardrobeItemDTO, UpdateWardrobeItemDTO } from "./types/dto.types";
 import { WardrobeItem } from "@/app/generated/prisma/browser";
 
@@ -44,9 +44,7 @@ export const CreateWardrobeItemDTOSchema = WardrobeItemBaseWithImagesSchema.pick
 }) satisfies ZodType<CreateWardrobeItemDTO>;
 
 // UPDATE schema
-export const UpdateWardrobeItemDTOSchema = WardrobeItemBaseWithImagesSchema.pick({
-  id: true,
-  userId: true,
+export const UpdateWardrobeItemDTOSchema = WardrobeItemBaseSchema.pick({
   categoryId: true,
   variantId: true,
   name: true,
@@ -57,7 +55,15 @@ export const UpdateWardrobeItemDTOSchema = WardrobeItemBaseWithImagesSchema.pick
   notes: true,
   source: true,
   purchasedDate: true,
-  imageUrls: true
+}).extend({
+  images: z.array(z.object({
+    id: z.uuid(),
+    imageUrl: z.string(),
+    altText: z.string().nullable(),
+    isPrimary: z.boolean(),
+    displayOrder: z.number(),
+    wardrobeItemId: z.uuid(),
+  }))
 }).partial().extend({
   id: z.uuid(), // auto-generated
   userId: z.uuid(),
