@@ -4,6 +4,7 @@ import { Form, FormikProvider } from "formik";
 import { motion } from "framer-motion";
 import useSignIn from "../hook/useSignIn";
 import { Mail, Lock } from "lucide-react";
+import CustomButton from "@/components/custom-button";
 
 const SignInForm = () => {
   const { formik } = useSignIn();
@@ -42,23 +43,22 @@ const SignInForm = () => {
             Forgot Password?
           </button>
         </motion.div>
-        <motion.button
+
+        <CustomButton
           type="submit"
+          loadingText=""
+          variant="motion"
+          loading={formik.isSubmitting}
+          size="md" // or "lg" if you want a bit taller
+          className="w-full py-4 rounded-xl bg-gradient-to-r from-[#671425] to-[#8B1D35] hover:from-[#6A1526] hover:to-[#9A1E3A] text-white shadow-lg shadow-[#671425]/30 hover:shadow-xl hover:shadow-[#671425]/40 group"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full py-4 rounded-xl bg-gradient-to-r from-[#671425] to-[#8B1D35] hover:from-[#6A1526] hover:to-[#9A1E3A] text-white shadow-lg shadow-[#671425]/30 hover:shadow-xl hover:shadow-[#671425]/40 transition-all duration-300 relative overflow-hidden group"
         >
           <span className="relative z-10">Sign In</span>
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
-            initial={{ x: "-100%" }}
-            whileHover={{ x: "100%" }}
-            transition={{ duration: 0.6 }}
-          />
-        </motion.button>
+        </CustomButton>
       </Form>
     </FormikProvider>
   );

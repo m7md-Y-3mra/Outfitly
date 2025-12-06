@@ -52,4 +52,14 @@ export const variantDefaults = {
     className: "bg-white/20 backdrop-blur-md hover:bg-white/30 text-foreground",
     style: {},
   },
+
+  link: {
+    className:
+      // no padding, transparent, text-only
+      "bg-transparent p-0 shadow-none hover:shadow-none " +
+      "text-[var(--outfitly-primary)] " +
+      "hover:text-[var(--outfitly-primary-hover)] " +
+      "dark:hover:text-[var(--outfitly-primary-active)]",
+    style: {},
+  },
 };

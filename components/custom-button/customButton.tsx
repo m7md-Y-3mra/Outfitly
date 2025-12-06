@@ -3,9 +3,11 @@ import { motion, MotionProps } from "framer-motion";
 import { ButtonProps } from "./button.types";
 import { sizeClasses, variantDefaults } from "./button.constants";
 import { Loader2 } from "lucide-react";
+import React from "react";
+
 type MotionButtonProps = ButtonProps & ButtonHTMLAttributes<HTMLButtonElement> & MotionProps;
 
-export const Button: FC<MotionButtonProps> = ({
+const CustomButton: FC<MotionButtonProps> = ({
   children,
   size = "md",
   variant = "primary",
@@ -17,22 +19,27 @@ export const Button: FC<MotionButtonProps> = ({
   type = "button",
   loading = false,
   loadingText,
+  disabled = false,
   ...rest
 }) => {
   const baseClasses =
     "transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden";
 
   const sizeClass = sizeClasses[size];
+  const isDisabled = loading || disabled; // ✅ central control
 
   if (variant === "motion") {
     return (
       <motion.button
         type={type}
-        className={`${baseClasses} ${sizeClass} ${className}`}
+        className={`${baseClasses} ${sizeClass} ${className} ${
+          isDisabled ? "opacity-60 cursor-not-allowed" : ""
+        }`}
         style={style}
-        {...rest} // this works now
-        whileHover={!loading ? { scale: 1.02 } : {}}
-        whileTap={!loading ? { scale: 0.98 } : {}}
+        {...rest}
+        whileHover={!isDisabled ? { scale: 1.02 } : {}}
+        whileTap={!isDisabled ? { scale: 0.98 } : {}}
+        disabled={isDisabled}
       >
         <span className="relative z-10 flex items-center justify-center gap-2">
           {loading && (
@@ -45,14 +52,16 @@ export const Button: FC<MotionButtonProps> = ({
             </motion.div>
           )}
 
-          {loading ? loadingText || children : children}
+          {/* ✅ Only show loadingText OR children – never both */}
+          <span>{loading ? (loadingText ?? "Loading...") : children}</span>
         </span>
+
         {/* Hover Shine */}
         {!loading && (
           <motion.div
             className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
             initial={{ x: "-100%" }}
-            whileHover={{ x: "100%" }}
+            whileHover={!isDisabled ? { x: "100%" } : {}}
             transition={{ duration: 0.6 }}
           />
         )}
@@ -66,8 +75,9 @@ export const Button: FC<MotionButtonProps> = ({
           />
         )}
 
-        {icon && <span>{icon}</span>}
-        {badge && <span>{badge}</span>}
+        {/* 🔇 Hide icon & badge while loading */}
+        {!loading && icon && <span>{icon}</span>}
+        {!loading && badge && <span>{badge}</span>}
       </motion.button>
     );
   }
@@ -87,9 +97,12 @@ export const Button: FC<MotionButtonProps> = ({
   return (
     <button
       type={type}
-      className={`${baseClasses} ${sizeClass} ${variantClasses} ${className}`}
+      className={`${baseClasses} ${sizeClass} ${variantClasses} ${className} ${
+        isDisabled ? "opacity-60 cursor-not-allowed" : ""
+      }`}
       style={variantStyles}
       {...rest}
+      disabled={isDisabled}
     >
       {icon && <span>{icon}</span>}
       {children}
@@ -97,3 +110,5 @@ export const Button: FC<MotionButtonProps> = ({
     </button>
   );
 };
+
+export default CustomButton;

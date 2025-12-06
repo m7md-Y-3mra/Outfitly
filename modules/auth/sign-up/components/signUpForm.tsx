@@ -6,12 +6,13 @@ import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import useSignUp from "../hook/useSignUp";
 import { Button } from "@/components/ui/button";
+import CustomButton from "@/components/custom-button";
 
 const SignUpForm = () => {
   const router = useRouter();
   const { formik } = useSignUp();
 
-  const isButtonDisabled = useMemo(() => {
+  const disabled = useMemo(() => {
     const { fullName, email, password, confirmPassword, terms } = formik.values;
 
     return (
@@ -55,24 +56,22 @@ const SignUpForm = () => {
 
         <MotionField type="checkbox" name="terms" label="Agree to Terms and Conditions" />
 
-        <motion.button
+        <CustomButton
           type="submit"
+          loadingText=""
+          disabled={disabled}
+          variant="motion"
+          loading={formik.isSubmitting}
+          size="md"
+          className="w-full py-4 rounded-xl bg-gradient-to-r from-[#671425] to-[#8B1D35] hover:from-[#6A1526] hover:to-[#9A1E3A] text-white shadow-lg shadow-[#671425]/30 hover:shadow-xl hover:shadow-[#671425]/40 group"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.55 }}
-          whileHover={{ scale: isButtonDisabled ? 1 : 1.02 }}
-          whileTap={{ scale: isButtonDisabled ? 1 : 0.98 }}
-          disabled={isButtonDisabled}
-          className="cursor-pointer w-full py-4 rounded-xl bg-gradient-to-r from-[var(--outfitly-gradient-start)] to-[var(--outfitly-gradient-mid)] hover:from-[var(--outfitly-primary-hover)] hover:to-[var(--outfitly-gradient-end)] text-[var(--outfitly-text-light)] shadow-lg shadow-[var(--outfitly-shadow)] hover:shadow-xl hover:shadow-[var(--outfitly-shadow)] transition-all duration-300 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
+          transition={{ duration: 0.5, delay: 0.6 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
-          <span className="relative z-10">{formik.isSubmitting ? "Signing Up..." : "Sign Up"}</span>
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
-            initial={{ x: "-100%" }}
-            whileHover={{ x: "100%" }}
-            transition={{ duration: 0.6 }}
-          />
-        </motion.button>
+          <span className="relative z-10">Sign Up</span>
+        </CustomButton>
 
         <motion.div
           initial={{ opacity: 0 }}
@@ -80,17 +79,16 @@ const SignUpForm = () => {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="text-center pt-4"
         >
-          <p className="text-[var(--outfitly-text-primary)]/60">
-            Already have an account?{" "}
-            <Button
+          <div className="flex items-center justify-center gap-2 text-sm">
+            <p className="text-[var(--outfitly-text-primary)]/60">Already have an account?</p>
+            <CustomButton
               type="button"
               variant="link"
-              onClick={() => router.push("sign-in")}
-              className="p-0 text-[var(--outfitly-primary)] hover:text-[var(--outfitly-primary-hover)] dark:hover:text-[var(--outfitly-primary-active)] transition-colors duration-300"
+              className="!p-0 m-0 cursor-pointer text-[var(--outfitly-primary)] hover:text-[var(--outfitly-primary-hover)] dark:hover:text-[var(--outfitly-primary-active)] transition-colors duration-300"
             >
               Sign In
-            </Button>
-          </p>
+            </CustomButton>
+          </div>
         </motion.div>
       </Form>
     </FormikProvider>

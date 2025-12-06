@@ -57,7 +57,7 @@ export default function SignUpPage() {
           className="w-full max-w-md"
         >
           <div className="text-center">
-            <Logo size="sm" animated={true} linkTo="/" />
+            <Logo size="xl" animated={true} linkTo="/" />
           </div>
 
           <SignUpCard />

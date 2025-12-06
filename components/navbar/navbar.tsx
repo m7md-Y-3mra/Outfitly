@@ -6,11 +6,12 @@ import { Bell, Sun, Moon, Menu, X } from "lucide-react";
 
 import { Button } from "../ui/button";
 import { Logo } from "../logo/logo";
-import { useTheme } from "../../contexts/ThemeContext";
 import { useNavbar } from "./useNavbar";
+import { useTheme } from "next-themes";
+import CustomButton from "../custom-button";
 
 export function Navbar() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const { isOpen, toggleMenu, closeMenu, isActive, NAV_LINKS, NAVBAR_COLORS } = useNavbar();
 
   return (
@@ -72,14 +73,14 @@ export function Navbar() {
                 </Button>
               </Link>
 
-              <Button
+              <CustomButton
                 variant="ghost"
-                onClick={toggleTheme}
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 className="hover:bg-transparent p-2"
                 style={{ color: NAVBAR_COLORS.primary }}
               >
                 {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              </Button>
+              </CustomButton>
 
               <Link href="/login">
                 <Button
@@ -121,21 +122,29 @@ export function Navbar() {
                 </span>
               </Link>
 
-              <button onClick={toggleTheme} className="p-2">
+              <CustomButton
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2"
+                style={{ color: NAVBAR_COLORS.primary }}
+              >
                 {theme === "dark" ? (
                   <Sun className="w-5 h-5" style={{ color: NAVBAR_COLORS.primary }} />
                 ) : (
                   <Moon className="w-5 h-5" style={{ color: NAVBAR_COLORS.primary }} />
                 )}
-              </button>
+              </CustomButton>
 
-              <button onClick={toggleMenu} className="p-2">
+              <CustomButton
+                onClick={toggleMenu}
+                className="p-2"
+                style={{ color: NAVBAR_COLORS.primary }}
+              >
                 {isOpen ? (
                   <X className="w-6 h-6" style={{ color: NAVBAR_COLORS.primary }} />
                 ) : (
                   <Menu className="w-6 h-6" style={{ color: NAVBAR_COLORS.primary }} />
                 )}
-              </button>
+              </CustomButton>
             </div>
           </div>
 

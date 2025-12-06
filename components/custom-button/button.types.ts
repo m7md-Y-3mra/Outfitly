@@ -9,7 +9,8 @@ export type ButtonVariant =
   | "gradient"
   | "category"
   | "icon"
-  | "motion";
+  | "motion"
+  | "link";
 
 // Extend ALL native <button> props
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -21,6 +22,4 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   selected?: boolean;
   loading?: boolean;
   loadingText?: string;
-
-  // category buttons
 }

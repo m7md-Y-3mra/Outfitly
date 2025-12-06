@@ -1,19 +1,13 @@
 "use client";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
-import { PageHeader } from "@/components/page-header";
-import type { AppProps } from "next/app";
-import { ThemeProvider } from "../contexts/ThemeContext";
-import { Button } from "@/components/button";
 
-export default function Home({ Component, pageProps }: AppProps) {
+export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <ThemeProvider>
-        <Navbar />
+    <div className="">
+      <Navbar />
 
-        <Footer />
-      </ThemeProvider>
+      <Footer />
     </div>
   );
 }
