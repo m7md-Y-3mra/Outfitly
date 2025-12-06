@@ -22,7 +22,7 @@ export function Logo({ size = "md", animated = true, linkTo = "/", className = "
       <Image
         src="/logo.png"
         alt="Outfitly Logo"
-        width={SIZE_CONFIG[size] * 4} // keeps high resolution
+        width={SIZE_CONFIG[size] * 1.2} // keeps high resolution
         height={SIZE_CONFIG[size]}
         className="object-contain w-auto"
         priority

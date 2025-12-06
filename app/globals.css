@@ -1,7 +1,6 @@
+@custom-variant dark (&:is(.dark *));
 @import "tailwindcss";
 @import "tw-animate-css";
-@custom-variant dark (&:is(.dark *));
-
 :root {
   /* ========================================
      OUTFITLY BRAND COLORS - LIGHT MODE
