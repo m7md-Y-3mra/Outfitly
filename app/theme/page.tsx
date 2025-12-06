@@ -1,9 +1,7 @@
-import { ModeToggle } from '@/components/themeTester'
+import { ModeToggle } from "@/components/themeTester";
 
 const ThemePage = () => {
-  return (
-    <ModeToggle/>
-  )
-}
+  return <ModeToggle />;
+};
 
-export default ThemePage
+export default ThemePage;
