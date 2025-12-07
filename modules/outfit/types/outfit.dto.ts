@@ -1,0 +1,27 @@
+import { Prisma } from "@/app/generated/prisma/client";
+
+export type TOutfitDTO = Prisma.OutfitGetPayload<{
+  include: {
+    likedBy: {
+      select: {
+        id: true;
+      };
+    };
+    occasion: {
+      select: { name: true };
+    };
+    items: {
+      select: {
+        wardrobeItem: {
+          select: { season: true };
+        };
+      };
+    };
+    user: {
+      select: {
+        id: true;
+        fullName: true;
+      };
+    };
+  };
+}>;
