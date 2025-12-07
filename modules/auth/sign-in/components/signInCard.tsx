@@ -15,8 +15,24 @@ const SignInCard = () => {
         text-[var(--outfitly-foreground)]
         border border-[var(--outfitly-border)]
       "
+      className="
+        rounded-3xl p-8 md:p-10 mb-6 relative overflow-hidden
+        backdrop-blur-sm shadow-2xl
+        bg-[var(--outfitly-surface)]
+        text-[var(--outfitly-foreground)]
+        border border-[var(--outfitly-border)]
+      "
     >
       {/* Top Accent Bar */}
+      <div
+        className="
+          absolute top-0 left-0 right-0 h-1
+          bg-gradient-to-r
+          from-[var(--outfitly-primary)]
+          via-[var(--outfitly-primary-hover)]
+          to-[var(--outfitly-primary-active)]
+        "
+      />
       <div
         className="
           absolute top-0 left-0 right-0 h-1
