@@ -2,6 +2,7 @@ import { z, ZodType } from "zod";
 import { WardrobeItemSourceEnum } from "./types";
 import {
   CreateWardrobeItemDTO,
+  DeleteWardrobeItemDTO,
   GetUserWardrobeItemDTO,
   GetWardrobeItemDetailsDTO,
   UpdateWardrobeItemDTO,
@@ -99,3 +100,7 @@ export const GetUserWardrobeItemSchema = z.object({
 export const GetWardrobeItemDetailsSchema = WardrobeItemBaseSchema.pick({
   id: true,
 }) satisfies ZodType<GetWardrobeItemDetailsDTO>;
+
+export const DeleteWardrobeItemSchema = WardrobeItemBaseSchema.pick({
+  id: true,
+}) satisfies ZodType<DeleteWardrobeItemDTO>;
