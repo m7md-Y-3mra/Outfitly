@@ -177,3 +177,25 @@ export const getUserWardrobeItemRepo = async ({
     totalPages: Math.ceil(total / take),
   };
 };
+
+export const getWardrobeItemDetailsRepo = async (itemId: string, userId: string) => {
+  return await prisma.wardrobeItem.findUnique({
+    where: {
+      id: itemId,
+      // This ensures only user's own items are returned
+      userId,
+    },
+    include: {
+      images: {
+        orderBy: { displayOrder: "asc" },
+        select: {
+          id: true,
+          imageUrl: true,
+          altText: true,
+          isPrimary: true,
+          displayOrder: true,
+        },
+      },
+    },
+  });
+};
