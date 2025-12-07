@@ -1,5 +1,6 @@
-import { Category, WardrobeItemImage } from "@/app/generated/prisma/browser";
+import { WardrobeItemImage, WardrobeItem } from "@/app/generated/prisma/browser";
 import { WardrobeItemWithImages, WardrobeItemWithoutAddedAtAndId } from ".";
+import { SortOrder } from "@/@types";
 
 export type CreateWardrobeItemDTO = WardrobeItemWithoutAddedAtAndId & { imageUrls: string[] };
 export type CreateWardrobeItemResponse = WardrobeItemWithImages;
@@ -9,16 +10,13 @@ export type UpdateWardrobeItemDTO = Partial<
 > & { id: string; userId: string };
 export type UpdateWardrobeItemResponse = WardrobeItemWithImages;
 
-export type WardrobeSortBy =
-  | "newest"
-  | "oldest"
-  | "name-asc"
-  | "name-desc";
+export type WardrobeSortBy = keyof Pick<WardrobeItem, "name" | "addedAt">;
 
 export type GetUserWardrobeItemDTO = {
   userId: string;
-  category?: Category | "ALL";
+  categoryId?: string;
   sortBy?: WardrobeSortBy;
+  sortOrder?: SortOrder;
   search?: string;
   take?: number;
   skip?: number;

@@ -109,15 +109,16 @@ export const findWardrobeItemById = async (id: string) => {
 
 export const getUserWardrobe = async ({
   userId,
-  category = "ALL",
-  sortBy = "newest",
+  categoryId,
+  sortBy = "addedAt",
+  sortOrder = "desc",
   search = "",
   take = 20,
   skip = 0,
 }: GetUserWardrobeItemDTO) => {
   const where = {
     userId,
-    ...(category && category !== "ALL" && { category }),
+    ...(categoryId && { categoryId }),
     ...(search && {
       name: {
         contains: search.trim(),
@@ -125,20 +126,6 @@ export const getUserWardrobe = async ({
       },
     }),
   };
-
-  const orderBy: {
-    addedAt: "asc" | "desc";
-  } | {
-    name: "asc" | "desc";
-  } = (() => {
-    switch (sortBy) {
-      case "newest": return { addedAt: "desc" };
-      case "oldest": return { addedAt: "asc" };
-      case "name-asc": return { name: "asc" };
-      case "name-desc": return { name: "desc" };
-      default: return { addedAt: "desc" };
-    }
-  })();
 
   const [items, total] = await prisma.$transaction([
     prisma.wardrobeItem.findMany({
@@ -160,7 +147,7 @@ export const getUserWardrobe = async ({
           orderBy: { displayOrder: "asc" }, // fallback if multiple primaries exist
         },
       },
-      orderBy,
+      orderBy: { [sortBy]: sortOrder },
       take,
       skip,
     }),

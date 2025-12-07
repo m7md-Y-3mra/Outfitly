@@ -21,3 +21,5 @@ export type TSuccessConfig = {
   statusCode?: 200 | 201 | 204;
   message?: string;
 };
+
+export type SortOrder = "asc" | "desc";
