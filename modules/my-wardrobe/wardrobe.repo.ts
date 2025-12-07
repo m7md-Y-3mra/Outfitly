@@ -194,6 +194,7 @@ export const getWardrobeItemDetailsRepo = async (itemId: string, userId: string)
           altText: true,
           isPrimary: true,
           displayOrder: true,
+          wardrobeItemId: true
         },
       },
     },
