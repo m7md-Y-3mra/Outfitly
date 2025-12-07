@@ -201,40 +201,6 @@ export const getWardrobeItemDetailsRepo = async (itemId: string, userId: string)
   });
 };
 
-export const getWardrobeStatsRepo = async (userId: string) => {
-  const result = await prisma.wardrobeItem.groupBy({
-    by: ["categoryId"],
-    where: {
-      userId,
-    },
-    _count: {
-      _all: true,
-    },
-  });
-
-  // Initialize all categories with 0
-  //** I need inside the database */
-  const byCategory: Record<string, number> = {
-    TOP: 0,
-    BOTTOM: 0,
-    SHOES: 0,
-    OUTERWEAR: 0,
-    ACCESSORY: 0,
-    DRESS: 0,
-    BAG: 0,
-    // Add any custom categories here
-  };
-
-  // Fill in the actual counts
-  for (const item of result) {
-    if (item.categoryId) {
-      byCategory[item.categoryId] = item._count._all;
-    }
-  }
-
-  return { byCategory };
-};
-
 export const deleteWardrobeItemRepo = async (itemId: string, userId: string) => {
   return await prisma.$transaction(async (tx) => {
     // 1. Delete images first (foreign key constraint)
@@ -250,4 +216,49 @@ export const deleteWardrobeItemRepo = async (itemId: string, userId: string) => 
     // 3. Return success
     return wardrobeItem;
   });
+};
+
+export const getWardrobeStatsRepo = async (userId: string) => {
+  // 1. Get counts grouped by Category name (via join)
+  const categoryCounts = await prisma.wardrobeItem.groupBy({
+    by: ["categoryId"],
+    where: {
+      userId,
+    },
+    _count: {
+      id: true,
+    },
+  });
+
+  // 2. Fetch all categories once (to get their names)
+  const categories = await prisma.category.findMany({
+    select: {
+      id: true,
+      name: true, // e.g. "Tops", "Bottoms", "Shoes"
+    },
+  });
+
+  // 3. Build lookup map: categoryId → name
+  const categoryMap = new Map(categories.map(c => [c.id, c.name]));
+
+  // 4. Initialize result with 0 for all known categories
+  const byCategory: Record<string, number> = {};
+  categories.forEach(cat => {
+    byCategory[cat.name] = 0;
+  });
+
+  // 5. Fill actual counts
+  let total = 0;
+  for (const { categoryId, _count } of categoryCounts) {
+    const name = categoryMap.get(categoryId);
+    if (name && _count.id > 0) {
+      byCategory[name] = _count.id;
+      total += _count.id;
+    }
+  }
+
+  return {
+    total,
+    byCategory,
+  };
 };
