@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "../../contexts/ThemeContext";
+import { useTheme } from "next-themes";
 
 export function usePageHeader() {
   const { theme } = useTheme();
