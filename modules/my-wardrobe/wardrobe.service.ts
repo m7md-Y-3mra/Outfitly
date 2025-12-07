@@ -81,8 +81,12 @@ export const getWardrobeItemDetailsService = async (
 
   const user = await getUserFromSession();
 
-  await userRepo.findById(user.sub);
-  await findWardrobeItemById(data.id);
+  const userData = await userRepo.findById(user.sub);
+  const wardrobeItemData = await findWardrobeItemById(data.id);
+
+  if (userData.id != wardrobeItemData.id) {
+    throw new CustomError({ message: "not authorized", statusCode: HttpStatusError.Unauthorized });
+  }
 
   return getWardrobeItemDetailsRepo(data.id, user.sub);
 };
