@@ -1,4 +1,3 @@
-
 export interface IOutfit {
   id: string;
   image: string | null;

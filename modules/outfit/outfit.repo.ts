@@ -6,51 +6,50 @@ import prisma from "@/lib/prisma";
 import { TOutfitDTO } from "./types/outfit.dto";
 
 export const findAll = async (
-    query: IPaginationQuery,
-    order: SortOrder, 
-    field: keyof Outfit 
+  query: IPaginationQuery,
+  order: SortOrder,
+  field: keyof Outfit,
 ): Promise<IPaginationResult<TOutfitDTO>> => {
-    
-    const outfits = await prisma.$transaction(async (tx) => {
-        const pagination = createPaginationForPrisma(query);
-        const allOutfits = await tx.outfit.findMany({
-            include: {
-                    likedBy: {
-                        select: {
-                            id: true,
-                        }
-                    },
-                    occasion: {
-                        select: { name: true },
-                    },
-                    items: {
-                        select: {
-                            wardrobeItem: {
-                                select: { season: true },
-                            },
-                        },      
-                    },
-                    user: {
-                        select: {
-                            id: true,
-                            fullName: true,
-                        }
-                    }
+  const outfits = await prisma.$transaction(async (tx) => {
+    const pagination = createPaginationForPrisma(query);
+    const allOutfits = await tx.outfit.findMany({
+      include: {
+        likedBy: {
+          select: {
+            id: true,
+          },
+        },
+        occasion: {
+          select: { name: true },
+        },
+        items: {
+          select: {
+            wardrobeItem: {
+              select: { season: true },
             },
-            orderBy: {
-                [field]: order
-            },
-            ...pagination          
-        });
-        
-        const total = await tx.outfit.count();
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            fullName: true,
+          },
+        },
+      },
+      orderBy: {
+        [field]: order,
+      },
+      ...pagination,
+    });
 
-        const meta = createPaginationMetaData(query.limit, query.page, total);
+    const total = await tx.outfit.count();
 
-        return {
-            data: allOutfits,
-            meta,
-        }
-    })
-    return outfits;
-}
+    const meta = createPaginationMetaData(query.limit, query.page, total);
+
+    return {
+      data: allOutfits,
+      meta,
+    };
+  });
+  return outfits;
+};
