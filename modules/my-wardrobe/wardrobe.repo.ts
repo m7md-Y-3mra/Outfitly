@@ -3,7 +3,8 @@ import prisma from "@/lib/prisma";
 import { WardrobeItemWithoutAddedAtAndId } from "./types";
 import { WardrobeItemImage } from "@/app/generated/prisma/client";
 import { MAX_IMAGES } from "./constant";
-import { GetUserWardrobeItemDTO } from "./types/dto.types";
+import { GetUserWardrobeRepoParams } from "./types/dto.types";
+import { PAGE_SIZE } from "@/app.constant";
 
 export const createWardrobeItemRepo = async (
   data: WardrobeItemWithoutAddedAtAndId,
@@ -107,15 +108,15 @@ export const findWardrobeItemById = async (id: string) => {
   });
 };
 
-export const getUserWardrobeRepo = async ({
+export const getUserWardrobeItemRepo = async ({
   userId,
   categoryId,
   sortBy = "addedAt",
   sortOrder = "desc",
   search = "",
-  take = 20,
+  take = PAGE_SIZE,
   skip = 0,
-}: GetUserWardrobeItemDTO) => {
+}: GetUserWardrobeRepoParams) => {
   const where = {
     userId,
     ...(categoryId && { categoryId }),
