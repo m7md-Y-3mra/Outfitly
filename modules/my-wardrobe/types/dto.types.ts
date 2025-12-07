@@ -1,6 +1,6 @@
 import { WardrobeItemImage, WardrobeItem } from "@/app/generated/prisma/browser";
 import { WardrobeItemWithImages, WardrobeItemWithoutAddedAtAndId } from ".";
-import { SortOrder } from "@/@types";
+import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 
 export type CreateWardrobeItemDTO = WardrobeItemWithoutAddedAtAndId & { imageUrls: string[] };
 export type CreateWardrobeItemResponse = WardrobeItemWithImages;
