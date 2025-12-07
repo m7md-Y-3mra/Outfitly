@@ -13,6 +13,7 @@ import {
   findWardrobeItemById,
   getUserWardrobeItemRepo,
   getWardrobeItemDetailsRepo,
+  getWardrobeStatsRepo,
   updateWardrobeItemRepo,
 } from "./wardrobe.repo";
 import {
@@ -106,4 +107,12 @@ export const deleteWardrobeItemService = async (
   }
 
   return deleteWardrobeItemRepo(data.id, user.sub);
+};
+
+export const getWardrobeStatsService = async () => {
+  const user = await getUserFromSession();
+
+  const userData = await userRepo.findById(user.sub);
+
+  return getWardrobeStatsRepo(userData.id);
 };
