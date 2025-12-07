@@ -2,6 +2,7 @@
 import { actionHandler } from "@/utils/action-handler.utils";
 import {
   createWardrobeItemService,
+  deleteWardrobeItemService,
   getUserWardrobeService,
   getWardrobeItemDetailsService,
   updateWardrobeItemService,
@@ -19,3 +20,5 @@ export const updateWardrobeItemAction = actionHandler(updateWardrobeItemService,
 export const getUserWardrobeItemAction = actionHandler(getUserWardrobeService);
 
 export const getWardrobeItemDetailsAction = actionHandler(getWardrobeItemDetailsService);
+
+export const deleteWardrobeItemAction = actionHandler(deleteWardrobeItemService);
