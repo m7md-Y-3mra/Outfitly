@@ -239,11 +239,11 @@ export const getWardrobeStatsRepo = async (userId: string) => {
   });
 
   // 3. Build lookup map: categoryId → name
-  const categoryMap = new Map(categories.map(c => [c.id, c.name]));
+  const categoryMap = new Map(categories.map((c) => [c.id, c.name]));
 
   // 4. Initialize result with 0 for all known categories
   const byCategory: Record<string, number> = {};
-  categories.forEach(cat => {
+  categories.forEach((cat) => {
     byCategory[cat.name] = 0;
   });
 
