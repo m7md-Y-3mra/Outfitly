@@ -44,3 +44,5 @@ export type GetUserWardrobeItemResponse = {
   currentPage: number;
   totalPages: number;
 };
+
+export type GetWardrobeItemDetailsDTO = { id: string };

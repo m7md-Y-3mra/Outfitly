@@ -3,6 +3,7 @@ import { WardrobeItemSourceEnum } from "./types";
 import {
   CreateWardrobeItemDTO,
   GetUserWardrobeItemDTO,
+  GetWardrobeItemDetailsDTO,
   UpdateWardrobeItemDTO,
   WardrobeSortBy,
 } from "./types/dto.types";
@@ -94,3 +95,7 @@ export const GetUserWardrobeItemSchema = z.object({
   page: z.number().default(PAGE),
   pageSize: z.number().default(PAGE_SIZE),
 }) satisfies ZodType<GetUserWardrobeItemDTO>;
+
+export const GetWardrobeItemDetailsSchema = WardrobeItemBaseSchema.pick({
+  id: true,
+}) satisfies ZodType<GetWardrobeItemDetailsDTO>;
