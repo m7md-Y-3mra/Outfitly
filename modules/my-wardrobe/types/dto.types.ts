@@ -12,12 +12,20 @@ export type UpdateWardrobeItemResponse = WardrobeItemWithImages;
 
 export type WardrobeSortBy = keyof Pick<WardrobeItem, "name" | "addedAt">;
 
-export type GetUserWardrobeItemDTO = {
+export type GetUserWardrobeItem = {
   userId: string;
   categoryId?: string;
   sortBy?: WardrobeSortBy;
   sortOrder?: SortOrder;
   search?: string;
-  take?: number;
-  skip?: number;
 };
+
+export type GetUserWardrobeItemDTO = GetUserWardrobeItem & {
+  skip?: number;
+  take?: number;
+};
+
+export type GetUserWardrobeRepoParams = GetUserWardrobeItemDTO & {
+  page?: number;
+  pageSize?: number;
+};;
