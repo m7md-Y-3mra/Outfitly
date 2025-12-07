@@ -437,6 +437,7 @@ export function ExplorePage() {
                         </span>
                       </div>
 
+                      {/* Decorative Gradient Line */}
                       <motion.div
                         className="mt-3 h-0.5 bg-gradient-to-r from-[var(--outfitly-gradient-start)] via-[var(--outfitly-gradient-mid)] to-[var(--outfitly-gradient-end)] rounded-full"
                         initial={{ width: 0 }}
@@ -451,6 +452,7 @@ export function ExplorePage() {
             </ResponsiveMasonry>
           </motion.div>
 
+          {/* Load More Button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
