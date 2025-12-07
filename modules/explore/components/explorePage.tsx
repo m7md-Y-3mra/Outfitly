@@ -1,8 +1,9 @@
-"use client";
+'use client'
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Heart, User, Filter, ChevronDown } from "lucide-react";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+
 
 import {
   DropdownMenu,
@@ -30,7 +31,8 @@ interface Outfit {
 const mockOutfits: Outfit[] = [
   {
     id: "1",
-    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80",
     username: "fashionista_23",
     likes: 234,
     isLiked: false,
@@ -39,7 +41,8 @@ const mockOutfits: Outfit[] = [
   },
   {
     id: "2",
-    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80",
     username: "style_maven",
     likes: 456,
     isLiked: false,
@@ -48,7 +51,8 @@ const mockOutfits: Outfit[] = [
   },
   {
     id: "3",
-    image: "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=600&q=80",
     username: "outfit_guru",
     likes: 567,
     isLiked: false,
@@ -57,7 +61,8 @@ const mockOutfits: Outfit[] = [
   },
   {
     id: "4",
-    image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80",
     username: "wardrobe_wizard",
     likes: 123,
     isLiked: false,
@@ -66,7 +71,8 @@ const mockOutfits: Outfit[] = [
   },
   {
     id: "5",
-    image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1445205170230-053b83016050?w=600&q=80",
     username: "chic_creator",
     likes: 789,
     isLiked: false,
@@ -75,7 +81,8 @@ const mockOutfits: Outfit[] = [
   },
   {
     id: "6",
-    image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=80",
     username: "trend_setter",
     likes: 345,
     isLiked: false,
@@ -84,7 +91,8 @@ const mockOutfits: Outfit[] = [
   },
   {
     id: "7",
-    image: "https://images.unsplash.com/photo-1467043237213-65f2da53396f?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1467043237213-65f2da53396f?w=600&q=80",
     username: "fashion_forward",
     likes: 678,
     isLiked: false,
@@ -93,7 +101,8 @@ const mockOutfits: Outfit[] = [
   },
   {
     id: "8",
-    image: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80",
     username: "style_icon",
     likes: 891,
     isLiked: false,
@@ -102,7 +111,8 @@ const mockOutfits: Outfit[] = [
   },
   {
     id: "9",
-    image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80",
     username: "closet_queen",
     likes: 234,
     isLiked: false,
@@ -126,8 +136,8 @@ export function ExplorePage() {
               isLiked: !outfit.isLiked,
               likes: outfit.isLiked ? outfit.likes - 1 : outfit.likes + 1,
             }
-          : outfit,
-      ),
+          : outfit
+      )
     );
   };
 
@@ -169,10 +179,14 @@ export function ExplorePage() {
               style={{
                 // #2a2a2a / #FFFFFF -> var(--outfitly-bg-secondary) / var(--outfitly-bg-white)
                 backgroundColor:
-                  theme === "dark" ? "var(--outfitly-bg-secondary)" : "var(--outfitly-bg-white)",
+                  theme === "dark"
+                    ? "var(--outfitly-bg-secondary)"
+                    : "var(--outfitly-bg-white)",
                 // #671425 / #F2E8E3 -> primary / bg-secondary
                 borderColor:
-                  theme === "dark" ? "var(--outfitly-primary)" : "var(--outfitly-bg-secondary)",
+                  theme === "dark"
+                    ? "var(--outfitly-primary)"
+                    : "var(--outfitly-bg-secondary)",
               }}
             >
               <div className="flex flex-wrap items-center gap-4">
@@ -192,7 +206,9 @@ export function ExplorePage() {
                     className="transition-colors duration-300"
                     style={{
                       color:
-                        theme === "dark" ? "var(--outfitly-text-light)" : "var(--outfitly-primary)",
+                        theme === "dark"
+                          ? "var(--outfitly-text-light)"
+                          : "var(--outfitly-primary)",
                     }}
                   >
                     Filter by:
@@ -316,7 +332,9 @@ export function ExplorePage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3, 1200: 4 }}>
+            <ResponsiveMasonry
+              columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3, 1200: 4 }}
+            >
               <Masonry gutter="1.5rem">
                 {outfits.map((outfit, index) => (
                   <motion.div
@@ -414,13 +432,15 @@ export function ExplorePage() {
                       {/* Like Count */}
                       <div className="flex items-center gap-2">
                         <Heart
-                          className={`w-4 h-4 ${outfit.isLiked ? "fill-current" : ""}`}
+                          className={`w-4 h-4 ${
+                            outfit.isLiked ? "fill-current" : ""
+                          }`}
                           style={{
                             color: outfit.isLiked
                               ? "var(--outfitly-primary)" // #671425
                               : theme === "dark"
-                                ? "var(--outfitly-text-light)" // #FAF1ED
-                                : "var(--outfitly-primary)", // #671425
+                              ? "var(--outfitly-text-light)" // #FAF1ED
+                              : "var(--outfitly-primary)", // #671425
                           }}
                         />
                         <span
@@ -436,8 +456,7 @@ export function ExplorePage() {
                           {outfit.likes.toLocaleString()}
                         </span>
                       </div>
-
-                      {/* Decorative Gradient Line */}
+                      
                       <motion.div
                         className="mt-3 h-0.5 bg-gradient-to-r from-[var(--outfitly-gradient-start)] via-[var(--outfitly-gradient-mid)] to-[var(--outfitly-gradient-end)] rounded-full"
                         initial={{ width: 0 }}
@@ -452,7 +471,6 @@ export function ExplorePage() {
             </ResponsiveMasonry>
           </motion.div>
 
-          {/* Load More Button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
