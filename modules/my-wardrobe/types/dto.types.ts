@@ -1,4 +1,4 @@
-import { WardrobeItemImage, WardrobeItem } from "@/app/generated/prisma/browser";
+import { WardrobeItemImage, WardrobeItem, Category } from "@/app/generated/prisma/browser";
 import { WardrobeItemWithImages, WardrobeItemWithoutAddedAtAndId } from ".";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 
@@ -20,12 +20,27 @@ export type GetUserWardrobeItem = {
   search?: string;
 };
 
-export type GetUserWardrobeItemDTO = GetUserWardrobeItem & {
+export type GetUserWardrobeRepoParams = GetUserWardrobeItemDTO & {
   skip?: number;
   take?: number;
 };
 
-export type GetUserWardrobeRepoParams = GetUserWardrobeItemDTO & {
+export type GetUserWardrobeItemDTO = GetUserWardrobeItem & {
   page?: number;
   pageSize?: number;
-};;
+};
+export type GetUserWardrobeItemResponse = {
+  items: {
+    primaryImageUrl: string;
+    primaryImageAlt: string;
+    name: string;
+    id: string;
+    color: string;
+    addedAt: Date;
+    category: Category | null;
+  }[];
+  total: number;
+  hasMore: boolean;
+  currentPage: number;
+  totalPages: number;
+};

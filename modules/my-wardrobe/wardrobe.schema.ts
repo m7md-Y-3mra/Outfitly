@@ -4,6 +4,7 @@ import { CreateWardrobeItemDTO, GetUserWardrobeItemDTO, UpdateWardrobeItemDTO, W
 import { WardrobeItem } from "@/app/generated/prisma/browser";
 import { createArrayFromDiscriminatedUnion } from "@/utils/types.utils";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
+import { PAGE, PAGE_SIZE } from "@/app.constant";
 
 // Base WardrobeItem schema
 const WardrobeItemBaseSchema = z.object({
@@ -79,9 +80,10 @@ export const UpdateWardrobeItemDTOSchema = WardrobeItemBaseSchema.pick({
 // GET USER WARDROBE ITEM
 export const GetUserWardrobeItemSchema = z.object({
   userId: z.uuid(),
-  categoryId: z.uuid(),
-  search: z.string(),
-  skip: z.number(),
+  categoryId: z.uuid().optional(),
+  search: z.string().optional(),
   sortBy: z.enum(createArrayFromDiscriminatedUnion<WardrobeSortBy>("addedAt", "name")).default("addedAt"),
   sortOrder: z.enum(createArrayFromDiscriminatedUnion<SortOrder>("asc", "desc")).default("desc"),
+  page: z.number().default(PAGE),
+  pageSize: z.number().default(PAGE_SIZE)
 }) satisfies ZodType<GetUserWardrobeItemDTO>;
