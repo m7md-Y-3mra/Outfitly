@@ -15,11 +15,11 @@ export const getOutfitsForExplore = async (
   const outfitsWithIsLiked: IOutfit[] = outfitsData.map((outfit) => ({
     id: outfit.id,
     image: outfit.imageUrl,
-    username: outfit.user.fullName!,
+    username: outfit.user.fullName ?? "Unknown user",
     likes: outfit.likedBy.length,
     isLiked: isUserLike(outfit.likedBy, userId),
-    style: outfit.occasion?.name || undefined,
-    season: outfit.items[0]?.wardrobeItem?.season || undefined,
+    style: outfit.occasion?.name,
+    season: outfit.items[0]?.wardrobeItem?.season,
   }));
 
   return {
