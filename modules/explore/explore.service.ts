@@ -1,11 +1,11 @@
 import { IPaginationQuery, IPaginationResult } from "@/@types/database.type";
-import { getAllOutfitsPaginated } from "../outfit/outfit.service";
+import { addLikeOutfit, getAllOutfitsPaginated } from "../outfit/outfit.service";
 import { IOutfit } from "./types/explore.type";
 import { User } from "@/app/generated/prisma/client";
 import { isUserLike } from "./utils";
 
 export const getOutfitsForExplore = async (
-  query: IPaginationQuery,
+  query: IPaginationQuery = {limit: 10, page:1},
   userId: User["id"],
 ): Promise<IPaginationResult<IOutfit>> => {
   const outfits = await getAllOutfitsPaginated(query);
@@ -27,3 +27,7 @@ export const getOutfitsForExplore = async (
     meta,
   };
 };
+
+export const likeOutfitForExplore = (outfitId: string, userId: string) => {
+  return addLikeOutfit(outfitId, userId);
+}

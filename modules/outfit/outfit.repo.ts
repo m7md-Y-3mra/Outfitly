@@ -3,12 +3,12 @@ import { Outfit } from "@/app/generated/prisma/client";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 import { createPaginationForPrisma, createPaginationMetaData } from "@/lib/database.util";
 import prisma from "@/lib/prisma";
-import { TOutfitDTO } from "./types/outfit.dto";
+import { TLikeOutfitDTO, TOutfitDTO } from "./types/outfit.dto";
 
 export const findAll = async (
   query: IPaginationQuery,
   order: SortOrder,
-  field: keyof Outfit,
+  field: Extract<keyof Outfit, "createdAt" | "name"> ,
 ): Promise<IPaginationResult<TOutfitDTO>> => {
   const outfits = await prisma.$transaction(async (tx) => {
     const pagination = createPaginationForPrisma(query);
@@ -53,3 +53,18 @@ export const findAll = async (
   });
   return outfits;
 };
+export const likeOutfit = (outfitId: string, userId: string): Promise<TLikeOutfitDTO> => {
+  return prisma.outfit.update({
+    where: { id: outfitId },
+    data: {
+      likedBy: { connect: { id: userId } },
+    },
+    select: {
+      id: true,
+      _count: {
+        select: { likedBy: true }, 
+      },
+    },
+  });
+};
+
