@@ -25,3 +25,14 @@ export type TOutfitDTO = Prisma.OutfitGetPayload<{
     };
   };
 }>;
+
+export type TLikeOutfitDTO = Prisma.OutfitGetPayload<{
+  select: {
+    id: true;
+    _count: {
+      select: {
+        likedBy: true;
+      };
+    };
+  };
+}>;
