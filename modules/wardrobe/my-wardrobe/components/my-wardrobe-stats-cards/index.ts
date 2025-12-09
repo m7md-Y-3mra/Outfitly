@@ -1,1 +1,1 @@
-export { default } from "./myWardrobeStatsCards"
+export { default } from "./myWardrobeStatsCards";

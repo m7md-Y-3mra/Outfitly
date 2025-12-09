@@ -54,4 +54,4 @@ export type DeleteWardrobeItemResponse = WardrobeItem;
 export type GetWardrobeStatsResponse = {
   total: number;
   byCategory: Record<string, number>;
-}
+};

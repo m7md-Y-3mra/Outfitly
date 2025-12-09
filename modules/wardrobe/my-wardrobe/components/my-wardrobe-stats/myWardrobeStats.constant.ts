@@ -1,4 +1,3 @@
-
 import { GetWardrobeStatsResponse } from "@/modules/wardrobe/types/dto.types";
 import { Shirt, Puzzle, Footprints, ShoppingBag } from "lucide-react";
 

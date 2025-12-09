@@ -1,1 +1,1 @@
-export { default } from "./statsLoadingFallback"
+export { default } from "./statsLoadingFallback";
