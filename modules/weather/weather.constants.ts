@@ -1,5 +1,5 @@
-import { WeatherData, Outfit, WardrobeItem } from './weather.types';
-import { Sunrise, Sun, Cloud, Sunset, Moon } from 'lucide-react'; // Added Moon for variety
+import { WeatherData, Outfit, WardrobeItem } from "./weather.types";
+import { Sunrise, Sun, Cloud, Sunset, Moon } from "lucide-react"; // Added Moon for variety
 
 export const mockWeather: WeatherData = {
   location: "San Francisco, CA", // Changed for variety

@@ -1,9 +1,9 @@
-import { motion } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
-import { Card } from '../../../../components/ui/card'; // Or '@/components/ui/card'
-import { Badge } from '../../../../components/ui/badge'; // Or '@/components/ui/badge'
+import { motion } from "framer-motion";
+import { ChevronRight } from "lucide-react";
+import { Card } from "../../../../components/ui/card"; // Or '@/components/ui/card'
+import { Badge } from "../../../../components/ui/badge"; // Or '@/components/ui/badge'
 import { useTheme } from "next-themes";
-import { Outfit } from '../../weather.types';
+import { Outfit } from "../../weather.types";
 
 interface OutfitCardProps {
   outfit: Outfit;
@@ -32,9 +32,10 @@ export const OutfitCard: React.FC<OutfitCardProps> = ({ outfit, index }) => {
           className="p-4 border-b-2 transition-all duration-300"
           style={{
             borderColor: theme === "dark" ? "#35353D" : "#F2E8E3",
-            background: theme === "dark"
-              ? "linear-gradient(135deg, rgba(103, 20, 37, 0.1) 0%, rgba(139, 29, 53, 0.05) 100%)"
-              : "linear-gradient(135deg, rgba(103, 20, 37, 0.05) 0%, rgba(139, 29, 53, 0.02) 100%)",
+            background:
+              theme === "dark"
+                ? "linear-gradient(135deg, rgba(103, 20, 37, 0.1) 0%, rgba(139, 29, 53, 0.05) 100%)"
+                : "linear-gradient(135deg, rgba(103, 20, 37, 0.05) 0%, rgba(139, 29, 53, 0.02) 100%)",
           }}
         >
           <div className="flex items-center justify-between mb-2">
@@ -105,7 +106,7 @@ export const OutfitCard: React.FC<OutfitCardProps> = ({ outfit, index }) => {
             }}
             onClick={() => {
               // Add navigation or action here, e.g., router.push('/outfit/' + outfit.id)
-              console.log('View outfit:', outfit.id);
+              console.log("View outfit:", outfit.id);
             }} // Placeholder for functionality
           >
             <span>View Outfit</span>
