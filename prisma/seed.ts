@@ -117,27 +117,27 @@ async function main() {
   // ==============================================================
   // 3. Products + a few real variants (so purchased items can link)
   // ==============================================================
-  // await prisma.product.createMany({
-  //   data: [
-  //     { id: 'p_nike_af1', name: 'Nike Air Force 1', slug: 'nike-air-force-1', basePrice: 109.99, brandId: 'b_nike', categoryId: 'c_sneakers' },
-  //     { id: 'p_levis_501', name: "Levi's 501", slug: 'levis-501', basePrice: 69.5, brandId: 'b_levis', categoryId: 'c_jeans' },
-  //     { id: 'p_zara_blazer', name: 'Zara Oversized Blazer', slug: 'zara-oversized-blazer', basePrice: 89.9, brandId: 'b_zara', categoryId: 'c_jacket' },
-  //     { id: 'p_uniqlo_tee', name: 'Uniqlo AIRism Tee', slug: 'uniqlo-airism-tee', basePrice: 19.9, brandId: 'b_uniqlo', categoryId: 'c_tshirt' },
-  //   ],
-  //   skipDuplicates: true,
-  // });
+  await prisma.product.createMany({
+    data: [
+      { id: 'p_nike_af1', name: 'Nike Air Force 1', slug: 'nike-air-force-1', basePrice: 109.99, brandId: 'b_nike', categoryId: 'c_sneakers' },
+      { id: 'p_levis_501', name: "Levi's 501", slug: 'levis-501', basePrice: 69.5, brandId: 'b_levis', categoryId: 'c_jeans' },
+      { id: 'p_zara_blazer', name: 'Zara Oversized Blazer', slug: 'zara-oversized-blazer', basePrice: 89.9, brandId: 'b_zara', categoryId: 'c_jacket' },
+      { id: 'p_uniqlo_tee', name: 'Uniqlo AIRism Tee', slug: 'uniqlo-airism-tee', basePrice: 19.9, brandId: 'b_uniqlo', categoryId: 'c_tshirt' },
+    ],
+    skipDuplicates: true,
+  });
 
-  // // Real variants (only these exist → safe to reference)
-  // await prisma.productVariant.createMany({
-  //   data: [
-  //     { id: 'var_nike_1', sku: 'NK-AF1-WHT-40', size: '40', colorId: 'col_white', quantity: 20, productId: 'p_nike_af1' },
-  //     { id: 'var_nike_2', sku: 'NK-AF1-WHT-42', size: '42', colorId: 'col_white', quantity: 15, productId: 'p_nike_af1' },
-  //     { id: 'var_levis_1', sku: 'LV501-32', size: '32', colorId: 'col_navy', quantity: 30, productId: 'p_levis_501' },
-  //     { id: 'var_zara_1', sku: 'ZARA-BLAZER-M', size: 'M', colorId: 'col_black', quantity: 12, productId: 'p_zara_blazer' },
-  //     { id: 'var_uniqlo_1', sku: 'UNIQLO-TEE-L', size: 'L', colorId: 'col_white', quantity: 50, productId: 'p_uniqlo_tee' },
-  //   ],
-  //   skipDuplicates: true,
-  // });
+  // Real variants (only these exist → safe to reference)
+  await prisma.productVariant.createMany({
+    data: [
+      { id: 'var_nike_1', sku: 'NK-AF1-WHT-40', size: '40', colorId: 'col_white', quantity: 20, productId: 'p_nike_af1' },
+      { id: 'var_nike_2', sku: 'NK-AF1-WHT-42', size: '42', colorId: 'col_white', quantity: 15, productId: 'p_nike_af1' },
+      { id: 'var_levis_1', sku: 'LV501-32', size: '32', colorId: 'col_navy', quantity: 30, productId: 'p_levis_501' },
+      { id: 'var_zara_1', sku: 'ZARA-BLAZER-M', size: 'M', colorId: 'col_black', quantity: 12, productId: 'p_zara_blazer' },
+      { id: 'var_uniqlo_1', sku: 'UNIQLO-TEE-L', size: 'L', colorId: 'col_white', quantity: 50, productId: 'p_uniqlo_tee' },
+    ],
+    skipDuplicates: true,
+  });
 
   const validVariantIds = ['var_nike_1', 'var_nike_2', 'var_levis_1', 'var_zara_1', 'var_uniqlo_1'];
 
@@ -151,7 +151,8 @@ async function main() {
   const colors = ['Black', 'White', 'Beige', 'Navy', 'Gray', 'Olive'];
   const sizes = ['XS', 'S', 'M', 'L', '38', '39', '40', '41', '42'];
   const seasons = ['all-year', 'spring,summer', 'fall,winter'];
-  const Categories = ['c_tshirt', 'c_shirt', 'c_jeans', 'c_pants', 'c_jacket', 'c_coat', 'c_hoodie', 'c_sneakers', 'c_boots', 'c_dress']
+  const catgs = await prisma.category.findMany();
+  const Categories = catgs.map(c => c.id);
 
   for (let i = 0; i < 156; i++) {
     const isPurchased = Math.random() > 0.75;

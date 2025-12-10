@@ -20,16 +20,16 @@ const useExplore = () => {
 
   useEffect(() => {
     const node = loaderRef.current;
-    if (!node || page === 0) return;
+    if (!node) return;
 
     const loadOutfits = async () => {
+      console.log(user, loading);
       if (!hasMore || loading || isFetchingRef.current || !user?.id) return;
 
       isFetchingRef.current = true;
       setLoading(true);
 
       const response = await getOutfitsForExploreAction({ page: page + 1, limit: 10 }, user.id);
-
       if (response.success) {
         dispatch({
           type: "SET_OUTFITS",
@@ -38,7 +38,6 @@ const useExplore = () => {
         setPage(response.data.meta.page);
         setHasMore(response.data.meta.page < response.data.meta.totalPages);
       } else {
-        console.log(response.message);
         toast.error("Failed to load, try again!");
       }
 
@@ -70,7 +69,6 @@ const useExplore = () => {
   const filtered = useMemo(() => {
     let result = state.outfits;
 
-    // Only filter if not "All ..."
     if (seasonFilter && seasonFilter !== "All Seasons") {
       result = result.filter((outfit) => outfit.season === seasonFilter);
     }
