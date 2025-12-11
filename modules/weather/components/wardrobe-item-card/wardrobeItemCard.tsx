@@ -22,8 +22,9 @@ export const WardrobeItemCard: React.FC<WardrobeItemCardProps> = ({ item, index 
       <Card
         className="group cursor-pointer overflow-hidden border-2 transition-all duration-300 hover:shadow-xl"
         style={{
-          borderColor: theme === "dark" ? "#35353D" : "#F2E8E3",
-          backgroundColor: theme === "dark" ? "#2A2A30" : "#FFFFFF",
+          borderColor:
+            theme === "dark" ? "var(--outfitly-bg-tertiary)" : "var(--outfitly-bg-secondary)",
+          backgroundColor: "var(--card)",
         }}
       >
         <div className="relative overflow-hidden aspect-square">
@@ -37,8 +38,8 @@ export const WardrobeItemCard: React.FC<WardrobeItemCardProps> = ({ item, index 
             <Badge
               className="backdrop-blur-sm shadow-md text-xs"
               style={{
-                backgroundColor: "rgba(103, 20, 37, 0.9)",
-                color: "#FAF1ED",
+                backgroundColor: "rgba(103, 20, 37, 0.9)", // Kept as rgba since --outfitly-primary is hex; matches #671425
+                color: "var(--outfitly-text-light)",
               }}
             >
               {item.category}
@@ -49,7 +50,9 @@ export const WardrobeItemCard: React.FC<WardrobeItemCardProps> = ({ item, index 
         <div className="p-3">
           <h4
             className="text-sm transition-colors duration-300"
-            style={{ color: theme === "dark" ? "#FAF1ED" : "#671425" }}
+            style={{
+              color: theme === "dark" ? "var(--outfitly-text-primary)" : "var(--outfitly-primary)",
+            }}
           >
             {item.name}
           </h4>

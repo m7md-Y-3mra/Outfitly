@@ -19,7 +19,7 @@ export interface Outfit {
   image: string;
   description: string;
   temperature: string;
-  icon: LucideIcon; 
+  icon: LucideIcon;
 }
 
 export interface WardrobeItem {

@@ -16,7 +16,7 @@ export default function WeatherPage() {
   const { weather, outfits, items, handleScroll } = useWeather();
 
   return (
-    <div style={{ backgroundColor: theme === "dark" ? "#1a1a1a" : "#FAF1ED" }}>
+    <div style={{ backgroundColor: "var(--outfitly-bg-primary)" }}>
       <Navbar />
       <main className="pt-20 pb-16">
         <PageHeader
@@ -36,11 +36,16 @@ export default function WeatherPage() {
           >
             <div className="flex items-center justify-between mt-12 mb-6">
               <h2
-                className="mb-8 bg-gradient-to-r from-[#671425] via-[#8B1D35] to-[#A82444] bg-clip-text text-transparent"
+                className="mb-8"
                 style={{
                   fontSize: "2rem",
                   fontWeight: "900",
                   letterSpacing: "0.02em",
+                  background:
+                    "linear-gradient(to right, var(--outfitly-gradient-start), var(--outfitly-gradient-mid), var(--outfitly-gradient-end))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
                 }}
               >
                 Perfect outfits for today:
@@ -60,11 +65,15 @@ export default function WeatherPage() {
           >
             <div className="flex items-center justify-between mt-12 mb-6">
               <h2
-                className="bg-gradient-to-r from-[#671425] via-[#8B1D35] to-[#A82444] bg-clip-text text-transparent"
                 style={{
                   fontSize: "2rem",
                   fontWeight: "900",
                   letterSpacing: "0.02em",
+                  background:
+                    "linear-gradient(to right, var(--outfitly-gradient-start), var(--outfitly-gradient-mid), var(--outfitly-gradient-end))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
                 }}
               >
                 Your wardrobe items for this weather:
@@ -83,12 +92,24 @@ export default function WeatherPage() {
               <button
                 onClick={() => handleScroll("left")}
                 className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow-md"
+                style={{
+                  backgroundColor: theme === "dark" ? "var(--card)" : "var(--card)",
+                  opacity: 0.7,
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.7")}
               >
                 &#8592;
               </button>
               <button
                 onClick={() => handleScroll("right")}
                 className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow-md"
+                style={{
+                  backgroundColor: theme === "dark" ? "var(--card)" : "var(--card)",
+                  opacity: 0.7,
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.7")}
               >
                 &#8594;
               </button>

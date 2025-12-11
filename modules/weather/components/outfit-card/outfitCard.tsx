@@ -23,19 +23,17 @@ export const OutfitCard: React.FC<OutfitCardProps> = ({ outfit, index }) => {
       <Card
         className="group cursor-pointer overflow-hidden border-2 transition-all duration-300 hover:shadow-2xl h-full"
         style={{
-          borderColor: theme === "dark" ? "#35353D" : "#F2E8E3",
-          backgroundColor: theme === "dark" ? "#2A2A30" : "#FFFFFF",
+          borderColor:
+            theme === "dark" ? "var(--outfitly-bg-tertiary)" : "var(--outfitly-bg-secondary)",
+          backgroundColor: "var(--card)",
         }}
       >
         {/* Time Badge Section */}
         <div
           className="p-4 border-b-2 transition-all duration-300"
           style={{
-            borderColor: theme === "dark" ? "#35353D" : "#F2E8E3",
-            background:
-              theme === "dark"
-                ? "linear-gradient(135deg, rgba(103, 20, 37, 0.1) 0%, rgba(139, 29, 53, 0.05) 100%)"
-                : "linear-gradient(135deg, rgba(103, 20, 37, 0.05) 0%, rgba(139, 29, 53, 0.02) 100%)",
+            borderColor: "var(--border)",
+            background: "var(--muted)",
           }}
         >
           <div className="flex items-center justify-between mb-2">
@@ -43,16 +41,26 @@ export const OutfitCard: React.FC<OutfitCardProps> = ({ outfit, index }) => {
               <div
                 className="w-10 h-10 rounded-lg flex items-center justify-center shadow-md"
                 style={{
-                  background: "linear-gradient(135deg, #671425 0%, #8B1D35 100%)",
+                  background:
+                    "linear-gradient(135deg, var(--outfitly-gradient-start) 0%, var(--outfitly-gradient-mid) 100%)",
                 }}
               >
-                <TimeIcon className="w-5 h-5" style={{ color: "#FAF1ED" }} />
+                <TimeIcon
+                  className="w-5 h-5"
+                  style={{
+                    color:
+                      theme === "dark"
+                        ? "var(--outfitly-text-primary)"
+                        : "var(--outfitly-text-light)",
+                  }}
+                />
               </div>
               <div>
                 <div
                   className="transition-colors duration-300"
                   style={{
-                    color: theme === "dark" ? "#FAF1ED" : "#671425",
+                    color:
+                      theme === "dark" ? "var(--outfitly-text-primary)" : "var(--outfitly-primary)",
                     fontWeight: "700",
                   }}
                 >
@@ -60,7 +68,7 @@ export const OutfitCard: React.FC<OutfitCardProps> = ({ outfit, index }) => {
                 </div>
                 <div
                   className="text-xs opacity-70 transition-colors duration-300"
-                  style={{ color: theme === "dark" ? "#FAF1ED" : "#4C1420" }}
+                  style={{ color: "var(--outfitly-text-primary)" }}
                 >
                   {outfit.timeRange}
                 </div>
@@ -69,8 +77,9 @@ export const OutfitCard: React.FC<OutfitCardProps> = ({ outfit, index }) => {
             <Badge
               className="shadow-md"
               style={{
-                backgroundColor: theme === "dark" ? "#1a1a1a" : "#F2E8E3",
-                color: theme === "dark" ? "#FAF1ED" : "#671425",
+                backgroundColor: "var(--muted)",
+                color:
+                  theme === "dark" ? "var(--outfitly-text-primary)" : "var(--outfitly-primary)",
               }}
             >
               {outfit.temperature}
@@ -101,8 +110,10 @@ export const OutfitCard: React.FC<OutfitCardProps> = ({ outfit, index }) => {
             whileTap={{ scale: 0.98 }}
             className="w-full px-4 py-3 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
             style={{
-              background: "linear-gradient(135deg, #671425 0%, #8B1D35 100%)",
-              color: "#FAF1ED",
+              background:
+                "linear-gradient(135deg, var(--outfitly-gradient-start) 0%, var(--outfitly-gradient-mid) 100%)",
+              color:
+                theme === "dark" ? "var(--outfitly-text-primary)" : "var(--outfitly-text-light)",
             }}
             onClick={() => {
               // Add navigation or action here, e.g., router.push('/outfit/' + outfit.id)
