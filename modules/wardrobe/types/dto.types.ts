@@ -59,7 +59,7 @@ export type GetWardrobeStatsResponse = {
 
 export type FilteredItemsDTO = Prisma.WardrobeItemGetPayload<{
   include: {
-    category: true,
-    images: true,
-  }
-}>
+    category: true;
+    images: true;
+  };
+}>;

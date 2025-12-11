@@ -264,7 +264,10 @@ export const getWardrobeStatsRepo = async (userId: string) => {
   };
 };
 
-export const getWardrobeItemsFiltered = async(filters: IGeneratorFilters, userId: string): Promise<FilteredItemsDTO[]> => {
+export const getWardrobeItemsFiltered = async (
+  filters: IGeneratorFilters,
+  userId: string,
+): Promise<FilteredItemsDTO[]> => {
   const { style, weather } = filters;
   const items = await prisma.wardrobeItem.findMany({
     where: {
@@ -274,14 +277,14 @@ export const getWardrobeItemsFiltered = async(filters: IGeneratorFilters, userId
         name: {
           contains: style,
           mode: "insensitive",
-        }
-      }
+        },
+      },
     },
     include: {
       category: true,
       images: true,
-    }
+    },
   });
 
   return items;
-}
+};

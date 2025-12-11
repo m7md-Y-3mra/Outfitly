@@ -123,4 +123,4 @@ export const getWardrobeStatsService = async (): Promise<GetWardrobeStatsRespons
 export const getFilteredItemsForGenerator = async (filters: IGeneratorFilters, userId: string) => {
   const items = await getWardrobeItemsFiltered(filters, userId);
   return items;
-}
+};
