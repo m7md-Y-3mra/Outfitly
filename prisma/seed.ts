@@ -151,7 +151,8 @@ async function main() {
   const colors = ['Black', 'White', 'Beige', 'Navy', 'Gray', 'Olive'];
   const sizes = ['XS', 'S', 'M', 'L', '38', '39', '40', '41', '42'];
   const seasons = ['all-year', 'spring,summer', 'fall,winter'];
-  const Categories = ['c_tshirt', 'c_shirt', 'c_jeans', 'c_pants', 'c_jacket', 'c_coat', 'c_hoodie', 'c_sneakers', 'c_boots', 'c_dress']
+  const catgs = await prisma.category.findMany();
+  const Categories = catgs.map(c => c.id);
 
   for (let i = 0; i < 156; i++) {
     const isPurchased = Math.random() > 0.75;

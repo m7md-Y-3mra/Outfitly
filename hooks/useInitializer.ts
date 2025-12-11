@@ -10,7 +10,7 @@ const useInitializer = () => {
 
   useEffect(() => {
     if (initialized.current || authStatus !== "idle") return;
-
+    initialized.current = true;
     const init = async () => {
       setStatus("loading");
 
@@ -19,7 +19,9 @@ const useInitializer = () => {
       if (res.success) {
         const { user } = res.data;
         applySignedIn(user);
+        console.log(user, "I am res");
         setStatus("authenticated");
+        return;
       }
 
       applySignedOut();

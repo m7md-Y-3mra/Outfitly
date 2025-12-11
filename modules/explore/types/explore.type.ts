@@ -4,6 +4,6 @@ export interface IOutfit {
   username: string;
   likes: number;
   isLiked: boolean;
-  style?: string | undefined;
-  season?: string | undefined;
+  style?: string;
+  season?: string;
 }

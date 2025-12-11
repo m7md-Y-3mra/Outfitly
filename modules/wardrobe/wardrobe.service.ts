@@ -24,6 +24,7 @@ import {
   GetUserWardrobeItemResponse,
   GetWardrobeItemDetailsDTO,
   GetWardrobeItemDetailsResponse,
+  GetWardrobeStatsResponse,
   UpdateWardrobeItemDTO,
   UpdateWardrobeItemResponse,
 } from "./types/dto.types";
@@ -109,7 +110,7 @@ export const deleteWardrobeItemService = async (
   return deleteWardrobeItemRepo(data.id, user.sub);
 };
 
-export const getWardrobeStatsService = async () => {
+export const getWardrobeStatsService = async (): Promise<GetWardrobeStatsResponse> => {
   const user = await getUserFromSession();
 
   const userData = await userRepo.findById(user.sub);
