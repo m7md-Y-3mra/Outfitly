@@ -1,15 +1,15 @@
 "use server";
-import { actionHandler } from "@/utils/action-handler.utils";
+import { errorMiddleware } from "@/middlewares/error.middleware";
 import {
   getOutfitsForExplore,
   likeOutfitForExplore,
   unlikeOutfitForExplore,
 } from "./explore.service";
 
-export const getOutfitsForExploreAction = actionHandler(getOutfitsForExplore, {
+export const getOutfitsForExploreAction = errorMiddleware(getOutfitsForExplore, {
   statusCode: 200,
 });
 
-export const likeOutfitAction = actionHandler(likeOutfitForExplore);
+export const likeOutfitAction = errorMiddleware(likeOutfitForExplore);
 
-export const unlikeOutfitAction = actionHandler(unlikeOutfitForExplore);
+export const unlikeOutfitAction = errorMiddleware(unlikeOutfitForExplore);

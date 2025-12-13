@@ -117,7 +117,7 @@ export const getUserWardrobeItemRepo = async ({
   search = "",
   take = PAGE_SIZE,
   skip = 0,
-}: GetUserWardrobeRepoParams) => {
+}: GetUserWardrobeRepoParams & { userId: string }) => {
   const where = {
     userId,
     ...(categoryId && { categoryId }),

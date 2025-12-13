@@ -1,5 +1,5 @@
 import { ApiResponseError, ApiResponseSuccess } from "@/@types/response.type";
-import CustomError from "./CustomError";
+import CustomError from "../utils/CustomError";
 import z, { ZodError } from "zod";
 import { HttpStatusError } from "@/@types/status-code.type";
 import {
@@ -9,11 +9,11 @@ import {
   PrismaClientRustPanicError,
   PrismaClientUnknownRequestError,
 } from "@prisma/client/runtime/client";
-import { prismaKnownErrorMessage } from "./prisma.utils";
+import { prismaKnownErrorMessage } from "../utils/prisma.utils";
 import { TSuccessConfig } from "@/@types";
 import { errors as JoseErrors } from "jose";
 
-export function actionHandler<Args extends unknown[], Return>(
+export function errorMiddleware<Args extends unknown[], Return>(
   actionFn: (...args: Args) => Promise<Return>,
   config?: TSuccessConfig,
 ) {

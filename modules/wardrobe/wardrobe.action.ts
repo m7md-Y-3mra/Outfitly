@@ -1,5 +1,5 @@
 "use server";
-import { actionHandler } from "@/utils/action-handler.utils";
+import { errorMiddleware } from "@/middlewares/error.middleware";
 import {
   createWardrobeItemService,
   deleteWardrobeItemService,
@@ -9,19 +9,19 @@ import {
   updateWardrobeItemService,
 } from "./wardrobe.service";
 
-export const createWardrobeItemAction = actionHandler(createWardrobeItemService, {
+export const createWardrobeItemAction = errorMiddleware(createWardrobeItemService, {
   statusCode: 201,
   message: "Wardrobe item created successfully",
 });
 
-export const updateWardrobeItemAction = actionHandler(updateWardrobeItemService, {
+export const updateWardrobeItemAction = errorMiddleware(updateWardrobeItemService, {
   message: "Wardrobe item updated successfully",
 });
 
-export const getUserWardrobeItemAction = actionHandler(getUserWardrobeService);
+export const getUserWardrobeItemAction = errorMiddleware(getUserWardrobeService);
 
-export const getWardrobeItemDetailsAction = actionHandler(getWardrobeItemDetailsService);
+export const getWardrobeItemDetailsAction = errorMiddleware(getWardrobeItemDetailsService);
 
-export const deleteWardrobeItemAction = actionHandler(deleteWardrobeItemService);
+export const deleteWardrobeItemAction = errorMiddleware(deleteWardrobeItemService);
 
-export const getWardrobeStatsAction = actionHandler(getWardrobeStatsService);
+export const getWardrobeStatsAction = errorMiddleware(getWardrobeStatsService);

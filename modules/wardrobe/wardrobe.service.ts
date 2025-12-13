@@ -29,25 +29,24 @@ import {
   UpdateWardrobeItemDTO,
   UpdateWardrobeItemResponse,
 } from "./types/dto.types";
-import { CreateWardrobeItemDTO } from "./types/dto.types";
-import userRepo from "../user/user.repo";
 import { findCategoryById } from "../category/category.repo";
 import { PAGE, PAGE_SIZE } from "@/app.constant";
-import { getUserFromSession } from "../auth/auth.service";
 import CustomError from "@/utils/CustomError";
 import { HttpStatusError } from "@/@types/status-code.type";
+import { authMiddleware } from "@/middlewares/auth.middleware";
 import { IGeneratorFilters } from "../AI-generator/types/generator.types";
+import { CreateWardrobeItemDTO } from "./types/dto.types";
 
 export const createWardrobeItemService = async (
-  CreateWardrobeItemDTO: CreateWardrobeItemDTO,
+  createWardrobeItemDTO: CreateWardrobeItemDTO,
 ): Promise<CreateWardrobeItemResponse> => {
-  const data = zodValidation(CreateWardrobeItemDTOSchema, CreateWardrobeItemDTO);
+  const data = zodValidation(CreateWardrobeItemDTOSchema, createWardrobeItemDTO);
+  const user = await authMiddleware();
   const { imageUrls, ...rest } = data;
 
-  await userRepo.findById(rest.userId);
   await findCategoryById(rest.categoryId);
 
-  const wardrobeItem = await createWardrobeItemRepo(rest, imageUrls);
+  const wardrobeItem = await createWardrobeItemRepo({ ...rest, userId: user.id }, imageUrls);
   return wardrobeItem;
 };
 
@@ -55,13 +54,13 @@ export const updateWardrobeItemService = async (
   updateWardrobeItemDTO: UpdateWardrobeItemDTO,
 ): Promise<UpdateWardrobeItemResponse> => {
   const data = zodValidation(UpdateWardrobeItemDTOSchema, updateWardrobeItemDTO);
-  const { images, id, userId, ...rest } = data;
+  const user = await authMiddleware();
+  const { images, id, ...rest } = data;
 
-  await userRepo.findById(userId);
   await findWardrobeItemById(id);
   if (rest.categoryId) await findCategoryById(rest.categoryId);
 
-  const wardrobeItem = await updateWardrobeItemRepo(id, userId, rest, images);
+  const wardrobeItem = await updateWardrobeItemRepo(id, user.id, rest, images);
   return wardrobeItem;
 };
 
@@ -70,12 +69,12 @@ export const getUserWardrobeService = async (
 ): Promise<GetUserWardrobeItemResponse> => {
   const data = zodValidation(GetUserWardrobeItemSchema, getUserWardrobeItemDTO);
 
-  await userRepo.findById(data.userId);
+  const user = await authMiddleware();
   if (data.categoryId) await findCategoryById(data.categoryId);
 
   const { page, pageSize, ...rest } = data;
   const skip = ((page || PAGE) - 1) * (pageSize || PAGE_SIZE);
-  return getUserWardrobeItemRepo({ ...rest, skip, take: pageSize });
+  return getUserWardrobeItemRepo({ ...{ userId: user.id, ...rest }, skip, take: pageSize });
 };
 
 export const getWardrobeItemDetailsService = async (
@@ -83,16 +82,14 @@ export const getWardrobeItemDetailsService = async (
 ): Promise<GetWardrobeItemDetailsResponse> => {
   const data = zodValidation(GetWardrobeItemDetailsSchema, getWardrobeItemDetailsDTO);
 
-  const user = await getUserFromSession();
-
-  const userData = await userRepo.findById(user.sub);
+  const user = await authMiddleware();
   const wardrobeItemData = await findWardrobeItemById(data.id);
 
-  if (userData.id != wardrobeItemData.id) {
+  if (user.id != wardrobeItemData.userId) {
     throw new CustomError({ message: "not authorized", statusCode: HttpStatusError.Unauthorized });
   }
 
-  return getWardrobeItemDetailsRepo(data.id, user.sub);
+  return getWardrobeItemDetailsRepo(data.id, user.id);
 };
 
 export const deleteWardrobeItemService = async (
@@ -100,24 +97,19 @@ export const deleteWardrobeItemService = async (
 ): Promise<DeleteWardrobeItemResponse> => {
   const data = zodValidation(DeleteWardrobeItemSchema, deleteWardrobeItemDTO);
 
-  const user = await getUserFromSession();
-
-  const userData = await userRepo.findById(user.sub);
+  const user = await authMiddleware();
   const wardrobeItemData = await findWardrobeItemById(data.id);
 
-  if (userData.id != wardrobeItemData.id) {
+  if (user.id != wardrobeItemData.id) {
     throw new CustomError({ message: "not authorized", statusCode: HttpStatusError.Unauthorized });
   }
 
-  return deleteWardrobeItemRepo(data.id, user.sub);
+  return deleteWardrobeItemRepo(data.id, user.id);
 };
 
 export const getWardrobeStatsService = async (): Promise<GetWardrobeStatsResponse> => {
-  const user = await getUserFromSession();
-
-  const userData = await userRepo.findById(user.sub);
-
-  return getWardrobeStatsRepo(userData.id);
+  const user = await authMiddleware();
+  return getWardrobeStatsRepo(user.id);
 };
 
 export const getFilteredItemsForGenerator = async (filters: IGeneratorFilters, userId: string) => {

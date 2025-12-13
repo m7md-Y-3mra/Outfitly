@@ -1,14 +1,16 @@
 import { WardrobeItemImage, WardrobeItem, Category } from "@/app/generated/prisma/browser";
-import { WardrobeItemWithImages, WardrobeItemWithoutAddedAtAndId } from ".";
+import { WardrobeItemWithImages, WardrobeItemWithoutAddedAtAndIdAndUserId } from ".";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 import { Prisma } from "@/app/generated/prisma/client";
 
-export type CreateWardrobeItemDTO = WardrobeItemWithoutAddedAtAndId & { imageUrls: string[] };
+export type CreateWardrobeItemDTO = WardrobeItemWithoutAddedAtAndIdAndUserId & {
+  imageUrls: string[];
+};
 export type CreateWardrobeItemResponse = WardrobeItemWithImages;
 
 export type UpdateWardrobeItemDTO = Partial<
-  WardrobeItemWithoutAddedAtAndId & { images: WardrobeItemImage[] }
-> & { id: string; userId: string };
+  WardrobeItemWithoutAddedAtAndIdAndUserId & { images: WardrobeItemImage[] }
+> & { id: string };
 export type UpdateWardrobeItemResponse = WardrobeItemWithImages;
 
 export type WardrobeSortBy = keyof Pick<WardrobeItem, "name" | "addedAt">;
@@ -26,7 +28,7 @@ export type GetUserWardrobeRepoParams = GetUserWardrobeItemDTO & {
   take?: number;
 };
 
-export type GetUserWardrobeItemDTO = GetUserWardrobeItem & {
+export type GetUserWardrobeItemDTO = Omit<GetUserWardrobeItem, "userId"> & {
   page?: number;
   pageSize?: number;
 };
