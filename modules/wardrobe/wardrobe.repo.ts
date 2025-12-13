@@ -211,7 +211,7 @@ export const deleteWardrobeItemRepo = async (itemId: string, userId: string) => 
 
     // 2. Delete the item
     const wardrobeItem = await tx.wardrobeItem.delete({
-      where: { id: itemId },
+      where: { id: itemId, userId },
     });
 
     // 3. Return success
