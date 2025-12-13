@@ -8,7 +8,7 @@ import {
   UpdateWardrobeItemDTO,
   WardrobeSortBy,
 } from "./types/dto.types";
-import { WardrobeItem } from "@/app/generated/prisma/browser";
+import { WardrobeItem, WardrobeStyle } from "@/app/generated/prisma/browser";
 import { createArrayFromDiscriminatedUnion } from "@/utils/types.utils";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 import { PAGE, PAGE_SIZE } from "@/app.constant";
@@ -19,6 +19,7 @@ const WardrobeItemBaseSchema = z.object({
   userId: z.uuid(),
   categoryId: z.string(),
   variantId: z.uuid().nullable(),
+  style: z.enum(Object.values(WardrobeStyle)),
 
   name: z.string().min(1, "Name is required"),
   color: z.string().min(1, "Color is required"),
@@ -50,6 +51,7 @@ export const CreateWardrobeItemDTOSchema = WardrobeItemBaseWithImagesSchema.pick
   source: true,
   purchasedDate: true,
   imageUrls: true,
+  style: true,
 }) satisfies ZodType<CreateWardrobeItemDTO>;
 
 // UPDATE schema
@@ -64,6 +66,7 @@ export const UpdateWardrobeItemDTOSchema = WardrobeItemBaseSchema.pick({
   notes: true,
   source: true,
   purchasedDate: true,
+  style: true,
 })
   .extend({
     images: z.array(
