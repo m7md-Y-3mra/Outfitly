@@ -1,24 +1,26 @@
 import CustomError from "../utils/CustomError";
 import { HttpStatusError } from "@/@types/status-code.type";
-import { User } from "@/app/generated/prisma/client";
 import { getUserFromSession } from "@/modules/auth/auth.service";
 import userRepo from "@/modules/user/user.repo";
 
-export function authMiddleware<Args extends unknown[], Return>(
-  actionFn: (user?: User, ...args: Args) => Promise<Return>,
-) {
-  return async (...args: Args): Promise<Return> => {
-    const payload = await getUserFromSession();
+export async function authMiddleware() {
+  const sessionUser = await getUserFromSession();
 
-    const userData = await userRepo.findById(payload.sub);
+  if (!sessionUser) {
+    throw new CustomError({
+      message: "not authenticated",
+      statusCode: HttpStatusError.Unauthorized,
+    });
+  }
 
-    if (!userData) {
-      throw new CustomError({
-        message: "not authenticated",
-        statusCode: HttpStatusError.Unauthorized,
-      });
-    }
+  const user = await userRepo.findById(sessionUser.sub);
 
-    return actionFn(userData, ...args);
-  };
+  if (!user) {
+    throw new CustomError({
+      message: "not authenticated",
+      statusCode: HttpStatusError.Unauthorized,
+    });
+  }
+
+  return user;
 }
