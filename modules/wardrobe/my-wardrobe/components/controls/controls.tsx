@@ -18,7 +18,7 @@ const Controls = () => {
     setViewMode(value);
   };
 
-  const onSortByChange = (value) => {
+  const onSortByChange = (value: WardrobeSortBy) => {
     setSortBy(value);
   };
   return (
@@ -71,7 +71,7 @@ const Controls = () => {
           <div className="relative">
             <select
               value={sortBy}
-              onChange={(e) => onSortByChange(e.target.value as SortBy)}
+              onChange={(e) => onSortByChange(e.target.value as WardrobeSortBy)}
               className="appearance-none pl-4 pr-10 py-3 rounded-xl bg-[#FAF1ED] dark:bg-[#1C1C20] border border-[#F2E8E3] dark:border-[#35353D] text-[#4C1420] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#671425] dark:focus:ring-[#8B1D35] transition-all duration-300 cursor-pointer"
             >
               {createArrayFromDiscriminatedUnion<WardrobeSortBy>("addedAt", "name").map(
