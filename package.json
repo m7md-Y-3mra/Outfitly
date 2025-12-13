@@ -13,7 +13,9 @@
     "studio": "npx prisma studio",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
-    "seed": "prisma db seed"
+    "seed": "prisma db seed",
+    "type-check": "tsc --noEmit",
+    "check": "npm run check-format && npm run lint && npm run type-check"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.0.1",
