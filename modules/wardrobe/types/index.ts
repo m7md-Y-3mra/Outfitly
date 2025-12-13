@@ -4,6 +4,8 @@ export type WardrobeItemWithoutAddedAt = Omit<WardrobeItem, "addedAt">;
 
 export type WardrobeItemWithoutAddedAtAndId = Omit<WardrobeItem, "addedAt" | "id">;
 
+export type WardrobeItemWithoutAddedAtAndIdAndUserId = Omit<WardrobeItem, "addedAt" | "id" | "userId">;
+
 export type WardrobeItemWithImages = WardrobeItem & { images: WardrobeItemImage[] };
 
 export const WardrobeItemSourceEnum = {

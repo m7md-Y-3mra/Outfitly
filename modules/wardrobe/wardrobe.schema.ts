@@ -15,7 +15,7 @@ import { PAGE, PAGE_SIZE } from "@/app.constant";
 
 // Base WardrobeItem schema
 const WardrobeItemBaseSchema = z.object({
-  id: z.uuid(), // auto-generated
+  id: z.string(), // auto-generated
   userId: z.uuid(),
   categoryId: z.string(),
   variantId: z.uuid().nullable(),
@@ -39,7 +39,6 @@ const WardrobeItemBaseWithImagesSchema = WardrobeItemBaseSchema.extend({
 
 // CREATE schema
 export const CreateWardrobeItemDTOSchema = WardrobeItemBaseWithImagesSchema.pick({
-  userId: true,
   categoryId: true,
   variantId: true,
   name: true,
@@ -81,12 +80,10 @@ export const UpdateWardrobeItemDTOSchema = WardrobeItemBaseSchema.pick({
   .partial()
   .extend({
     id: z.string(), // auto-generated
-    userId: z.string(),
   }) satisfies ZodType<UpdateWardrobeItemDTO>;
 
 // GET USER WARDROBE ITEM
 export const GetUserWardrobeItemSchema = z.object({
-  userId: z.uuid(),
   categoryId: z.uuid().optional(),
   search: z.string().optional(),
   sortBy: z
