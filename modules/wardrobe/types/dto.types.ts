@@ -2,7 +2,9 @@ import { WardrobeItemImage, WardrobeItem, Category } from "@/app/generated/prism
 import { WardrobeItemWithImages, WardrobeItemWithoutAddedAtAndIdAndUserId } from ".";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 
-export type CreateWardrobeItemDTO = WardrobeItemWithoutAddedAtAndIdAndUserId & { imageUrls: string[] };
+export type CreateWardrobeItemDTO = WardrobeItemWithoutAddedAtAndIdAndUserId & {
+  imageUrls: string[];
+};
 export type CreateWardrobeItemResponse = WardrobeItemWithImages;
 
 export type UpdateWardrobeItemDTO = Partial<
