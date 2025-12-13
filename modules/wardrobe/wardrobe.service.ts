@@ -13,6 +13,7 @@ import {
   findWardrobeItemById,
   getUserWardrobeItemRepo,
   getWardrobeItemDetailsRepo,
+  getWardrobeItemsFiltered,
   getWardrobeStatsRepo,
   updateWardrobeItemRepo,
 } from "./wardrobe.repo";
@@ -28,17 +29,18 @@ import {
   UpdateWardrobeItemDTO,
   UpdateWardrobeItemResponse,
 } from "./types/dto.types";
-import { CreateWardrobeItemDTO } from "./types/dto.types";
 import { findCategoryById } from "../category/category.repo";
 import { PAGE, PAGE_SIZE } from "@/app.constant";
 import CustomError from "@/utils/CustomError";
 import { HttpStatusError } from "@/@types/status-code.type";
 import { authMiddleware } from "@/middlewares/auth.middleware";
+import { IGeneratorFilters } from "../AI-generator/types/generator.types";
+import {CreateWardrobeItemDTO} from "./types/dto.types"
 
 export const createWardrobeItemService = async (
-  CreateWardrobeItemDTO: CreateWardrobeItemDTO,
+  createWardrobeItemDTO: CreateWardrobeItemDTO,
 ): Promise<CreateWardrobeItemResponse> => {
-  const data = zodValidation(CreateWardrobeItemDTOSchema, CreateWardrobeItemDTO);
+  const data = zodValidation(CreateWardrobeItemDTOSchema, createWardrobeItemDTO);
   const user = await authMiddleware();
   const { imageUrls, ...rest } = data;
 
@@ -108,4 +110,9 @@ export const deleteWardrobeItemService = async (
 export const getWardrobeStatsService = async (): Promise<GetWardrobeStatsResponse> => {
   const user = await authMiddleware();
   return getWardrobeStatsRepo(user.id);
+};
+
+export const getFilteredItemsForGenerator = async (filters: IGeneratorFilters, userId: string) => {
+  const items = await getWardrobeItemsFiltered(filters, userId);
+  return items;
 };

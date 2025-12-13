@@ -1,6 +1,7 @@
 import { WardrobeItemImage, WardrobeItem, Category } from "@/app/generated/prisma/browser";
 import { WardrobeItemWithImages, WardrobeItemWithoutAddedAtAndIdAndUserId } from ".";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
+import { Prisma } from "@/app/generated/prisma/client";
 
 export type CreateWardrobeItemDTO = WardrobeItemWithoutAddedAtAndIdAndUserId & {
   imageUrls: string[];
@@ -57,3 +58,10 @@ export type GetWardrobeStatsResponse = {
   total: number;
   byCategory: Record<string, number>;
 };
+
+export type FilteredItemsDTO = Prisma.WardrobeItemGetPayload<{
+  include: {
+    category: true;
+    images: true;
+  };
+}>;

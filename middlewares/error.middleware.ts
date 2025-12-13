@@ -31,7 +31,7 @@ export function errorMiddleware<Args extends unknown[], Return>(
       // ---------------------------
       // 🔥 Prisma Error Handling
       // ---------------------------
-
+      console.log(err);
       if (err instanceof PrismaClientKnownRequestError) {
         return {
           success: false,
