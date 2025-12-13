@@ -7,3 +7,11 @@ export const findCategoryById = async (id: string) => {
     },
   });
 };
+
+export const findAllCategoriesRepo = async () => {
+  return await prisma.category.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+};
