@@ -1,4 +1,4 @@
-// import { Controls } from "lucide-react";
+import { Search as Controls } from "lucide-react";
 
 import { useQueryState } from "nuqs";
 
@@ -14,7 +14,7 @@ const Search = () => {
 
   return (
     <div className="relative flex-1 max-w-md">
-      {/* <Controls className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#4C1420]/40 dark:text-white/40" /> */}
+      <Controls className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#4C1420]/40 dark:text-white/40" />
       <input
         type="text"
         placeholder="Search your wardrobe..."
