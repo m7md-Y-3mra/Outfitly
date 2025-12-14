@@ -34,7 +34,9 @@ export function ProfileTabs({ activeTab, onTabChange }: ProfileTabsProps) {
             >
               <Icon className="w-5 h-5" />
               <span className="hidden sm:inline">{tab.label}</span>
-              <Badge className={`ml-1 ${isActive ? "bg-secondary text-secondary-foreground" : "bg-muted text-muted-foreground"}`}>
+              <Badge
+                className={`ml-1 ${isActive ? "bg-secondary text-secondary-foreground" : "bg-muted text-muted-foreground"}`}
+              >
                 {tab.count}
               </Badge>
             </motion.button>

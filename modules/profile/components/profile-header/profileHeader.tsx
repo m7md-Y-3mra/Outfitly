@@ -37,7 +37,10 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
                 </div>
                 <div className="flex items-center gap-2 opacity-70">
                   <LinkIcon className="w-4 h-4 text-primary" />
-                  <a href={`https://${user.website}`} className="hover:underline transition-colors duration-300 text-primary">
+                  <a
+                    href={`https://${user.website}`}
+                    className="hover:underline transition-colors duration-300 text-primary"
+                  >
                     {user.website}
                   </a>
                 </div>
