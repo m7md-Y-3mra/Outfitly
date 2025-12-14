@@ -1,4 +1,4 @@
-import { createLoader, parseAsString, parseAsStringEnum } from "nuqs";
+import { createLoader, parseAsString, parseAsStringEnum } from "nuqs/server";
 import { WardrobeSortBy } from "../types/dto.types";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 import { createArrayFromDiscriminatedUnion } from "@/utils/types.utils";
