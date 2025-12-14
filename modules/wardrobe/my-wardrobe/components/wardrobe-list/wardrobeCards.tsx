@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import { Plus, Trash2, Edit } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useViewMode } from "../../provider/viewMode.provider";
 
 export function WardrobeCards({ wardrobeItems }: { wardrobeItems: GetUserWardrobeItemResponse }) {
   const router = useRouter();
+  const { viewMode, toggleMode } = useViewMode();
 
   return (
     <motion.div
