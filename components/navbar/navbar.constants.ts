@@ -1,6 +1,6 @@
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "My Wardrobe", href: "/wardrobe" },
+  { label: "My Wardrobe", href: "/my-wardrobe" },
   { label: "AI Generator", href: "/ai-generator" },
   { label: "Weather", href: "/weather-outfits" },
   { label: "Explore", href: "/explore" },
