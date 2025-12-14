@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { MapPin, Droplets, Wind, Eye } from "lucide-react";
-import { Card } from "../../../../components/ui/card"; // Or '@/components/ui/card' if using aliases
+import { Card } from "../../../../components/ui/card";
 import { useTheme } from "next-themes";
 import { WeatherData } from "../../weather.types";
 import { getWeatherIcon } from "../../weather.utils";
 import { LucideIcon } from "lucide-react";
-// Interface for weather details to ensure type safety and reduce duplication
+
 interface WeatherDetail {
-  icon: React.ComponentType<{ className?: string }>; // Lucide icon component
+  icon: React.ComponentType<{ className?: string }>;
   label: string;
   value: string | number;
 }
@@ -20,12 +20,11 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ weather }) => {
   const { theme } = useTheme();
   const WeatherIcon: LucideIcon = getWeatherIcon(weather.condition);
 
-  // Array of weather details for dynamic rendering (eliminates duplication)
   const weatherDetails: WeatherDetail[] = [
     { icon: Wind, label: "Feels Like", value: `${weather.feelsLike}°F` },
     { icon: Droplets, label: "Humidity", value: `${weather.humidity}%` },
     { icon: Wind, label: "Wind Speed", value: `${weather.windSpeed} mph` },
-    { icon: Eye, label: "UV Index", value: `${weather.uvIndex} (Moderate)` },
+    { icon: Eye, label: "UV Index", value: `${weather.uvIndex}` },
   ];
 
   return (
@@ -42,21 +41,10 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ weather }) => {
           backgroundColor: "var(--card)",
         }}
       >
-        {/* Animated Gradient Background */}
-        <div
-          className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl animate-pulse"
-          style={{
-            background:
-              "linear-gradient(to bottom right, var(--outfitly-gradient-start), var(--outfitly-gradient-mid), var(--outfitly-gradient-end))",
-            opacity: 0.1,
-          }}
-        />
-
         <div className="relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            {/* Left: Main Weather Info */}
+            {/* Left */}
             <div>
-              {/* Location */}
               <div className="flex items-center gap-2 mb-6">
                 <div
                   className="w-10 h-10 rounded-lg flex items-center justify-center shadow-md"
@@ -121,13 +109,13 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ weather }) => {
                 </div>
               </div>
 
-              {/* Weather Details Grid - Now dynamic and DRY */}
+              {/* Details Grid */}
               <div className="grid grid-cols-2 gap-4 mt-6">
                 {weatherDetails.map((detail, index) => {
-                  const IconComponent = detail.icon; // Dynamically render the icon
+                  const IconComponent = detail.icon;
                   return (
                     <div
-                      key={index} // Use index or a unique key if available
+                      key={index}
                       className="p-4 rounded-xl transition-all duration-300"
                       style={{
                         backgroundColor:
@@ -139,7 +127,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ weather }) => {
                       <div className="flex items-center gap-2 mb-2">
                         <div
                           className="w-8 h-8 rounded-lg flex items-center justify-center"
-                          style={{ backgroundColor: "rgba(103, 20, 37, 0.1)" }} // Kept as rgba since --outfitly-primary is hex; matches #671425
+                          style={{ backgroundColor: "rgba(103, 20, 37, 0.1)" }}
                         >
                           <IconComponent
                             className="w-4 h-4"
@@ -175,23 +163,16 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ weather }) => {
               </div>
             </div>
 
-            {/* Right: Large Weather Icon */}
+            {/* Right */}
             <div className="flex items-center justify-center">
               <motion.div
-                animate={{
-                  scale: [1, 1.05, 1],
-                  rotate: [0, 5, -5, 0],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+                animate={{ scale: [1, 1.05, 1], rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 className="w-64 h-64 rounded-full flex items-center justify-center relative"
                 style={{
                   background:
                     "linear-gradient(135deg, var(--outfitly-gradient-start) 0%, var(--outfitly-gradient-mid) 50%, var(--outfitly-gradient-end) 100%)",
-                  boxShadow: "0 20px 60px rgba(103, 20, 37, 0.3)", // Kept as rgba since --outfitly-primary is hex; matches #671425
+                  boxShadow: "0 20px 60px rgba(103, 20, 37, 0.3)",
                 }}
               >
                 <WeatherIcon

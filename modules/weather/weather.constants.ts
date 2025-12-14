@@ -2,15 +2,15 @@ import { WeatherData, Outfit, WardrobeItem } from "./weather.types";
 import { Sunrise, Sun, Cloud, Sunset, Moon } from "lucide-react"; // Added Moon for variety
 
 export const mockWeather: WeatherData = {
-  location: "San Francisco, CA", // Changed for variety
-  temperature: 68, // Cooler temp
-  temperatureCelsius: 20,
-  condition: "Cloudy", // Different condition to test icon
-  feelsLike: 65,
-  humidity: 60, // Higher humidity
-  windSpeed: 12, // Stronger wind
-  uvIndex: 4, // Lower UV
-  icon: "cloudy",
+  location: "Gaza, Palestine",
+  temperature: 77,
+  temperatureCelsius: 25,
+  condition: "Sunny",
+  feelsLike: 78,
+  humidity: 60,
+  windSpeed: 10,
+  uvIndex: 7,
+  icon: "sunny",
 };
 
 export const timeBasedOutfits: Outfit[] = [
