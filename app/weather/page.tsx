@@ -1,7 +1,7 @@
-import WeatherPage from "@/modules/weather"; 
+import WeatherPage from "@/modules/weather";
 
 const Weather = () => {
   return <WeatherPage />;
 };
 
-export default Weather; 
+export default Weather;

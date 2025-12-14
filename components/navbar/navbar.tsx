@@ -82,11 +82,19 @@ export function Navbar() {
                 className="hover:bg-transparent p-2"
                 style={{ color: iconColor }}
               >
-                {theme === "dark" ? <Sun className="w-5 h-5" style={{ color: iconColor }} /> : <Moon className="w-5 h-5" style={{ color: iconColor }} />}
+                {theme === "dark" ? (
+                  <Sun className="w-5 h-5" style={{ color: iconColor }} />
+                ) : (
+                  <Moon className="w-5 h-5" style={{ color: iconColor }} />
+                )}
               </CustomButton>
 
               <Link href="/sign-in">
-                <Button variant="ghost" className="hover:bg-transparent" style={{ color: iconColor }}>
+                <Button
+                  variant="ghost"
+                  className="hover:bg-transparent"
+                  style={{ color: iconColor }}
+                >
                   Sign In
                 </Button>
               </Link>
@@ -121,12 +129,24 @@ export function Navbar() {
                 </span>
               </Link>
 
-              <CustomButton onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="p-2" style={{ color: iconColor }}>
-                {theme === "dark" ? <Sun className="w-5 h-5" style={{ color: iconColor }} /> : <Moon className="w-5 h-5" style={{ color: iconColor }} />}
+              <CustomButton
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2"
+                style={{ color: iconColor }}
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-5 h-5" style={{ color: iconColor }} />
+                ) : (
+                  <Moon className="w-5 h-5" style={{ color: iconColor }} />
+                )}
               </CustomButton>
 
               <CustomButton onClick={toggleMenu} className="p-2" style={{ color: iconColor }}>
-                {isOpen ? <X className="w-6 h-6" style={{ color: iconColor }} /> : <Menu className="w-6 h-6" style={{ color: iconColor }} />}
+                {isOpen ? (
+                  <X className="w-6 h-6" style={{ color: iconColor }} />
+                ) : (
+                  <Menu className="w-6 h-6" style={{ color: iconColor }} />
+                )}
               </CustomButton>
             </div>
           </div>

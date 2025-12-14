@@ -27,16 +27,16 @@ export function Logo({
       animate={animated ? { opacity: 1, y: 0 } : undefined}
       transition={animated ? { duration: 0.6, delay: 0.1 } : undefined}
     >
-    <Image
-      src="/logo.png"
-      alt="Outfitly Logo"
-      width={SIZE_CONFIG[size] * 1.2}
-      height={SIZE_CONFIG[size]}
-      className="object-contain w-auto filter transition duration-300"
-      style={{
-        filter: theme === "dark" ? "brightness(0) invert(1)" : "none",
-      }}
-    />
+      <Image
+        src="/logo.png"
+        alt="Outfitly Logo"
+        width={SIZE_CONFIG[size] * 1.2}
+        height={SIZE_CONFIG[size]}
+        className="object-contain w-auto filter transition duration-300"
+        style={{
+          filter: theme === "dark" ? "brightness(0) invert(1)" : "none",
+        }}
+      />
     </motion.div>
   );
 
