@@ -1,4 +1,4 @@
 // Placeholder for component-specific logic
-export function useProfileLikedOutfitsGrid() {
+export function useProfileOutfitsGrid() {
   return {};
 }

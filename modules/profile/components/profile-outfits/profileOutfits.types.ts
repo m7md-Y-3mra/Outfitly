@@ -1,3 +1,3 @@
-export interface ProfileLikedOutfitsGridProps {
+export interface ProfileOutfitsGridProps {
   outfits: import("../../profile.types").Outfit[];
 }
