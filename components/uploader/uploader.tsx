@@ -8,6 +8,7 @@ import { useCallback, useState, useEffect } from "react";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import { Loader2, Trash2 } from "lucide-react";
+import Image from "next/image";
 
 export function Uploader() {
   const [files, setFiles] = useState<
@@ -52,7 +53,7 @@ export function Uploader() {
 
       setFiles((prevFiles) => prevFiles.filter((f) => f.id !== fileId));
       toast.success("File removed successfully");
-    } catch (error) {
+    } catch {
       toast.error("Failed to remove file from storage.");
       setFiles((prevFiles) =>
         prevFiles.map((f) => (f.id === fileId ? { ...f, isDeleting: false, error: true } : f)),
@@ -197,6 +198,7 @@ export function Uploader() {
       // Cleanup object URLs when component unmounts
       files.forEach((file) => {
         if (file.objectUrl) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           +URL.revokeObjectURL(file.objectUrl);
         }
       });
@@ -220,7 +222,7 @@ export function Uploader() {
             <p className="text-center">Drop the files here ...</p>
           ) : (
             <div className="flex flex-col items-center gap-y-3">
-              <p>Drag 'n' drop some files here, or click to select files</p>
+              <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
               <Button>Select Files</Button>
             </div>
           )}
@@ -233,7 +235,12 @@ export function Uploader() {
             return (
               <div key={id} className="flex flex-col gap-1">
                 <div className="relative aspect-square rounded-lg overflow-hidden">
-                  <img src={objectUrl} alt={file.name} className="w-full h-full object-cover" />
+                  <Image
+                    src={objectUrl!}
+                    alt={file.name}
+                    className="w-full h-full object-cover"
+                    fill
+                  />
 
                   <Button
                     variant="destructive"
