@@ -2,11 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { GetUserWardrobeItemResponse } from "@/modules/wardrobe/types/dto.types";
 
 const WardrobePagination = ({
-  paginationDetails: { hasMore },
+  paginationDetails: { totalPages },
 }: {
   paginationDetails: Omit<GetUserWardrobeItemResponse, "items">;
 }) => {
@@ -20,33 +20,31 @@ const WardrobePagination = ({
   return (
     <Pagination>
       <PaginationContent>
-        {page > 1 && (
-          <>
-            {/* <PaginationItem>
-              <Button variant="outline" onClick={() => handlePageChange(page - 1)}>
-                <ChevronLeft className="mr-2 h-4 w-4" />
-                Previous
-              </Button>
-            </PaginationItem> */}
-            <PaginationItem>
-              <Button variant="outline" onClick={() => handlePageChange(page - 1)}>
-                {page - 1}
-              </Button>
-            </PaginationItem>
-          </>
-        )}
         <PaginationItem>
-          <Button variant="outline" disabled>
-            {page}
+          <Button
+            variant="outline"
+            onClick={() => handlePageChange(page - 1)}
+            disabled={page === 1}
+          >
+            <ChevronLeft className="mr-2 h-4 w-4" />
+            Previous
           </Button>
         </PaginationItem>
-        {hasMore && (
-          <PaginationItem>
-            <Button variant="outline" onClick={() => handlePageChange(page + 1)}>
-              {page + 1}
-            </Button>
-          </PaginationItem>
-        )}
+        <PaginationItem>
+          <Button variant="outline" disabled>
+            {page} / {totalPages}
+          </Button>
+        </PaginationItem>
+        <PaginationItem>
+          <Button
+            variant="outline"
+            onClick={() => handlePageChange(page + 1)}
+            disabled={page === totalPages}
+          >
+            Next
+            <ChevronRight className="mr-2 h-4 w-4" />
+          </Button>
+        </PaginationItem>
       </PaginationContent>
     </Pagination>
   );
