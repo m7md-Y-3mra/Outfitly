@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { S3 } from "@/lib/S3Client";
+import { S3_BUCKET_NAME } from "@/config/env.config";
 
 export async function DELETE(request: Request) {
     try {
@@ -15,7 +16,7 @@ export async function DELETE(request: Request) {
         }
 
         const command = new DeleteObjectCommand({
-            Bucket: "uploads-locale",
+            Bucket: S3_BUCKET_NAME,
             Key: key,
         });
 
