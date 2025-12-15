@@ -6,6 +6,7 @@ import { MAX_IMAGES } from "./constant";
 import { FilteredItemsDTO, GetUserWardrobeRepoParams } from "./types/dto.types";
 import { PAGE_SIZE } from "@/app.constant";
 import { IGeneratorFilters } from "../AI-generator/types/generator.types";
+import { cacheTag } from "next/cache";
 
 export const createWardrobeItemRepo = async (
   data: WardrobeItemWithoutAddedAtAndId,
@@ -118,6 +119,9 @@ export const getUserWardrobeItemRepo = async ({
   take = PAGE_SIZE,
   skip = 0,
 }: GetUserWardrobeRepoParams & { userId: string }) => {
+  'use cache'
+  cacheTag(`wardrobe-user-items-${userId}-${sortBy}-${sortOrder}-${search}-${take}-${skip}`);
+
   const where = {
     userId,
     ...(categoryId && { categoryId }),
