@@ -11,7 +11,13 @@ import CustomButton from "../custom-button";
 import { useState } from "react";
 import { NAVBAR_COLORS } from "../navbar/navbar.constants";
 
-export function AdminNavbar() {
+export function AdminNavbar({
+  isSidebarOpen,
+  onMenuClick,
+}: {
+  isSidebarOpen: boolean;
+  onMenuClick: () => void;
+}) {
   const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
