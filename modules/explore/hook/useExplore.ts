@@ -30,6 +30,7 @@ const useExplore = () => {
       setLoading(true);
 
       const response = await getOutfitsForExploreAction({ page: page + 1, limit: 10 }, user.id);
+
       if (response.success) {
         dispatch({
           type: "SET_OUTFITS",

@@ -20,7 +20,7 @@ export const getOutfitsForExplore = async (
     likes: outfit.likedBy.length,
     isLiked: isUserLike(outfit.likedBy, userId),
     style: outfit.occasion?.name,
-    season: outfit.items[0]?.wardrobeItem?.season,
+    season: outfit.items[0]?.wardrobeItem?.season || "All Seasons",
   }));
 
   return {

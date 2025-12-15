@@ -3,8 +3,10 @@ import prisma from "@/lib/prisma";
 import { WardrobeItemWithoutAddedAtAndId } from "./types";
 import { WardrobeItemImage } from "@/app/generated/prisma/client";
 import { MAX_IMAGES } from "./constant";
-import { GetUserWardrobeRepoParams } from "./types/dto.types";
+import { FilteredItemsDTO, GetUserWardrobeRepoParams } from "./types/dto.types";
 import { PAGE_SIZE } from "@/app.constant";
+import { IGeneratorFilters } from "../AI-generator/types/generator.types";
+import { cacheTag } from "next/cache";
 
 export const createWardrobeItemRepo = async (
   data: WardrobeItemWithoutAddedAtAndId,
@@ -116,7 +118,10 @@ export const getUserWardrobeItemRepo = async ({
   search = "",
   take = PAGE_SIZE,
   skip = 0,
-}: GetUserWardrobeRepoParams) => {
+}: GetUserWardrobeRepoParams & { userId: string }) => {
+  "use cache";
+  cacheTag(`wardrobe-user-items-${userId}-${sortBy}-${sortOrder}-${search}-${take}-${skip}`);
+
   const where = {
     userId,
     ...(categoryId && { categoryId }),
@@ -210,7 +215,7 @@ export const deleteWardrobeItemRepo = async (itemId: string, userId: string) => 
 
     // 2. Delete the item
     const wardrobeItem = await tx.wardrobeItem.delete({
-      where: { id: itemId },
+      where: { id: itemId, userId },
     });
 
     // 3. Return success
@@ -261,4 +266,29 @@ export const getWardrobeStatsRepo = async (userId: string) => {
     total,
     byCategory,
   };
+};
+
+export const getWardrobeItemsFiltered = async (
+  filters: IGeneratorFilters,
+  userId: string,
+): Promise<FilteredItemsDTO[]> => {
+  const { style, weather } = filters;
+  const items = await prisma.wardrobeItem.findMany({
+    where: {
+      userId,
+      season: weather,
+      category: {
+        name: {
+          contains: style,
+          mode: "insensitive",
+        },
+      },
+    },
+    include: {
+      category: true,
+      images: true,
+    },
+  });
+
+  return items;
 };

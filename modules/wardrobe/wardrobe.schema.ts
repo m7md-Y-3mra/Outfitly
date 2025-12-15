@@ -8,17 +8,18 @@ import {
   UpdateWardrobeItemDTO,
   WardrobeSortBy,
 } from "./types/dto.types";
-import { WardrobeItem } from "@/app/generated/prisma/browser";
+import { WardrobeItem, WardrobeStyle } from "@/app/generated/prisma/browser";
 import { createArrayFromDiscriminatedUnion } from "@/utils/types.utils";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 import { PAGE, PAGE_SIZE } from "@/app.constant";
 
 // Base WardrobeItem schema
 const WardrobeItemBaseSchema = z.object({
-  id: z.uuid(), // auto-generated
+  id: z.string(), // auto-generated
   userId: z.uuid(),
   categoryId: z.string(),
   variantId: z.uuid().nullable(),
+  style: z.enum(Object.values(WardrobeStyle)),
 
   name: z.string().min(1, "Name is required"),
   color: z.string().min(1, "Color is required"),
@@ -39,7 +40,6 @@ const WardrobeItemBaseWithImagesSchema = WardrobeItemBaseSchema.extend({
 
 // CREATE schema
 export const CreateWardrobeItemDTOSchema = WardrobeItemBaseWithImagesSchema.pick({
-  userId: true,
   categoryId: true,
   variantId: true,
   name: true,
@@ -51,6 +51,7 @@ export const CreateWardrobeItemDTOSchema = WardrobeItemBaseWithImagesSchema.pick
   source: true,
   purchasedDate: true,
   imageUrls: true,
+  style: true,
 }) satisfies ZodType<CreateWardrobeItemDTO>;
 
 // UPDATE schema
@@ -65,6 +66,7 @@ export const UpdateWardrobeItemDTOSchema = WardrobeItemBaseSchema.pick({
   notes: true,
   source: true,
   purchasedDate: true,
+  style: true,
 })
   .extend({
     images: z.array(
@@ -81,12 +83,10 @@ export const UpdateWardrobeItemDTOSchema = WardrobeItemBaseSchema.pick({
   .partial()
   .extend({
     id: z.string(), // auto-generated
-    userId: z.string(),
   }) satisfies ZodType<UpdateWardrobeItemDTO>;
 
 // GET USER WARDROBE ITEM
 export const GetUserWardrobeItemSchema = z.object({
-  userId: z.uuid(),
   categoryId: z.uuid().optional(),
   search: z.string().optional(),
   sortBy: z
