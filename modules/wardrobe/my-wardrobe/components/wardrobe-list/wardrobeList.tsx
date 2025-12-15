@@ -1,13 +1,22 @@
 import { getUserWardrobeItemAction } from "@/modules/wardrobe/wardrobe.action";
-import { SearchParams } from "nuqs";
 import { WardrobeCards } from "./wardrobeCards";
+import WardrobePagination from "../wardrobe-pagination";
+import { GetUserWardrobeItemDTO } from "@/modules/wardrobe/types/dto.types";
 
-const WardrobeList = async ({ searchParams }: { searchParams: SearchParams }) => {
+const WardrobeList = async ({ searchParams }: { searchParams: GetUserWardrobeItemDTO }) => {
   const res = await getUserWardrobeItemAction({ ...searchParams });
   if (!res.success) {
     throw new Error("Failed to load wardrobe items");
   }
-  return <WardrobeCards wardrobeItems={res.data} />;
+  const { items, ...rest } = res.data;
+  return (
+    <>
+      <div className="py-10">
+        <WardrobeCards wardrobeItems={items} />
+      </div>
+      <WardrobePagination paginationDetails={rest} />
+    </>
+  );
 };
 
 export default WardrobeList;
