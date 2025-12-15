@@ -20,7 +20,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     // Set initial state
     handleResize();
 
-    // Optional: Listen for resize if dynamic behavior is desired, 
+    // Optional: Listen for resize if dynamic behavior is desired,
     // but typically per-session init is enough or user controlled thereafter.
     // We'll leave it user-controlled after init to avoid annoying auto-closing/opening on resize boundaries while working.
   }, []);
@@ -36,10 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       <div className="flex max-w-7xl mx-auto">
         {/* Sidebar */}
-        <AdminSidebar
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-        />
+        <AdminSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
         {/* Main Content */}
         <main className="flex-1 w-full min-h-screen transition-all duration-300">

@@ -1,5 +1,5 @@
 const OutfitsPage = () => {
-    return <div>OutfitsPage</div>;
+  return <div>OutfitsPage</div>;
 };
 
 export default OutfitsPage;
