@@ -1,6 +1,6 @@
 import { Search as Controls } from "lucide-react";
 
-import { useQueryState } from "nuqs";
+import { useQueryState, debounce } from "nuqs";
 
 const Search = () => {
   const [search, setSearch] = useQueryState("search", {
@@ -9,7 +9,10 @@ const Search = () => {
   });
 
   const onSearchChange = (value: string) => {
-    setSearch(value);
+    setSearch(value, {
+      // Send immediate update if resetting, otherwise debounce at 500ms
+      limitUrlUpdates: value === "" ? undefined : debounce(500),
+    });
   };
 
   return (
