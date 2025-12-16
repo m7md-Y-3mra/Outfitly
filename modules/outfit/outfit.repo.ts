@@ -3,7 +3,7 @@ import { Outfit } from "@/app/generated/prisma/client";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 import { createPaginationForPrisma, createPaginationMetaData } from "@/lib/database.util";
 import prisma from "@/lib/prisma";
-import { TLikeOutfitDTO, TOutfitDTO } from "./types/outfit.dto";
+import { CreateOutfitDTO, TLikeOutfitDTO, TOutfitDTO } from "./types/outfit.dto";
 
 export const findAll = async (
   query: IPaginationQuery,
@@ -79,6 +79,23 @@ export const unlikeOutfit = (outfitId: string, userId: string): Promise<TLikeOut
       _count: {
         select: { likedBy: true },
       },
+    },
+  });
+};
+
+
+export const createOutfit = (outfit: CreateOutfitDTO) => {
+  return prisma.outfit.create({
+    data: outfit,
+  });
+};
+
+export const getAllOccasions = () => {
+  return prisma.occasion.findMany({
+    select: {
+      id: true,
+      name: true,
+      description: true,
     },
   });
 };

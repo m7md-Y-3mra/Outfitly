@@ -133,7 +133,7 @@ model ProductVariant {
 model ProductColor {
   id      String @id @default(uuid())
   name    String
-  hexCode String // e.g., #FF0000
+  hexCode String 
 
   variants ProductVariant[]
 }
@@ -273,30 +273,23 @@ model Outfit {
   @@index([occasionId])
 }
 
-model OutfitItemType {
-  id   String  @id @default(uuid())
-  name String  @unique // e.g., Top, Bottom, Shoes, Outerwear, Accessory, Dress
-  icon String?
 
-  items OutfitItem[]
-}
 
 model OutfitItem {
   id               String  @id @default(uuid())
   outfitId         String
   wardrobeItemId   String?
   productVariantId String?
-  typeId           String
 
   outfit       Outfit          @relation(fields: [outfitId], references: [id], onDelete: Cascade)
   wardrobeItem WardrobeItem?   @relation(fields: [wardrobeItemId], references: [id])
   product      ProductVariant? @relation(fields: [productVariantId], references: [id])
-  type         OutfitItemType  @relation(fields: [typeId], references: [id])
+
 
   @@index([outfitId])
   @@index([wardrobeItemId])
   @@index([productVariantId])
-  @@index([typeId])
+
 }
 
 model WardrobeItem {
