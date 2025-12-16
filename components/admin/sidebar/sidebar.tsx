@@ -27,7 +27,7 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         className={cn(
           "fixed md:sticky top-32 left-0 z-40 h-[calc(100vh-9rem)] transition-all duration-500 ease-in-out mb-6 overflow-hidden",
           isOpen
-            ? "translate-x-6 md:translate-x-0 w-[260px] opacity-100 md:ml-6"
+            ? "translate-x-6 md:translate-x-0 w-[260px] opacity-100"
             : "-translate-x-full w-0 md:ml-0 opacity-0 md:opacity-0",
         )}
         style={{

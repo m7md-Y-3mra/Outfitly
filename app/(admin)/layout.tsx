@@ -40,7 +40,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Main Content */}
         <main className="flex-1 w-full min-h-screen transition-all duration-300">
-          <div className="p-6 md:p-8 pt-[100px] md:pt-[100px] min-h-[calc(100vh-2rem)]">
+          <div className="p-6 md:p-8 pt-[100px] md:pt-[100px] md:pr-0 min-h-[calc(100vh-2rem)]">
             {children}
           </div>
         </main>

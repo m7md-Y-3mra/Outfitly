@@ -8,7 +8,6 @@ import { Button } from "../ui/button";
 import { Logo } from "../logo/logo";
 import { useTheme } from "next-themes";
 import CustomButton from "../custom-button";
-import { useState } from "react";
 import { NAVBAR_COLORS } from "../navbar/navbar.constants";
 
 export function AdminNavbar({
@@ -19,9 +18,6 @@ export function AdminNavbar({
   onMenuClick: () => void;
 }) {
   const { theme, setTheme } = useTheme();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
     <motion.nav
@@ -43,11 +39,11 @@ export function AdminNavbar({
             {/* Left Section: Burger, Logo, Badge */}
             <div className="flex items-center gap-4">
               <CustomButton
-                onClick={toggleMenu}
+                onClick={onMenuClick}
                 className="p-2! hover:bg-transparent"
                 style={{ color: NAVBAR_COLORS.primary }}
               >
-                {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </CustomButton>
 
               <div className="flex items-center gap-3">

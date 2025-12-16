@@ -7,9 +7,7 @@ import { DashboardStats } from "@/components/admin/stats/dashboard-stats";
 
 const DashboardPage = () => {
   return (
-    <div className="p-6 space-y-8">
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-
+    <div className="pt-8 space-y-8">
       {/* Top Stats Section */}
       <DashboardStats />
 
