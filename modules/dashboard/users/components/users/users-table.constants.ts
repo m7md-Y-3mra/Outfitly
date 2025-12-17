@@ -1,0 +1,42 @@
+export const USERS = [
+  {
+    id: 1,
+    name: "Emma Watson",
+    email: "emma.watson@example.com",
+    outfits: 12,
+    status: "Active",
+    joined: "2024-01-15",
+  },
+  {
+    id: 2,
+    name: "Liam Johnson",
+    email: "liam.j@example.com",
+    outfits: 5,
+    status: "Suspended",
+    joined: "2024-02-10",
+  },
+  {
+    id: 3,
+    name: "Sophia Williams",
+    email: "sophia.w@example.com",
+    outfits: 24,
+    status: "Active",
+    joined: "2023-11-05",
+  },
+  {
+    id: 4,
+    name: "Noah Brown",
+    email: "noah.b@example.com",
+    outfits: 8,
+    status: "Active",
+    joined: "2024-03-01",
+  },
+  {
+    id: 5,
+    name: "Olivia Jones",
+    email: "olivia.j@example.com",
+    outfits: 0,
+    status: "Suspended",
+    joined: "2024-02-28",
+  },
+];
