@@ -103,10 +103,7 @@ const useWardrobeForm = ({ initialData, onSuccess, categories }: UseWardrobeForm
   };
 
   const formik = useFormik<CreateWardrobeForm>({
-    initialValues: initialData || {
-      ...CREATE_WARDROBE_INITIAL_VALUES,
-      purchasedDate: new Date(),
-    },
+    initialValues: initialData || CREATE_WARDROBE_INITIAL_VALUES,
     onSubmit: (values, { resetForm, setSubmitting }) => {
       handleSubmit(values, resetForm, setSubmitting);
     },
