@@ -52,33 +52,31 @@ export const updateWardrobeItemRepo = async (
       const existingImages = existingItem?.images || [];
 
       // 3. Build WardrobeItemImage array (same logic as create)
-      const images = imageUrls
-        .slice(0, MAX_IMAGES)
-        .map((url, index) => {
-          const existingImage = existingImages.find(img => img.imageUrl === url);
+      const images = imageUrls.slice(0, MAX_IMAGES).map((url, index) => {
+        const existingImage = existingImages.find((img) => img.imageUrl === url);
 
-          if (existingImage) {
-            // Keep existing image with updated order/primary
-            return {
-              ...existingImage,
-              displayOrder: index,
-              isPrimary: index === 0,
-            };
-          } else {
-            // New image - no id, will be created
-            return {
-              imageUrl: url,
-              altText: data.name || existingItem?.name || null,
-              isPrimary: index === 0,
-              displayOrder: index,
-              wardrobeItemId: id,
-            };
-          }
-        });
+        if (existingImage) {
+          // Keep existing image with updated order/primary
+          return {
+            ...existingImage,
+            displayOrder: index,
+            isPrimary: index === 0,
+          };
+        } else {
+          // New image - no id, will be created
+          return {
+            imageUrl: url,
+            altText: data.name || existingItem?.name || null,
+            isPrimary: index === 0,
+            displayOrder: index,
+            wardrobeItemId: id,
+          };
+        }
+      });
 
       // 4. Upsert each image (update or create)
       // eslint-disable-next-line prefer-const
-      let newImages = []
+      let newImages = [];
       for (const [index, img] of images.entries()) {
         const isPrimary = index === 0;
 

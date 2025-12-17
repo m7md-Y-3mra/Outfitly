@@ -55,16 +55,7 @@ export default async function AddWardrobeItemPage() {
 
 // Content component that fetches data
 async function AddWardrobeItemContent() {
-  const [categories, brands] = await Promise.all([
-    CategoriesLoader(),
-    BrandsLoader(),
-  ]);
+  const [categories, brands] = await Promise.all([CategoriesLoader(), BrandsLoader()]);
 
-  return (
-    <WardrobeFrom
-      categories={categories}
-      brands={brands}
-      initialData={null}
-    />
-  );
+  return <WardrobeFrom categories={categories} brands={brands} initialData={null} />;
 }

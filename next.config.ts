@@ -7,10 +7,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "images.unsplash.com",
-      }, {
+      },
+      {
         protocol: "https",
-        hostname: "outfitly.fly.storage.tigris.dev"
-      }
+        hostname: "outfitly.fly.storage.tigris.dev",
+      },
     ],
   },
 };

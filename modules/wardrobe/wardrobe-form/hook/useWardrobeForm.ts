@@ -35,11 +35,12 @@ const useWardrobeForm = ({ initialData, onSuccess, categories }: UseWardrobeForm
       if (isEditMode && initialData?.id) {
         // Update mode
         // Ensure purchasedDate is a Date object
-        const purchasedDate = typeof values.purchasedDate === 'string'
-          ? new Date(values.purchasedDate)
-          : values.purchasedDate;
+        const purchasedDate =
+          typeof values.purchasedDate === "string"
+            ? new Date(values.purchasedDate)
+            : values.purchasedDate;
 
-        console.log(values.imageUrls)
+        console.log(values.imageUrls);
 
         const updateData: UpdateWardrobeItemDTO = {
           id: initialData.id,
@@ -52,7 +53,7 @@ const useWardrobeForm = ({ initialData, onSuccess, categories }: UseWardrobeForm
           style: values.style,
           purchasedDate: purchasedDate,
           notes: values.notes,
-          imageUrls: values.imageUrls
+          imageUrls: values.imageUrls,
         };
 
         const response = await updateWardrobeItemAction(updateData);
@@ -67,9 +68,10 @@ const useWardrobeForm = ({ initialData, onSuccess, categories }: UseWardrobeForm
       } else {
         // Create mode
         // Ensure purchasedDate is a Date object
-        const purchasedDate = typeof values.purchasedDate === 'string'
-          ? new Date(values.purchasedDate)
-          : values.purchasedDate;
+        const purchasedDate =
+          typeof values.purchasedDate === "string"
+            ? new Date(values.purchasedDate)
+            : values.purchasedDate;
 
         const createData: CreateWardrobeItemDTO = {
           name: values.name,

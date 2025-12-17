@@ -9,7 +9,11 @@ import {
   getWardrobeStatsService,
   updateWardrobeItemService,
 } from "./wardrobe.service";
-import type { CreateWardrobeItemDTO, DeleteWardrobeItemDTO, UpdateWardrobeItemDTO } from "./types/dto.types";
+import type {
+  CreateWardrobeItemDTO,
+  DeleteWardrobeItemDTO,
+  UpdateWardrobeItemDTO,
+} from "./types/dto.types";
 
 // Wrapper functions with cache invalidation
 const createWardrobeItemWithCache = async (data: CreateWardrobeItemDTO) => {

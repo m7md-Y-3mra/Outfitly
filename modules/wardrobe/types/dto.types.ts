@@ -2,7 +2,10 @@ import { WardrobeItemWithImages, WardrobeItemWithoutAddedAtAndIdAndUserId } from
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 import { Prisma } from "@/app/generated/prisma/client";
 
-export type CreateWardrobeItemDTO = Omit<WardrobeItemWithoutAddedAtAndIdAndUserId, "source" | "variantId"> & {
+export type CreateWardrobeItemDTO = Omit<
+  WardrobeItemWithoutAddedAtAndIdAndUserId,
+  "source" | "variantId"
+> & {
   imageUrls: string[];
 };
 export type CreateWardrobeItemResponse = WardrobeItemWithImages;

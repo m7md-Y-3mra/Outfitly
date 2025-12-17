@@ -37,7 +37,13 @@ const invalidTextareaClasses =
 const errorTextClasses =
   "mt-1 rounded-md border border-destructive/30 bg-destructive/5 px-2 py-1 text-xs text-destructive";
 
-const CustomTextarea: React.FC<CustomTextareaProps> = ({ name, label, style, rows = 5, ...rest }) => {
+const CustomTextarea: React.FC<CustomTextareaProps> = ({
+  name,
+  label,
+  style,
+  rows = 5,
+  ...rest
+}) => {
   const [field, meta] = useField(name);
 
   const hasError = meta.touched && !!meta.error;

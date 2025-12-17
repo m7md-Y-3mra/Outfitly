@@ -6,13 +6,7 @@ import { Label } from "../ui/label";
 import withMotion from "@/HOC/withMotion";
 import clsx from "clsx";
 import type { IStyle } from "@/@types";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 export type SelectOption = {
   label: string;

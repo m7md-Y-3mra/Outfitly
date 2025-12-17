@@ -51,9 +51,9 @@ export const createWardrobeItemService = async (
       ...rest,
       userId: user.id,
       variantId: null, // Default to null
-      source: "manual" // Default from schema
+      source: "manual", // Default from schema
     },
-    imageUrls
+    imageUrls,
   );
   return wardrobeItem;
 };
