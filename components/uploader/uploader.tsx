@@ -9,34 +9,67 @@ import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import { Loader2, Trash2 } from "lucide-react";
 import Image from "next/image";
+import { S3_BUCKET_NAME } from "@/config/env.config";
 
 export default function Uploader({
   onImageDelete,
   onImageUpload,
+  initialImages = [],
 }: {
   onImageUpload: (key?: string) => void;
   onImageDelete: (key?: string) => void;
+  initialImages?: string[];
 }) {
   const [files, setFiles] = useState<
     Array<{
       id: string;
-      file: File;
+      file?: File;
+      url?: string;
       uploading: boolean;
       progress: number;
       key?: string;
       isDeleting: boolean;
       error: boolean;
       objectUrl?: string;
+      isExisting?: boolean;
     }>
   >([]);
+
+  // Initialize existing images on mount
+  useEffect(() => {
+    const initialImagesFun = () => {
+      if (initialImages.length > 0) {
+        const existingFiles = initialImages.map((url, index) => {
+          // Extract S3 key from URL
+          const key = url.includes(".dev/") ? url.split(".dev/")[1] : url;
+
+          return {
+            id: `existing-${index}`,
+            url: url,
+            key: key,
+            uploading: false,
+            progress: 100,
+            isDeleting: false,
+            error: false,
+            isExisting: true,
+          };
+        });
+
+        setFiles(existingFiles);
+      }
+    };
+
+    initialImagesFun();
+  }, [initialImages]);
 
   async function removeFile(fileId: string) {
     try {
       const fileToRemove = files.find((f) => f.id === fileId);
-      if (fileToRemove) {
-        if (fileToRemove.objectUrl) {
-          URL.revokeObjectURL(fileToRemove.objectUrl);
-        }
+      if (!fileToRemove) return;
+
+      // Revoke object URL for new uploads only
+      if (fileToRemove.objectUrl && !fileToRemove.isExisting) {
+        URL.revokeObjectURL(fileToRemove.objectUrl);
       }
 
       setFiles((prevFiles) =>
@@ -46,7 +79,7 @@ export default function Uploader({
       const response = await fetch("/api/s3/delete", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ key: fileToRemove?.key }),
+        body: JSON.stringify({ key: fileToRemove.key }),
       });
 
       if (!response.ok) {
@@ -57,7 +90,7 @@ export default function Uploader({
         return;
       }
 
-      onImageDelete(fileToRemove?.key);
+      onImageDelete(fileToRemove.key);
 
       setFiles((prevFiles) => prevFiles.filter((f) => f.id !== fileId));
       toast.success("File removed successfully");
@@ -240,45 +273,55 @@ export default function Uploader({
 
       {files.length > 0 && (
         <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
-          {files.map(({ id, file, uploading, progress, isDeleting, error, objectUrl }) => {
-            return (
-              <div key={id} className="flex flex-col gap-1">
-                <div className="relative aspect-square rounded-lg overflow-hidden">
-                  <Image
-                    src={objectUrl!}
-                    alt={file.name}
-                    className="w-full h-full object-cover"
-                    fill
-                  />
+          {files.map(
+            ({ id, file, url, uploading, progress, isDeleting, error, objectUrl, isExisting }) => {
+              // Determine image source - existing images use url, new uploads use objectUrl
+              const imageSrc = isExisting ? url! : objectUrl!;
+              const imageAlt = isExisting ? `Image ${id}` : file?.name || "Uploaded image";
+              console.log(imageSrc);
+              return (
+                <div key={id} className="flex flex-col gap-1">
+                  <div className="relative aspect-square rounded-lg overflow-hidden">
+                    <Image
+                      src={imageSrc}
+                      alt={imageAlt}
+                      className="w-full h-full object-cover"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
 
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    className="absolute top-2 right-2"
-                    onClick={() => removeFile(id)}
-                    disabled={isDeleting}
-                  >
-                    {isDeleting ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Trash2 className="w-4 h-4" />
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      className="absolute top-2 right-2"
+                      onClick={() => removeFile(id)}
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-4 h-4" />
+                      )}
+                    </Button>
+                    {/* Show upload progress only for new uploads */}
+                    {uploading && !isDeleting && !isExisting && (
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <div className="text-white font-medium text-lg">{progress}%</div>
+                      </div>
                     )}
-                  </Button>
-                  {uploading && !isDeleting && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                      <div className="text-white font-medium text-lg">{progress}%</div>
-                    </div>
-                  )}
-                  {error && (
-                    <div className="absolute inset-0 bg-red-500/50 flex items-center justify-center">
-                      <div className="text-white font-medium">Error</div>
-                    </div>
-                  )}
+                    {error && (
+                      <div className="absolute inset-0 bg-red-500/50 flex items-center justify-center">
+                        <div className="text-white font-medium">Error</div>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-sm text-muted-foreground truncate px-1">
+                    {isExisting ? "Existing image" : file?.name || "Image"}
+                  </p>
                 </div>
-                <p className="text-sm text-muted-foreground truncate px-1">{file.name}</p>
-              </div>
-            );
-          })}
+              );
+            },
+          )}
         </div>
       )}
     </>

@@ -9,7 +9,7 @@ export type CreateWardrobeItemDTO = Omit<WardrobeItemWithoutAddedAtAndIdAndUserI
 export type CreateWardrobeItemResponse = WardrobeItemWithImages;
 
 export type UpdateWardrobeItemDTO = Partial<
-  WardrobeItemWithoutAddedAtAndIdAndUserId & { images: WardrobeItemImage[] }
+  WardrobeItemWithoutAddedAtAndIdAndUserId & { imageUrls: string[] }
 > & { id: string };
 export type UpdateWardrobeItemResponse = WardrobeItemWithImages;
 

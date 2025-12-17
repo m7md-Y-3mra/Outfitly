@@ -65,7 +65,11 @@ const WardrobeFrom: React.FC<WardrobeFormProps> = ({
       <FormikProvider value={formik}>
         <Form className="space-y-8">
           {/* Image Upload Section */}
-          <Uploader onImageUpload={handleImageUpload} onImageDelete={handleImageDelete} />
+          <Uploader
+            onImageUpload={handleImageUpload}
+            onImageDelete={handleImageDelete}
+            initialImages={formik.values.imageUrls}
+          />
 
           {/* Item Details Form */}
           <ItemDetailsForm categories={categories} brands={brands} />
