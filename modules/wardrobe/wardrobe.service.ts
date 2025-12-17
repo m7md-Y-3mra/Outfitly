@@ -36,6 +36,7 @@ import { HttpStatusError } from "@/@types/status-code.type";
 import { authMiddleware } from "@/middlewares/auth.middleware";
 import { IGeneratorFilters } from "../AI-generator/types/generator.types";
 import { CreateWardrobeItemDTO } from "./types/dto.types";
+import { revalidateTag } from "next/cache";
 
 export const createWardrobeItemService = async (
   createWardrobeItemDTO: CreateWardrobeItemDTO,
@@ -46,7 +47,15 @@ export const createWardrobeItemService = async (
 
   await findCategoryById(rest.categoryId);
 
-  const wardrobeItem = await createWardrobeItemRepo({ ...rest, userId: user.id }, imageUrls);
+  const wardrobeItem = await createWardrobeItemRepo(
+    {
+      ...rest,
+      userId: user.id,
+      variantId: null, // Default to null
+      source: "manual", // Default from schema
+    },
+    imageUrls,
+  );
   return wardrobeItem;
 };
 
@@ -55,12 +64,14 @@ export const updateWardrobeItemService = async (
 ): Promise<UpdateWardrobeItemResponse> => {
   const data = zodValidation(UpdateWardrobeItemDTOSchema, updateWardrobeItemDTO);
   const user = await authMiddleware();
-  const { images, id, ...rest } = data;
+  const { imageUrls, id, ...rest } = data;
 
   await findWardrobeItemById(id);
   if (rest.categoryId) await findCategoryById(rest.categoryId);
 
-  const wardrobeItem = await updateWardrobeItemRepo(id, user.id, rest, images);
+  // Pass imageUrls to repo - repo handles reconstruction
+  const wardrobeItem = await updateWardrobeItemRepo(id, user.id, rest, imageUrls);
+  revalidateTag(`wardrobe-item-details-${id}-${user.id}`, "max");
   return wardrobeItem;
 };
 

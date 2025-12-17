@@ -15,13 +15,12 @@ export function WardrobeGridItem({
 
   const handleEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    router.push(`/wardrobe/item/${item.id}/edit`);
-    // Add logic for opening a modal or navigating to the edit page
+    router.push(`/my-wardrobe/edit/${item.id}`);
   };
 
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // Add logic for confirming and deleting the item
+    // TODO: Add delete confirmation dialog
     console.log(`Deleting item ${item.id}`);
   };
 

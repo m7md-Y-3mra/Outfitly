@@ -29,6 +29,7 @@ const Controls = () => {
   const onSortOrderChange = (value: SortOrder) => {
     setSortOrder(value);
   };
+
   return (
     <div>
       {/* Search and Controls */}

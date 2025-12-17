@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export function AddNewListCard() {
   const router = useRouter();
@@ -10,7 +10,7 @@ export function AddNewListCard() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      onClick={() => router.push("/wardrobe/add")}
+      onClick={() => router.push("/my-wardrobe/add")}
       className="group relative overflow-hidden rounded-2xl bg-linear-to-r from-[#671425] to-[#8B1D35] 
                  p-6 cursor-pointer hover:shadow-xl hover:shadow-[#671425]/20 transition-all duration-300"
       aria-label="Add a new item to the wardrobe"
