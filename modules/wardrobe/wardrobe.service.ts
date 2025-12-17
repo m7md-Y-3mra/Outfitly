@@ -111,11 +111,16 @@ export const deleteWardrobeItemService = async (
   const user = await authMiddleware();
   const wardrobeItemData = await findWardrobeItemById(data.id);
 
-  if (user.id != wardrobeItemData.id) {
+  if (user.id != wardrobeItemData.userId) {
     throw new CustomError({ message: "not authorized", statusCode: HttpStatusError.Unauthorized });
   }
 
-  return deleteWardrobeItemRepo(data.id, user.id);
+  const deletedWardrobeItem = await deleteWardrobeItemRepo(data.id, user.id);
+  revalidateTag(`wardrobe-user-items-${deletedWardrobeItem.userId}`, {
+    expire: 0,
+  });
+
+  return deletedWardrobeItem;
 };
 
 export const getWardrobeStatsService = async (): Promise<GetWardrobeStatsResponse> => {

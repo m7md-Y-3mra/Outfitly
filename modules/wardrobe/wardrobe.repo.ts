@@ -146,6 +146,7 @@ export const getUserWardrobeItemRepo = async ({
 }: GetUserWardrobeRepoParams & { userId: string }) => {
   "use cache";
   cacheTag(`wardrobe-user-items-${userId}-${sortBy}-${sortOrder}-${search}-${take}-${skip}`);
+  cacheTag(`wardrobe-user-items-${userId}`);
 
   const where = {
     userId,

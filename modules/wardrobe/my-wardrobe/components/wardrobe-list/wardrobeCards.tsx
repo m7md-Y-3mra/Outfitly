@@ -1,4 +1,5 @@
 "use client";
+import { useOptimistic } from "react";
 import { GetUserWardrobeItemResponse } from "@/modules/wardrobe/types/dto.types";
 import { useViewMode } from "../../provider/viewMode.provider";
 import { motion } from "framer-motion";
@@ -13,7 +14,20 @@ export function WardrobeCards({
   wardrobeItems: GetUserWardrobeItemResponse["items"];
 }) {
   const { viewMode } = useViewMode();
-  const items = wardrobeItems || [];
+
+  // Optimistic state for delete operations
+  const [optimisticItems, deleteOptimisticItem] = useOptimistic(
+    wardrobeItems,
+    (state, deletedItemId: string) => {
+      return state.filter((item) => item.id !== deletedItemId);
+    },
+  );
+
+  const handleDeleteItem = (itemId: string) => {
+    deleteOptimisticItem(itemId);
+  };
+
+  const items = optimisticItems || [];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -38,7 +52,7 @@ export function WardrobeCards({
 
         {/* Wardrobe Items */}
         {items.map((item, index) => (
-          <WardrobeGridItem key={item.id} item={item} index={index} />
+          <WardrobeGridItem key={item.id} item={item} index={index} onDelete={handleDeleteItem} />
         ))}
       </motion.div>
     );
@@ -57,7 +71,7 @@ export function WardrobeCards({
 
       {/* Items List */}
       {items.map((item, index) => (
-        <WardrobeListItem key={item.id} item={item} index={index} />
+        <WardrobeListItem key={item.id} item={item} index={index} onDelete={handleDeleteItem} />
       ))}
     </motion.div>
   );
