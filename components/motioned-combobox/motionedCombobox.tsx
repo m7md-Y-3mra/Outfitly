@@ -8,7 +8,14 @@ import withMotion from "@/HOC/withMotion";
 import clsx from "clsx";
 import type { IStyle } from "@/@types";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "../ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
@@ -68,7 +75,7 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
   };
 
   const filteredOptions = options.filter((option) =>
-    option.toLowerCase().includes(search.toLowerCase())
+    option.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -93,7 +100,7 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
               invalidButtonClasses,
               style?.input,
               hasError && "border-destructive",
-              !field.value && "text-[#4C1420]/40 dark:text-white/40"
+              !field.value && "text-[#4C1420]/40 dark:text-white/40",
             )}
           >
             {field.value || placeholder}
@@ -115,7 +122,7 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
                     onClick={() => handleSelect(search)}
                     className="w-full text-left px-2 py-1.5 text-sm hover:bg-accent rounded-sm"
                   >
-                    Use "{search}" as custom brand
+                    Use &quot;{search}&quot; as custom brand
                   </button>
                 </CommandEmpty>
               )}
@@ -125,15 +132,11 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
               {filteredOptions.length > 0 && (
                 <CommandGroup>
                   {filteredOptions.map((option) => (
-                    <CommandItem
-                      key={option}
-                      value={option}
-                      onSelect={() => handleSelect(option)}
-                    >
+                    <CommandItem key={option} value={option} onSelect={() => handleSelect(option)}>
                       <Check
                         className={cn(
                           "mr-2 h-4 w-4",
-                          field.value === option ? "opacity-100" : "opacity-0"
+                          field.value === option ? "opacity-100" : "opacity-0",
                         )}
                       />
                       {option}

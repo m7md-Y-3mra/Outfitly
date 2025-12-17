@@ -1,7 +1,6 @@
 "use server";
 import prisma from "@/lib/prisma";
 import { WardrobeItemWithoutAddedAtAndId } from "./types";
-import { WardrobeItemImage } from "@/app/generated/prisma/client";
 import { MAX_IMAGES } from "./constant";
 import { FilteredItemsDTO, GetUserWardrobeRepoParams } from "./types/dto.types";
 import { PAGE_SIZE } from "@/app.constant";
@@ -85,7 +84,7 @@ export const updateWardrobeItemRepo = async (
 
         let image;
         if ("id" in img && img.id) {
-           image = await tx.wardrobeItemImage.update({
+          image = await tx.wardrobeItemImage.update({
             where: { id: img.id },
             data: {
               imageUrl: img.imageUrl,

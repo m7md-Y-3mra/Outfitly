@@ -1,8 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle, Home, RotateCw } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { AlertTriangle, RotateCw } from "lucide-react";
 import { FallbackProps } from "react-error-boundary";
 
 const WardrobeListErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {

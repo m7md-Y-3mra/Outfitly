@@ -5,7 +5,6 @@ import "./globals.css";
 import { AppClientWrapper } from "@/components/app-wrapper/appClientWrapper";
 import { ThemeProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import WardrobeFrom from "@/modules/wardrobe/wardrobe-form/wardrobeFrom";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

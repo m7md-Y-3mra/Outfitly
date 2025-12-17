@@ -9,7 +9,6 @@ import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import { Loader2, Trash2 } from "lucide-react";
 import Image from "next/image";
-import { S3_BUCKET_NAME } from "@/config/env.config";
 
 export default function Uploader({
   onImageDelete,

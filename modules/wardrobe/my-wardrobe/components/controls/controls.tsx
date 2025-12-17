@@ -1,13 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
 import Search from "./search";
-import { ChevronDown, Grid3x3, List, Plus } from "lucide-react";
+import { ChevronDown, Grid3x3, List } from "lucide-react";
 import { createArrayFromDiscriminatedUnion } from "@/utils/types.utils";
 import { WardrobeSortBy } from "@/modules/wardrobe/types/dto.types";
 import { useQueryState } from "nuqs";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 import { useViewMode } from "../../provider/viewMode.provider";
-import Link from "next/link";
 
 const Controls = () => {
   const { viewMode, toggleMode } = useViewMode();
