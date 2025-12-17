@@ -82,28 +82,24 @@ async function EditWardrobeItemContent({ id }: { id: string }) {
   ]);
 
   // Find the category name from the category ID
-  const category = categories.find((cat) => cat.id === wardrobeItem.categoryId);
+  const category = categories.find((cat) => cat.id === wardrobeItem?.categoryId);
 
   // Transform the wardrobe item to the form format
   const initialData: CreateWardrobeForm = {
-    id: wardrobeItem.id,
-    name: wardrobeItem.name,
+    id: wardrobeItem?.id,
+    name: wardrobeItem?.name || "",
     categoryName: category?.name || "",
-    brand: wardrobeItem.brand,
-    color: wardrobeItem.color,
-    size: wardrobeItem.size,
-    season: wardrobeItem.season,
-    style: wardrobeItem.style,
-    purchasedDate: new Date(wardrobeItem.purchasedDate),
-    notes: wardrobeItem.notes || "",
-    imageUrls: wardrobeItem.images.map((img) => img.imageUrl),
+    brand: wardrobeItem?.brand || "",
+    color: wardrobeItem?.color || "",
+    size: wardrobeItem?.size || "",
+    season: wardrobeItem?.season || "",
+    style: wardrobeItem?.style || "CASUAL",
+    purchasedDate:
+      wardrobeItem?.purchasedDate.toISOString().split("T")[0] ||
+      new Date().toISOString().split("T")[0],
+    notes: wardrobeItem?.notes || "",
+    imageUrls: wardrobeItem?.images.map((img) => img.imageUrl) || [],
   };
 
-  return (
-    <WardrobeFrom
-      categories={categories}
-      brands={brands}
-      initialData={initialData}
-    />
-  );
+  return <WardrobeFrom categories={categories} brands={brands} initialData={initialData} />;
 }
