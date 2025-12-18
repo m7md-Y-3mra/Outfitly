@@ -1,9 +1,9 @@
 "use server";
+import Groq from "groq-sdk";
 import { getAllOccasions } from "../outfit/outfit.repo";
 import { getFilteredItemsForGenerator } from "../wardrobe/wardrobe.service";
 import { normalizeResponse } from "./ai.utils";
 import { IGeneratorFilters, IItemsForAI } from "./types/generator.types";
-import { GoogleGenAI } from "@google/genai";
 
 export const getItemsForGenerator = async (filters: IGeneratorFilters, userId: string) => {
   const items = await getFilteredItemsForGenerator(filters, userId);
@@ -22,17 +22,19 @@ export const getItemsForGenerator = async (filters: IGeneratorFilters, userId: s
   return itemsForReturn;
 };
 
-const ai = new GoogleGenAI({
-  // Recommended: put your key in env, don't hardcode it
-  apiKey: process.env.GEMINI_API_KEY,
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY!,
 });
 
 export const generateAIOutfit = async (prompt: string) => {
-  const res = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
+  const res = await groq.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
+    messages: [{ role: "user", content: prompt }],
+    temperature: 0.7,
   });
-  return normalizeResponse(res.text || "");
+
+  const text = res.choices?.[0]?.message?.content ?? "";
+  return normalizeResponse(text);
 };
 
 export const getOccasionsForAI = async () => {

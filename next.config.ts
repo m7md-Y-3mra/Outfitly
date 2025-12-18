@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "outfitly.fly.storage.tigris.dev",
       },
+      {
+        hostname: "picsum.photos",
+        pathname: "/**",
+      },
     ],
   },
 };

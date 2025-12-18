@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Shirt, ShoppingBag, CheckCircle2, Heart, Share2 } from "lucide-react";
+import { X, Shirt, ShoppingBag, CheckCircle2, RefreshCw } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import OutfitItemCard from "./outfitItemCard";
 import type { IOutfitForModal } from "./aiGenerator";
+import OutfitItemCard from "./outfitItemCard";
 
 type OutfitPreviewModalProps = {
   open: boolean;
@@ -14,11 +14,18 @@ type OutfitPreviewModalProps = {
   outfit: IOutfitForModal;
 };
 
-export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModalProps) {
-  const coverImage = outfit.items?.[0]?.images?.[0] ?? "";
-  const itemsCount = outfit.items?.length ?? 0;
+function safeImageSrc(src?: unknown): string | null {
+  if (typeof src !== "string") return null;
+  const s = src.trim();
+  if (!s) return null;
+  if (s.startsWith("http://") || s.startsWith("https://") || s.startsWith("/")) return s;
+  return null;
+}
 
-  // ✅ Prevent body scroll + prevent layout shift that can cause x-scroll
+export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModalProps) {
+  const coverImage = useMemo(() => safeImageSrc(outfit?.items?.[0]?.images), [outfit]);
+  const itemsCount = outfit?.items?.length ?? 0;
+
   useEffect(() => {
     if (!open) return;
 
@@ -35,6 +42,41 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
     };
   }, [open]);
 
+  const outfitlyGradient = useMemo(
+    () =>
+      "linear-gradient(135deg, var(--outfitly-gradient-start) 0%, var(--outfitly-gradient-mid) 50%, var(--outfitly-gradient-end) 100%)",
+    [],
+  );
+
+  // ===== Common tokens (consistent)
+  const panelBorder = "border-2 border-[var(--outfitly-border-medium)]";
+  const panelBg = "bg-[var(--outfitly-bg-primary)]";
+  const subtleBg = "bg-[var(--outfitly-bg-secondary)]";
+  const textPrimary = "text-[var(--outfitly-text-primary)]";
+  const textSecondary = "text-[var(--outfitly-text-secondary)]";
+  const textLight = "text-[var(--outfitly-text-light)]";
+
+  const iconChip = "shrink-0 w-10 h-10 rounded-lg flex items-center justify-center shadow-md";
+
+  const badgeBase = "shadow-md border border-[var(--outfitly-border-medium)]";
+
+  // ✅ better contrast: primary badge uses light text (not secondary)
+  const badgePrimary =
+    "bg-[var(--outfitly-primary)] text-[var(--outfitly-text-light)] border-transparent";
+
+  const badgeNeutral = `${subtleBg} ${textSecondary} ${badgeBase}`;
+
+  const actionBtnPrimary =
+    "flex-1 min-w-[220px] px-6 py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden group max-w-full";
+
+  const actionBtnSecondary =
+    "px-6 py-4 rounded-xl border-2 border-[var(--outfitly-border-medium)] shadow-lg transition-all duration-300 flex items-center justify-center gap-2 max-w-full " +
+    `${subtleBg} ${textSecondary}`;
+
+  const closeBtn =
+    "shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 border-2 " +
+    `border-[var(--outfitly-border-medium)] ${subtleBg}`;
+
   return (
     <AnimatePresence>
       {open && (
@@ -44,11 +86,10 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50"
-          style={{ backgroundColor: "hsl(var(--background) / 0.75)" }}
+          style={{ backgroundColor: "rgba(0,0,0,0.8)" }}
           onClick={onClose}
         >
-          {/* ✅ Center wrapper - never scrolls horizontally */}
-          <div className="fixed inset-0 p-4 sm:p-6 flex items-center justify-center overflow-x-hidden">
+          <div className="fixed inset-0 p-4 sm:p-6 flex items-center justify-center overflow-x-hidden custom-scroll">
             <motion.div
               key="panel"
               initial={{ scale: 0.96, y: 24, opacity: 0 }}
@@ -56,41 +97,39 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
               exit={{ scale: 0.96, y: 24, opacity: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 22 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl overflow-y-auto overflow-x-hidden border"
-              style={{
-                backgroundColor: "hsl(var(--card))",
-                borderColor: "hsl(var(--border))",
-              }}
+              className={[
+                "relative w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl overflow-y-auto overflow-x-hidden",
+                panelBorder,
+                panelBg,
+              ].join(" ")}
             >
-              {/* Glow (clipped) */}
               <div
                 className="pointer-events-none absolute -inset-1 rounded-2xl opacity-20 blur-xl"
-                style={{
-                  background:
-                    "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.7) 50%, transparent 100%)",
-                }}
+                style={{ background: outfitlyGradient }}
               />
 
               <div className="relative min-w-0 overflow-x-hidden">
-                {/* Header */}
                 <div
-                  className="sticky top-0 z-10 p-6 border-b backdrop-blur-sm min-w-0"
+                  className={[
+                    "sticky top-0 z-10 p-6 border-b-2 backdrop-blur-sm min-w-0",
+                    "border-[var(--outfitly-border-medium)]",
+                  ].join(" ")}
                   style={{
-                    borderColor: "hsl(var(--border))",
-                    backgroundColor: "hsl(var(--card) / 0.92)",
+                    backgroundColor:
+                      "color-mix(in srgb, var(--outfitly-bg-primary) 92%, transparent)",
                   }}
                 >
                   <div className="flex items-start justify-between gap-4 min-w-0">
                     <div className="min-w-0">
-                      <h2 className="mb-2 break-words text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--primary))] via-[hsl(var(--primary)/0.85)] to-[hsl(var(--primary)/0.7)] text-2xl font-black">
+                      <h2
+                        className="mb-2 break-words text-transparent bg-clip-text text-2xl font-black"
+                        style={{ backgroundImage: outfitlyGradient }}
+                      >
                         {outfit.name}
                       </h2>
 
                       {outfit.description ? (
-                        <p
-                          className="text-sm opacity-80 break-words"
-                          style={{ color: "hsl(var(--muted-foreground))" }}
-                        >
+                        <p className={`text-sm opacity-80 break-words ${textPrimary}`}>
                           {outfit.description}
                         </p>
                       ) : null}
@@ -100,84 +139,39 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
                       whileHover={{ scale: 1.08, rotate: 90 }}
                       whileTap={{ scale: 0.94 }}
                       onClick={onClose}
-                      className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 border"
-                      style={{
-                        backgroundColor: "hsl(var(--secondary))",
-                        borderColor: "hsl(var(--border))",
-                      }}
+                      className={closeBtn}
                       aria-label="Close"
                     >
-                      <X className="w-5 h-5" style={{ color: "hsl(var(--foreground))" }} />
+                      <X className={`w-5 h-5 ${textSecondary}`} />
                     </motion.button>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3 mt-4 min-w-0">
                     {typeof outfit.confidence === "number" ? (
-                      <Badge
-                        className="shadow-md"
-                        style={{
-                          backgroundColor: "hsl(var(--primary))",
-                          color: "hsl(var(--primary-foreground))",
-                        }}
-                      >
-                        {outfit.confidence}% Match
-                      </Badge>
+                      <Badge className={badgePrimary}>{outfit.confidence}% Match</Badge>
                     ) : null}
 
-                    <Badge
-                      className="shadow-md"
-                      style={{
-                        backgroundColor: "hsl(var(--secondary))",
-                        color: "hsl(var(--foreground))",
-                        borderColor: "hsl(var(--border))",
-                      }}
-                    >
-                      {itemsCount} Items
-                    </Badge>
+                    <Badge className={badgeNeutral}>{itemsCount} Items</Badge>
 
-                    {outfit.style ? (
-                      <Badge
-                        className="shadow-md"
-                        style={{
-                          backgroundColor: "hsl(var(--secondary))",
-                          color: "hsl(var(--foreground))",
-                          borderColor: "hsl(var(--border))",
-                        }}
-                      >
-                        {outfit.style}
-                      </Badge>
-                    ) : null}
+                    {outfit.style ? <Badge className={badgeNeutral}>{outfit.style}</Badge> : null}
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="p-6 min-w-0 overflow-x-hidden">
-                  {/* Preview */}
                   <div className="mb-8 min-w-0">
                     <div className="flex items-center gap-3 mb-4 min-w-0">
-                      <div
-                        className="shrink-0 w-10 h-10 rounded-lg flex items-center justify-center shadow-md"
-                        style={{
-                          background:
-                            "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)/0.75) 100%)",
-                        }}
-                      >
-                        <Shirt
-                          className="w-5 h-5"
-                          style={{ color: "hsl(var(--primary-foreground))" }}
-                        />
+                      <div className={iconChip} style={{ backgroundImage: outfitlyGradient }}>
+                        <Shirt className={`w-5 h-5 ${textLight}`} />
                       </div>
 
-                      <h3 className="font-bold" style={{ color: "hsl(var(--foreground))" }}>
-                        Complete Outfit Preview
-                      </h3>
+                      <h3 className={`font-bold ${textSecondary}`}>Complete Outfit Preview</h3>
                     </div>
 
                     <motion.div
-                      className="relative overflow-hidden rounded-xl border aspect-[3/4] max-w-md w-full mx-auto"
-                      style={{
-                        borderColor: "hsl(var(--border))",
-                      }}
+                      className={[
+                        "relative overflow-hidden rounded-xl aspect-[3/4] max-w-md w-full mx-auto",
+                        panelBorder,
+                      ].join(" ")}
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.3 }}
                     >
@@ -194,11 +188,7 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
                         </div>
                       ) : (
                         <div
-                          className="w-full h-full flex items-center justify-center"
-                          style={{
-                            backgroundColor: "hsl(var(--muted))",
-                            color: "hsl(var(--muted-foreground))",
-                          }}
+                          className={`w-full h-full flex items-center justify-center ${subtleBg} ${textPrimary}`}
                         >
                           No image
                         </div>
@@ -213,37 +203,19 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
                     </motion.div>
                   </div>
 
-                  {/* Items */}
                   <div className="min-w-0">
                     <div className="flex items-center gap-3 mb-4 min-w-0">
-                      <div
-                        className="shrink-0 w-10 h-10 rounded-lg flex items-center justify-center shadow-md"
-                        style={{
-                          background:
-                            "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)/0.75) 100%)",
-                        }}
-                      >
-                        <ShoppingBag
-                          className="w-5 h-5"
-                          style={{ color: "hsl(var(--primary-foreground))" }}
-                        />
+                      <div className={iconChip} style={{ backgroundImage: outfitlyGradient }}>
+                        <ShoppingBag className={`w-5 h-5 ${textLight}`} />
                       </div>
 
-                      <h3 className="font-bold" style={{ color: "hsl(var(--foreground))" }}>
-                        Outfit Components
-                      </h3>
+                      <h3 className={`font-bold ${textSecondary}`}>Outfit Components</h3>
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 min-w-0">
                       {outfit.items.map((item, index) => (
                         <div key={`${item.id ?? item.name}-${index}`} className="min-w-0">
-                          <OutfitItemCard
-                            index={index}
-                            item={{
-                              ...item,
-                              images: Array.isArray(item.images) ? item.images : [item.images],
-                            }}
-                          />
+                          <OutfitItemCard index={index} item={{ ...item, images: item.images }} />
                         </div>
                       ))}
                     </div>
@@ -252,45 +224,35 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
                   {/* Actions */}
                   <div className="mt-8 flex flex-wrap gap-4 min-w-0">
                     <motion.button
+                      type="button"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex-1 min-w-[220px] px-6 py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden group max-w-full"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)/0.75) 100%)",
-                        color: "hsl(var(--primary-foreground))",
-                      }}
+                      onClick={() => {}}
+                      className={actionBtnPrimary}
+                      style={{ backgroundImage: outfitlyGradient }}
                     >
-                      <CheckCircle2 className="w-5 h-5 relative z-10 shrink-0" />
-                      <span className="relative z-10 break-words">Use This Outfit</span>
+                      <motion.div
+                        className="absolute inset-0"
+                        style={{
+                          background:
+                            "linear-gradient(90deg, transparent, rgba(255,255,255,0.20), transparent)",
+                        }}
+                        animate={{ x: ["-100%", "200%"] }}
+                        transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 0.5 }}
+                      />
+                      <CheckCircle2 className={`w-5 h-5 relative z-10 shrink-0 ${textLight}`} />
+                      <span className={`relative z-10 break-words ${textLight}`}>Save Outfit</span>
                     </motion.button>
 
                     <motion.button
+                      type="button"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="px-6 py-4 rounded-xl border shadow-lg transition-all duration-300 flex items-center justify-center gap-2 max-w-full"
-                      style={{
-                        borderColor: "hsl(var(--border))",
-                        backgroundColor: "hsl(var(--secondary))",
-                        color: "hsl(var(--foreground))",
-                      }}
+                      onClick={() => {}}
+                      className={actionBtnSecondary}
                     >
-                      <Heart className="w-5 h-5 shrink-0" />
-                      <span className="break-words">Save</span>
-                    </motion.button>
-
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="px-6 py-4 rounded-xl border shadow-lg transition-all duration-300 flex items-center justify-center gap-2 max-w-full"
-                      style={{
-                        borderColor: "hsl(var(--border))",
-                        backgroundColor: "hsl(var(--secondary))",
-                        color: "hsl(var(--foreground))",
-                      }}
-                    >
-                      <Share2 className="w-5 h-5 shrink-0" />
-                      <span className="break-words">Share</span>
+                      <RefreshCw className="w-5 h-5 shrink-0" />
+                      <span className="break-words">Regenerate</span>
                     </motion.button>
                   </div>
                 </div>

@@ -15,7 +15,7 @@ export function createPrompt(
       weather: userRequest.weather,
       style: userRequest.style,
       occasion: userRequest.occasion,
-      requirements: userRequest.requirments, // normalize key for the model
+      requirements: userRequest.requirments,
     },
     null,
     2,

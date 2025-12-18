@@ -1,55 +1,287 @@
-import { createPrompt } from "@/modules/AI-generator/ai.utils";
-import { generateAIOutfit } from "@/modules/AI-generator/generator.service";
-import { IItemsForAI, IUserRequirements } from "@/modules/AI-generator/types/generator.types";
+import AIGenerator from "@/modules/AI-generator";
+import { IItemsForAI } from "@/modules/AI-generator/types/generator.types";
 
 export const ITEMS_FOR_AI_DUMMY: IItemsForAI[] = [
+  // Tops
   {
     id: "1",
     name: "White Cotton T-Shirt",
     color: "White",
     notes: "Basic, fits slightly oversized.",
     season: "Summer",
-    images: "https://picsum.photos/seed/tshirt/600/800",
+    images: "https://picsum.photos/seed/tshirt-white/600/800",
   },
   {
     id: "2",
-    name: "Light Blue Denim Jeans",
-    color: "Light Blue",
-    notes: "Straight fit, comfortable for daily wear.",
-    season: "All",
-    images: "https://picsum.photos/seed/jeans/600/800",
+    name: "Black Crewneck T-Shirt",
+    color: "Black",
+    notes: "Clean minimal tee, easy to pair.",
+    season: "Summer",
+    images: "https://picsum.photos/seed/tshirt-black/600/800",
   },
   {
     id: "3",
-    name: "Black Sneakers",
-    color: "Black",
-    notes: "Everyday sneakers, clean look.",
-    season: "All",
-    images: "https://picsum.photos/seed/sneakers/600/800",
+    name: "Light Gray Oversized Tee",
+    color: "Light Gray",
+    notes: "Relaxed fit, streetwear vibe.",
+    season: "Summer",
+    images: "https://picsum.photos/seed/tshirt-gray/600/800",
   },
   {
     id: "4",
+    name: "Navy Long Sleeve Tee",
+    color: "Navy",
+    notes: "Great for layering and cooler nights.",
+    season: "Spring",
+    images: "https://picsum.photos/seed/longsleeve-navy/600/800",
+  },
+  {
+    id: "5",
     name: "Beige Hoodie",
     color: "Beige",
     notes: "Warm hoodie, good for layering.",
     season: "Winter",
-    images: "https://picsum.photos/seed/hoodie/600/800",
+    images: "https://picsum.photos/seed/hoodie-beige/600/800",
   },
   {
-    id: "5",
+    id: "6",
+    name: "Charcoal Hoodie",
+    color: "Charcoal",
+    notes: "Soft fabric, everyday essential.",
+    season: "Winter",
+    images: "https://picsum.photos/seed/hoodie-charcoal/600/800",
+  },
+  {
+    id: "7",
+    name: "White Oxford Shirt",
+    color: "White",
+    notes: "Smart casual, works for office looks.",
+    season: "All",
+    images: "https://picsum.photos/seed/oxford-white/600/800",
+  },
+  {
+    id: "8",
+    name: "Light Blue Button-Up Shirt",
+    color: "Light Blue",
+    notes: "Breathable, polished but not formal.",
+    season: "All",
+    images: "https://picsum.photos/seed/buttonup-blue/600/800",
+  },
+  {
+    id: "9",
+    name: "Black Turtleneck",
+    color: "Black",
+    notes: "Sleek base layer for winter outfits.",
+    season: "Winter",
+    images: "https://picsum.photos/seed/turtleneck-black/600/800",
+  },
+  {
+    id: "10",
+    name: "Cream Knit Sweater",
+    color: "Cream",
+    notes: "Cozy knit, elevates simple fits.",
+    season: "Winter",
+    images: "https://picsum.photos/seed/sweater-cream/600/800",
+  },
+
+  // Bottoms
+  {
+    id: "11",
+    name: "Light Blue Denim Jeans",
+    color: "Light Blue",
+    notes: "Straight fit, comfortable for daily wear.",
+    season: "All",
+    images: "https://picsum.photos/seed/jeans-lightblue/600/800",
+  },
+  {
+    id: "12",
+    name: "Black Slim Jeans",
+    color: "Black",
+    notes: "Slim fit, great for going out.",
+    season: "All",
+    images: "https://picsum.photos/seed/jeans-black/600/800",
+  },
+  {
+    id: "13",
+    name: "Dark Indigo Jeans",
+    color: "Dark Indigo",
+    notes: "Classic denim, more dressed-up.",
+    season: "All",
+    images: "https://picsum.photos/seed/jeans-indigo/600/800",
+  },
+  {
+    id: "14",
+    name: "Beige Chino Pants",
+    color: "Beige",
+    notes: "Smart casual, works with shirts or tees.",
+    season: "All",
+    images: "https://picsum.photos/seed/chinos-beige/600/800",
+  },
+  {
+    id: "15",
+    name: "Olive Cargo Pants",
+    color: "Olive",
+    notes: "Utility style, roomy pockets.",
+    season: "Fall",
+    images: "https://picsum.photos/seed/cargo-olive/600/800",
+  },
+  {
+    id: "16",
+    name: "Gray Sweatpants",
+    color: "Gray",
+    notes: "Comfort fit, athleisure vibe.",
+    season: "Winter",
+    images: "https://picsum.photos/seed/sweatpants-gray/600/800",
+  },
+  {
+    id: "17",
+    name: "Black Tailored Trousers",
+    color: "Black",
+    notes: "Clean cut, perfect for semi-formal outfits.",
+    season: "All",
+    images: "https://picsum.photos/seed/trousers-black/600/800",
+  },
+  {
+    id: "18",
+    name: "Navy Shorts",
+    color: "Navy",
+    notes: "Lightweight summer shorts.",
+    season: "Summer",
+    images: "https://picsum.photos/seed/shorts-navy/600/800",
+  },
+
+  // Outerwear
+  {
+    id: "19",
     name: "Olive Bomber Jacket",
     color: "Olive",
     notes: "Light jacket, perfect for spring evenings.",
     season: "Spring",
-    images: "https://picsum.photos/seed/jacket/600/800",
+    images: "https://picsum.photos/seed/jacket-olive/600/800",
   },
   {
-    id: "6",
+    id: "20",
+    name: "Black Denim Jacket",
+    color: "Black",
+    notes: "Street classic, easy layering piece.",
+    season: "Fall",
+    images: "https://picsum.photos/seed/jacket-denim-black/600/800",
+  },
+  {
+    id: "21",
+    name: "Camel Wool Coat",
+    color: "Camel",
+    notes: "Warm and elegant for winter days.",
+    season: "Winter",
+    images: "https://picsum.photos/seed/coat-camel/600/800",
+  },
+  {
+    id: "22",
+    name: "Navy Blazer",
+    color: "Navy",
+    notes: "Business casual essential.",
+    season: "All",
+    images: "https://picsum.photos/seed/blazer-navy/600/800",
+  },
+  {
+    id: "23",
+    name: "Light Gray Puffer Jacket",
+    color: "Light Gray",
+    notes: "Warm puffer, good for cold weather.",
+    season: "Winter",
+    images: "https://picsum.photos/seed/puffer-gray/600/800",
+  },
+
+  // Shoes
+  {
+    id: "24",
+    name: "Black Sneakers",
+    color: "Black",
+    notes: "Everyday sneakers, clean look.",
+    season: "All",
+    images: "https://picsum.photos/seed/sneakers-black/600/800",
+  },
+  {
+    id: "25",
+    name: "White Sneakers",
+    color: "White",
+    notes: "Minimal sneakers, matches most outfits.",
+    season: "All",
+    images: "https://picsum.photos/seed/sneakers-white/600/800",
+  },
+  {
+    id: "26",
+    name: "Brown Leather Loafers",
+    color: "Brown",
+    notes: "Smart casual shoes for office or events.",
+    season: "All",
+    images: "https://picsum.photos/seed/loafers-brown/600/800",
+  },
+  {
+    id: "27",
+    name: "Black Chelsea Boots",
+    color: "Black",
+    notes: "Boots that elevate outfits instantly.",
+    season: "Winter",
+    images: "https://picsum.photos/seed/boots-chelsea/600/800",
+  },
+  {
+    id: "28",
+    name: "Running Shoes",
+    color: "Gray",
+    notes: "Sporty shoes for active days.",
+    season: "All",
+    images: "https://picsum.photos/seed/runners-gray/600/800",
+  },
+
+  // Accessories
+  {
+    id: "29",
     name: "Brown Leather Belt",
     color: "Brown",
     notes: "Simple classic belt.",
     season: "All",
-    images: "https://picsum.photos/seed/belt/600/800",
+    images: "https://picsum.photos/seed/belt-brown/600/800",
+  },
+  {
+    id: "30",
+    name: "Black Leather Belt",
+    color: "Black",
+    notes: "Works best with black shoes and trousers.",
+    season: "All",
+    images: "https://picsum.photos/seed/belt-black/600/800",
+  },
+  {
+    id: "31",
+    name: "Silver Watch",
+    color: "Silver",
+    notes: "Minimal watch for a clean look.",
+    season: "All",
+    images: "https://picsum.photos/seed/watch-silver/600/800",
+  },
+  {
+    id: "32",
+    name: "Black Cap",
+    color: "Black",
+    notes: "Casual cap, streetwear touch.",
+    season: "Summer",
+    images: "https://picsum.photos/seed/cap-black/600/800",
+  },
+  {
+    id: "33",
+    name: "Neutral Tote Bag",
+    color: "Beige",
+    notes: "Everyday tote, clean and practical.",
+    season: "All",
+    images: "https://picsum.photos/seed/tote-beige/600/800",
+  },
+  {
+    id: "34",
+    name: "Gray Scarf",
+    color: "Gray",
+    notes: "Warm accessory for winter layering.",
+    season: "Winter",
+    images: "https://picsum.photos/seed/scarf-gray/600/800",
   },
 ];
 
@@ -96,18 +328,8 @@ export const ALL_OCCASIONS_DUMMY = [
   },
 ];
 
-const dummyUserReq: IUserRequirements = {
-  occasion: "Casual Hangout",
-  weather: "Sunny & Warm",
-  style: "CASUAL",
-  requirments: "Light colors, comfortable shoes",
+const AIGeneratorPage = () => {
+  return <AIGenerator />;
 };
 
-const AIGenerator = async () => {
-  // const prompt= createPrompt(ITEMS_FOR_AI_DUMMY, ALL_OCCASIONS_DUMMY, dummyUserReq)
-  // const content = await generateAIOutfit(prompt)
-  // console.log(JSON.parse(content));
-  return <div>Test</div>;
-};
-
-export default AIGenerator;
+export default AIGeneratorPage;

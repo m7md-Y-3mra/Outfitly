@@ -1,4 +1,5 @@
 import { WardrobeItem, WardrobeItemImage } from "@/app/generated/prisma/client";
+import { OCCASIONS, STYLES, WEATHER } from "../constants/constants";
 
 export interface IGeneratorFilters {
   style: string;
@@ -41,3 +42,9 @@ export interface IUserRequirements {
   occasion: string;
   requirments: string;
 }
+
+export type TOccasionValue = (typeof OCCASIONS)[number];
+export type TWeatherValue = (typeof WEATHER)[number];
+export type TStyleValue = (typeof STYLES)[number];
+
+export type TIconType = React.ComponentType<{ className?: string; style?: React.CSSProperties }>;

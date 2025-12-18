@@ -1,4 +1,5 @@
 import { ApiResponseError, ApiResponseSuccess } from "@/@types/response.type";
+import { ApiError } from "@google/genai";
 import CustomError from "../utils/CustomError";
 import z, { ZodError } from "zod";
 import { HttpStatusError } from "@/@types/status-code.type";
@@ -115,6 +116,55 @@ export function errorMiddleware<Args extends unknown[], Return>(
       // 🔥 CustomError
       // ---------------------------
 
+      if (err instanceof ApiError) {
+        const status = err.status as number | undefined;
+        const msg = String(err.message ?? "");
+
+        // 503: model overloaded / unavailable
+        if (status === 503) {
+          return {
+            success: false,
+            statusCode: 503,
+            message: "AI is overloaded right now. Please try again in a few seconds.",
+          };
+        }
+
+        // 429: quota / rate limit
+        if (status === 429) {
+          return {
+            success: false,
+            statusCode: 429,
+            message: "AI rate limit/quota reached. Please try again later.",
+          };
+        }
+
+        // 400: usually bad request (prompt too large / invalid schema / invalid params)
+        if (status === 400) {
+          return {
+            success: false,
+            statusCode: 400,
+            message: "AI request is invalid. Please adjust your input and try again.",
+            // optional: return the provider message for debugging (only if you want)
+            // errors: { ai: [msg] },
+          };
+        }
+
+        // 401/403: missing/invalid key, permissions
+        if (status === 401 || status === 403) {
+          return {
+            success: false,
+            statusCode: 500, // or 401 if you want to expose it; usually hide provider auth issues
+            message: "AI service is not configured correctly (API key/permissions).",
+          };
+        }
+
+        // Fallback for any other Gemini API error
+        return {
+          success: false,
+          statusCode: 500,
+          message: msg || "AI service error.",
+        };
+      }
       if (err instanceof CustomError) {
         return {
           success: false,

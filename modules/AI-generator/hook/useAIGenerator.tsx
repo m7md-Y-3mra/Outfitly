@@ -16,15 +16,18 @@ import {
   getItemsForGeneratorAction,
   getOccasionsForAIAction,
 } from "../generator.actions";
+import { ALL_OCCASIONS_DUMMY, ITEMS_FOR_AI_DUMMY } from "@/app/(main)/AI-generator/page";
+import { useAuth } from "@/providers/auth/auth.provider";
 
 export function useAIGenerator() {
   const [formData, setFormData] = useState<AIGeneratorFormData>({
-    occasion: "Casual",
-    weather: "Sunny",
-    style: "Modern",
+    occasion: "",
+    weather: "",
+    style: "",
     requirements: "",
   });
-
+  const { user } = useAuth();
+  console.log(user);
   const [customOccasion, setCustomOccasion] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [showResults, setShowResults] = useState(false);
@@ -64,15 +67,15 @@ export function useAIGenerator() {
 
     const items = itemsRes.data;
     const occasions = occasionsRes.data;
-
+    console.log(occasions);
     setFilteredFromDB(items);
 
     // 2) build prompt + call AI
     const userReqs = toUserRequirements(formData);
-    const prompt = createPrompt(items, occasions, userReqs);
+    const prompt = createPrompt(ITEMS_FOR_AI_DUMMY, ALL_OCCASIONS_DUMMY, userReqs);
 
     const aiRes = await generateAIOutfitAction(prompt);
-
+    console.log(aiRes);
     setIsGenerating(false);
 
     if (!aiRes.success) return;
@@ -89,7 +92,7 @@ export function useAIGenerator() {
       const outfit = generatedOutfits.find((o) => o.name === name);
       if (!outfit || !filteredFromDB) return;
 
-      const itemsForView = getItemsByIds(filteredFromDB, outfit.items);
+      const itemsForView = getItemsByIds(ITEMS_FOR_AI_DUMMY, outfit.items);
 
       setViewingOutfit({
         ...outfit,
