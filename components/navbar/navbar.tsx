@@ -82,7 +82,7 @@ export function Navbar() {
                 {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </CustomButton>
 
-              <Link href="/login">
+              <Link href="/sign-in">
                 <Button
                   variant="ghost"
                   className="hover:bg-transparent"
@@ -92,7 +92,7 @@ export function Navbar() {
                 </Button>
               </Link>
 
-              <Link href="/login">
+              <Link href="/sign-up">
                 <Button
                   className="hover:scale-105 hover:shadow-lg transition-all"
                   style={{
@@ -171,7 +171,7 @@ export function Navbar() {
               ))}
 
               <div className="pt-4 space-y-3">
-                <Link href="/login">
+                <Link href="/sign-in">
                   <Button
                     variant="ghost"
                     className="w-full"
@@ -181,7 +181,7 @@ export function Navbar() {
                   </Button>
                 </Link>
 
-                <Link href="/login">
+                <Link href="/sign-up">
                   <Button
                     className="w-full"
                     style={{
