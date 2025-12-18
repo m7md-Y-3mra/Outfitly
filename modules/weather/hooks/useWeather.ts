@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { WeatherData, Outfit, WardrobeItem } from "../weather.types";
 import { mockWeather, timeBasedOutfits, suitableItems } from "../weather.constants";
+import { WeatherService } from "../weather.service";
+import { validateWeatherData } from "../weather.validation";
 
 interface UseWeatherReturn {
   weather: WeatherData;
@@ -15,7 +17,7 @@ export const useWeather = (): UseWeatherReturn => {
   const [weather, setWeather] = useState<WeatherData>(mockWeather);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  // Scroll handler for wardrobe items
+  // Scroll handler for wardrobe items (unchanged)
   const handleScroll = (direction: "left" | "right") => {
     const container = document.getElementById("items-scroll");
     if (container) {
@@ -27,49 +29,24 @@ export const useWeather = (): UseWeatherReturn => {
     }
   };
 
-  // Fetch weather from Open-Meteo
+  // Fetch weather using the service and validate response
   useEffect(() => {
-    if (!navigator.geolocation) return;
-
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-
-        try {
-          const res = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`,
-          );
-          if (!res.ok) throw new Error("Failed to fetch weather");
-
-          const data = await res.json();
-
-          // Open-Meteo returns temperature in Celsius and windspeed in km/h
-          const current = data.current_weather;
-
-          const newWeather: WeatherData = {
-            location: data.timezone.split("/")[1] || "Gaza", // "Gaza" from "Asia/Gaza"
-            temperature: Math.round(current.temperature * 1.8 + 32), // Convert to °F
-            temperatureCelsius: current.temperature,
-            condition: "Cloudy", // Open-Meteo doesn’t provide condition strings, you can map from weathercode if needed
-            feelsLike: Math.round(current.temperature * 1.8 + 32), // Approx
-            humidity: 50, // Open-Meteo doesn’t provide, fallback to default
-            windSpeed: current.windspeed,
-            uvIndex: 5, // Fallback value
-            icon: "cloudy", // Fallback, can map using weathercode
-          };
-
-          setWeather(newWeather);
-        } catch (err) {
-          console.error("Weather fetch failed, using default", err);
+    const fetchWeather = async () => {
+      try {
+        const fetchedWeather = await WeatherService.fetchCurrentWeather();
+        if (validateWeatherData(fetchedWeather)) {
+          setWeather(fetchedWeather);
+        } else {
+          console.warn("Invalid weather data, using mock");
           setWeather(mockWeather);
         }
-      },
-      (err) => {
-        console.warn("Location denied, using mock weather");
+      } catch (error) {
+        console.error("Weather fetch failed, using mock", error);
         setWeather(mockWeather);
-      },
-    );
+      }
+    };
+
+    fetchWeather();
   }, []);
 
   return { weather, outfits: timeBasedOutfits, items: suitableItems, handleScroll };
