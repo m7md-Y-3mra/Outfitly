@@ -2,7 +2,7 @@
 import MotionField from "@/components/motioned-input/motionedInput";
 import { Form, FormikProvider } from "formik";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useMemo } from "react";
 import useSignUp from "../hook/useSignUp";
 import CustomButton from "@/components/custom-button";

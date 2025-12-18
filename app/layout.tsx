@@ -5,8 +5,7 @@ import "./globals.css";
 import { AppClientWrapper } from "@/components/app-wrapper/appClientWrapper";
 import { ThemeProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
+import NextTopLoader from "nextjs-toploader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +38,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
+              <NextTopLoader />
               {children}
             </ThemeProvider>
           </AppClientWrapper>
