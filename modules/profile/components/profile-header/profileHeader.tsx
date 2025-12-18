@@ -155,7 +155,8 @@ export function ProfileHeader({
       .toUpperCase();
 
     return (
-      <div className="
+      <div
+        className="
     w-full h-full 
     flex items-center justify-center 
     rounded-full 
@@ -163,14 +164,14 @@ export function ProfileHeader({
     shadow-lg 
     animate-gradient animate-float
     "
-  style={{
-    background: `linear-gradient( var(--outfitly-gradient-start), var(--outfitly-gradient-mid), var(--outfitly-gradient-end))`,
-    backgroundSize: "200% 200%",
-    textShadow: "1px 1px 3px rgba(0,0,0,0.4)",
-  }}>
+        style={{
+          background: `linear-gradient( var(--outfitly-gradient-start), var(--outfitly-gradient-mid), var(--outfitly-gradient-end))`,
+          backgroundSize: "200% 200%",
+          textShadow: "1px 1px 3px rgba(0,0,0,0.4)",
+        }}
+      >
         {initials}
       </div>
-   
     );
   };
 
