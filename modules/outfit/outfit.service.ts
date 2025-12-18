@@ -5,10 +5,11 @@ import {
   PrismaClientKnownRequestError,
   SortOrder,
 } from "@/app/generated/prisma/internal/prismaNamespace";
-import { findAll, likeOutfit, unlikeOutfit } from "./outfit.repo";
+import { createOutfit, findAll, likeOutfit, unlikeOutfit } from "./outfit.repo";
 import { zodValidation } from "@/utils/zod.utils";
 import { outfitListQuerySchema } from "./validation/outfit.validation";
 import CustomError from "@/utils/CustomError";
+import { CreateOutfitDTO } from "./types/outfit.dto";
 
 export const getAllOutfitsPaginated = async (
   query: IPaginationQuery,
@@ -33,4 +34,8 @@ export const addLikeOutfit = async (userId: string, outfitId: string) => {
 
 export const removeLike = async (userId: string, outfitId: string) => {
   return unlikeOutfit(outfitId, userId);
+};
+
+export const createOutfitService = async (data: CreateOutfitDTO) => {
+  return await createOutfit(data);
 };

@@ -2,22 +2,30 @@
 
 import { useCallback, useMemo, useState } from "react";
 
-import type { IItemsForAI } from "../types/generator.types";
+import type { AIOutfitResponse, IItemsForAI } from "../types/generator.types";
 import type {
   AIGeneratorFormData,
   IGeneratedOutfit,
   IOutfitForModal,
 } from "../components/aiGenerator";
 
-import { createPrompt, getItemsByIds, toGeneratedOutfits, toUserRequirements } from "../ai.utils";
+import {
+  createPrompt,
+  getItemsByIds,
+  toGeneratedOutfits,
+  toUserRequirements,
+  transfromAIResponse,
+} from "../ai.utils";
 
 import {
+  createOutfitAction,
   generateAIOutfitAction,
   getItemsForGeneratorAction,
   getOccasionsForAIAction,
 } from "../generator.actions";
 import { ALL_OCCASIONS_DUMMY, ITEMS_FOR_AI_DUMMY } from "@/app/(main)/AI-generator/page";
 import { useAuth } from "@/providers/auth/auth.provider";
+import { toast } from "sonner";
 
 export function useAIGenerator() {
   const [formData, setFormData] = useState<AIGeneratorFormData>({
@@ -31,12 +39,10 @@ export function useAIGenerator() {
   const [customOccasion, setCustomOccasion] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [showResults, setShowResults] = useState(false);
-
   const [generatedOutfits, setGeneratedOutfits] = useState<IGeneratedOutfit[]>([]);
   const [viewingOutfit, setViewingOutfit] = useState<IOutfitForModal | null>(null);
-
   const [filteredFromDB, setFilteredFromDB] = useState<IItemsForAI[] | null>(null);
-
+  const [aiResults, setAIResults] = useState<AIOutfitResponse[]>([]);
   const canGenerate = useMemo(() => {
     return Boolean(
       formData.occasion &&
@@ -54,7 +60,6 @@ export function useAIGenerator() {
     setIsGenerating(true);
     setShowResults(false);
 
-    // 1) fetch items + occasions
     const [itemsRes, occasionsRes] = await Promise.all([
       getItemsForGeneratorAction({ style: formData.style, weather: formData.weather }, "1"),
       getOccasionsForAIAction(),
@@ -70,7 +75,6 @@ export function useAIGenerator() {
     console.log(occasions);
     setFilteredFromDB(items);
 
-    // 2) build prompt + call AI
     const userReqs = toUserRequirements(formData);
     const prompt = createPrompt(ITEMS_FOR_AI_DUMMY, ALL_OCCASIONS_DUMMY, userReqs);
 
@@ -80,29 +84,46 @@ export function useAIGenerator() {
 
     if (!aiRes.success) return;
 
-    // 3) map to UI state
+    setAIResults(aiRes.data);
+
     const outfits = toGeneratedOutfits(aiRes.data);
 
     setGeneratedOutfits(outfits);
     setShowResults(true);
   }, [canGenerate, isGenerating, formData]);
 
-  const onSelectOutfit = useCallback(
-    (name: string) => {
-      const outfit = generatedOutfits.find((o) => o.name === name);
-      if (!outfit || !filteredFromDB) return;
+  const onSelectOutfit = (name: string) => {
+    const outfit = generatedOutfits.find((o) => o.name === name);
+    if (!outfit || !filteredFromDB) return;
 
-      const itemsForView = getItemsByIds(ITEMS_FOR_AI_DUMMY, outfit.items);
+    const itemsForView = getItemsByIds(ITEMS_FOR_AI_DUMMY, outfit.items);
 
-      setViewingOutfit({
-        ...outfit,
-        items: itemsForView,
-      });
-    },
-    [generatedOutfits, filteredFromDB],
-  );
+    setViewingOutfit({
+      ...outfit,
+      items: itemsForView,
+    });
+  };
 
-  const closeModal = useCallback(() => setViewingOutfit(null), []);
+  const closeModal = () => setViewingOutfit(null);
+
+  const onSave = async (name: string) => {
+    if (!generatedOutfits || !aiResults || !user) return;
+
+    const outfit = aiResults.find((i) => i.name === name);
+
+    if (!outfit) {
+      return;
+    }
+
+    const outfitForCreate = transfromAIResponse(outfit, user.id);
+    const createdOutfit = await createOutfitAction(outfitForCreate);
+    if (!createdOutfit.success) {
+      toast.error("Failed to save the outfit, please try again!");
+      return;
+    }
+
+    toast.success(`${createdOutfit.data.name} Outfit created successfully!`);
+  };
 
   const setFormField = useCallback(
     <K extends keyof AIGeneratorFormData>(key: K, value: AIGeneratorFormData[K]) => {
@@ -124,6 +145,7 @@ export function useAIGenerator() {
     generatedOutfits,
     open,
     viewingOutfit,
+    onSave,
     setFormData,
     setFormField,
     setCustomOccasion,

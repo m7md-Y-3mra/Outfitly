@@ -22,6 +22,7 @@ export type AIOutfitResponse = {
   style?: string;
   occasion?: { id: string } | { name: string; description?: string };
   wardrobeItemIds: string[];
+  confidence: number;
 };
 
 export type AIOutfitBatchResponse = {

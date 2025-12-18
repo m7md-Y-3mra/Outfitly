@@ -7,23 +7,20 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import type { IOutfitForModal } from "./aiGenerator";
 import OutfitItemCard from "./outfitItemCard";
+import { safeImageSrc } from "../ai.utils";
 
 type OutfitPreviewModalProps = {
   open: boolean;
   onClose: () => void;
+  onSave: (name: string) => void;
   outfit: IOutfitForModal;
 };
 
-function safeImageSrc(src?: unknown): string | null {
-  if (typeof src !== "string") return null;
-  const s = src.trim();
-  if (!s) return null;
-  if (s.startsWith("http://") || s.startsWith("https://") || s.startsWith("/")) return s;
-  return null;
-}
-
-export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModalProps) {
-  const coverImage = useMemo(() => safeImageSrc(outfit?.items?.[0]?.images), [outfit]);
+export function OutfitPreviewModal({ open, onClose, onSave, outfit }: OutfitPreviewModalProps) {
+  const coverImage = useMemo(
+    () => safeImageSrc(outfit.image ?? outfit?.items[0]?.images),
+    [outfit],
+  );
   const itemsCount = outfit?.items?.length ?? 0;
 
   useEffect(() => {
@@ -48,7 +45,6 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
     [],
   );
 
-  // ===== Common tokens (consistent)
   const panelBorder = "border-2 border-[var(--outfitly-border-medium)]";
   const panelBg = "bg-[var(--outfitly-bg-primary)]";
   const subtleBg = "bg-[var(--outfitly-bg-secondary)]";
@@ -60,14 +56,13 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
 
   const badgeBase = "shadow-md border border-[var(--outfitly-border-medium)]";
 
-  // ✅ better contrast: primary badge uses light text (not secondary)
   const badgePrimary =
     "bg-[var(--outfitly-primary)] text-[var(--outfitly-text-light)] border-transparent";
 
   const badgeNeutral = `${subtleBg} ${textSecondary} ${badgeBase}`;
 
   const actionBtnPrimary =
-    "flex-1 min-w-[220px] px-6 py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden group max-w-full";
+    "cursor-pointer flex-1 min-w-[220px] px-6 py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden group max-w-full";
 
   const actionBtnSecondary =
     "px-6 py-4 rounded-xl border-2 border-[var(--outfitly-border-medium)] shadow-lg transition-all duration-300 flex items-center justify-center gap-2 max-w-full " +
@@ -85,6 +80,7 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
           className="fixed inset-0 z-50"
           style={{ backgroundColor: "rgba(0,0,0,0.8)" }}
           onClick={onClose}
@@ -92,10 +88,15 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
           <div className="fixed inset-0 p-4 sm:p-6 flex items-center justify-center overflow-x-hidden custom-scroll">
             <motion.div
               key="panel"
-              initial={{ scale: 0.96, y: 24, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.96, y: 24, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 260, damping: 22 }}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+                duration: 0.3,
+              }}
               onClick={(e) => e.stopPropagation()}
               className={[
                 "relative w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl overflow-y-auto overflow-x-hidden",
@@ -227,7 +228,7 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
                       type="button"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={() => {}}
+                      onClick={() => onSave(outfit.name)}
                       className={actionBtnPrimary}
                       style={{ backgroundImage: outfitlyGradient }}
                     >
@@ -248,7 +249,7 @@ export function OutfitPreviewModal({ open, onClose, outfit }: OutfitPreviewModal
                       type="button"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={() => {}}
+                      onClick={onClose}
                       className={actionBtnSecondary}
                     >
                       <RefreshCw className="w-5 h-5 shrink-0" />
