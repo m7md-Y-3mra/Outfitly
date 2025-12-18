@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import type { TabType, User, Outfit, LikedProduct } from "../profile.types";
 import { useAuth } from "@/providers/auth/auth.provider"; // Your auth store
-import { getUserProfile, getUserOutfitsPaginated, getLikedOutfitsPaginated, getLikedProductsPaginated, updateProfile } from "../profile.service";
+import {
+  getUserProfile,
+  getUserOutfitsPaginated,
+  getLikedOutfitsPaginated,
+  getLikedProductsPaginated,
+  updateProfile,
+} from "../profile.service";
 import type { IPaginationQuery } from "@/@types/database.type";
 
 export function useProfile() {
@@ -81,28 +87,28 @@ export function useProfile() {
     setEditForm(user);
   };
 
-const saveEditing = async () => {
-  if (!editForm || !authUser?.id) return;
+  const saveEditing = async () => {
+    if (!editForm || !authUser?.id) return;
 
-  if (!editForm.name.trim()) {
-    alert("Name is required");
-    return;
-  }
+    if (!editForm.name.trim()) {
+      alert("Name is required");
+      return;
+    }
 
-  await updateProfile(authUser.id, {
-    name: editForm.name.trim(),
-    bio: editForm.bio || undefined,
-    location: editForm.location || undefined,
-    website: editForm.website || undefined,
-    avatarUrl: editForm.avatarUrl || undefined,
-  });
+    await updateProfile(authUser.id, {
+      name: editForm.name.trim(),
+      bio: editForm.bio || undefined,
+      location: editForm.location || undefined,
+      website: editForm.website || undefined,
+      avatarUrl: editForm.avatarUrl || undefined,
+    });
 
-  await fetchProfile();
-  setIsEditing(false);
-};
+    await fetchProfile();
+    setIsEditing(false);
+  };
 
   const updateEditForm = (field: keyof User, value: string) => {
-    setEditForm((prev) => prev ? { ...prev, [field]: value } : null);
+    setEditForm((prev) => (prev ? { ...prev, [field]: value } : null));
   };
 
   return {

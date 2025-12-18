@@ -6,7 +6,7 @@ export const profileUpdateSchema = z.object({
   bio: z.string().optional(),
   location: z.string().optional(),
   website: z.string().optional(),
-  avatarUrl: z.string().optional(), 
+  avatarUrl: z.string().optional(),
 });
 
 // Pagination list schema

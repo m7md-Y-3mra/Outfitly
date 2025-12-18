@@ -32,7 +32,14 @@ export function ProfileTabs({ activeTab, onTabChange, counts }: ProfileTabsWithC
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = isTabActive(activeTab, tab.id);
-          const count = counts[tab.id === "outfits" ? "outfits" : tab.id === "liked-products" ? "likedProducts" : "likedOutfits"];
+          const count =
+            counts[
+              tab.id === "outfits"
+                ? "outfits"
+                : tab.id === "liked-products"
+                  ? "likedProducts"
+                  : "likedOutfits"
+            ];
           return (
             <motion.button
               key={tab.id}

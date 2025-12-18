@@ -5,12 +5,7 @@ import { Card } from "../../../../components/ui/card";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { Textarea } from "../../../../components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "../../../../components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../../../components/ui/dialog";
 import ReactCrop, { Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import type { ProfileHeaderProps } from "./profileHeader.types";
@@ -64,13 +59,17 @@ export function ProfileHeader({
       0,
       0,
       crop.width!,
-      crop.height!
+      crop.height!,
     );
 
     return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        resolve(new File([blob!], "avatar.jpg", { type: "image/jpeg" }));
-      }, "image/jpeg", 0.9);
+      canvas.toBlob(
+        (blob) => {
+          resolve(new File([blob!], "avatar.jpg", { type: "image/jpeg" }));
+        },
+        "image/jpeg",
+        0.9,
+      );
     });
   };
 
@@ -128,9 +127,7 @@ export function ProfileHeader({
     setImagePreview(null);
   };
 
-  const websiteUrl = user.website.startsWith("http")
-    ? user.website
-    : `https://${user.website}`;
+  const websiteUrl = user.website.startsWith("http") ? user.website : `https://${user.website}`;
 
   return (
     <>
@@ -194,9 +191,7 @@ export function ProfileHeader({
                   {isEditing ? (
                     <Input
                       value={safeEditForm.location}
-                      onChange={(e) =>
-                        onUpdateForm("location", e.target.value)
-                      }
+                      onChange={(e) => onUpdateForm("location", e.target.value)}
                     />
                   ) : (
                     user.location
@@ -208,9 +203,7 @@ export function ProfileHeader({
                   {isEditing ? (
                     <Input
                       value={safeEditForm.website}
-                      onChange={(e) =>
-                        onUpdateForm("website", e.target.value)
-                      }
+                      onChange={(e) => onUpdateForm("website", e.target.value)}
                     />
                   ) : (
                     <a href={websiteUrl} target="_blank">

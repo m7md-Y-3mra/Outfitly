@@ -12,7 +12,12 @@ import { ProfileOutfitsGrid } from "./components/profile-outfits/profileOutfits"
 import { ProfileLikedProductsGrid } from "./components/profile-liked-products/likedProducts";
 import { ProfileLikedOutfitsGrid } from "./components/profile-liked-outfits/likedOutfits";
 
-function renderContent(activeTab: TabType, outfits: Outfit[], likedProducts: LikedProduct[], likedOutfits: Outfit[]) {
+function renderContent(
+  activeTab: TabType,
+  outfits: Outfit[],
+  likedProducts: LikedProduct[],
+  likedOutfits: Outfit[],
+) {
   switch (activeTab) {
     case "outfits":
       return <ProfileOutfitsGrid outfits={outfits} />;
@@ -75,8 +80,8 @@ export function ProfilePage() {
             activeTab={activeTab}
             onTabChange={setActiveTab}
             counts={{
-              outfits: outfits.length, 
-              likedProducts: likedProducts.length, 
+              outfits: outfits.length,
+              likedProducts: likedProducts.length,
               likedOutfits: likedOutfits.length,
             }}
           />

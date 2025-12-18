@@ -127,7 +127,7 @@ export const findLikedProducts = async (
 // Update user profile
 export const updateUserProfile = async (
   userId: string,
-  data: { name?: string; bio?: string; location?: string; website?: string, avatarUrl?: string },
+  data: { name?: string; bio?: string; location?: string; website?: string; avatarUrl?: string },
 ) => {
   return prisma.user.update({
     where: { id: userId },
@@ -136,8 +136,7 @@ export const updateUserProfile = async (
       bio: data.bio,
       location: data.location,
       website: data.website,
-      avatarUrl:data.avatarUrl
-      
+      avatarUrl: data.avatarUrl,
     },
   });
 };
