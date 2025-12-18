@@ -1,4 +1,4 @@
-import { WardrobeItem, WardrobeItemImage } from "@/app/generated/prisma/browser";
+import { WardrobeItem, WardrobeItemImage, Category } from "@/app/generated/prisma/browser";
 
 export type WardrobeItemWithoutAddedAt = Omit<WardrobeItem, "addedAt">;
 
@@ -9,7 +9,10 @@ export type WardrobeItemWithoutAddedAtAndIdAndUserId = Omit<
   "addedAt" | "id" | "userId"
 >;
 
-export type WardrobeItemWithImages = WardrobeItem & { images: WardrobeItemImage[] };
+export type WardrobeItemWithImages = WardrobeItem & {
+  images: WardrobeItemImage[];
+  category: Category | null;
+};
 
 export const WardrobeItemSourceEnum = {
   manual: "manual",

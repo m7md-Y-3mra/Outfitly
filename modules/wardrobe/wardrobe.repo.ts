@@ -1,11 +1,11 @@
 "use server";
 import prisma from "@/lib/prisma";
 import { WardrobeItemWithoutAddedAtAndId } from "./types";
-import { WardrobeItemImage } from "@/app/generated/prisma/client";
 import { MAX_IMAGES } from "./constant";
 import { FilteredItemsDTO, GetUserWardrobeRepoParams } from "./types/dto.types";
 import { PAGE_SIZE } from "@/app.constant";
 import { IGeneratorFilters } from "../AI-generator/types/generator.types";
+import { cacheTag } from "next/cache";
 
 export const createWardrobeItemRepo = async (
   data: WardrobeItemWithoutAddedAtAndId,
@@ -25,6 +25,7 @@ export const createWardrobeItemRepo = async (
     },
     include: {
       images: true,
+      category: true,
     },
   });
 };
@@ -33,7 +34,7 @@ export const updateWardrobeItemRepo = async (
   id: string,
   userId: string,
   data: Partial<WardrobeItemWithoutAddedAtAndId>,
-  images?: WardrobeItemImage[],
+  imageUrls?: string[],
 ) => {
   return await prisma.$transaction(async (tx) => {
     // 1. Update the wardrobe item fields
@@ -42,21 +43,47 @@ export const updateWardrobeItemRepo = async (
       data,
     });
 
-    if (images) {
-      // 2. Normalize images: enforce order 0 to 3, make first one primary
-      const normalizedImages = images
-        .slice(0, MAX_IMAGES) // extra safety
-        .map((img, index) => ({
-          ...img,
-          displayOrder: index,
-        }));
+    if (imageUrls !== undefined) {
+      // 2. Fetch existing images to preserve metadata
+      const existingItem = await tx.wardrobeItem.findUnique({
+        where: { id },
+        include: { images: true },
+      });
 
-      // 3. Upsert each image (update or create)
-      for (const [index, img] of normalizedImages.entries()) {
+      const existingImages = existingItem?.images || [];
+
+      // 3. Build WardrobeItemImage array (same logic as create)
+      const images = imageUrls.slice(0, MAX_IMAGES).map((url, index) => {
+        const existingImage = existingImages.find((img) => img.imageUrl === url);
+
+        if (existingImage) {
+          // Keep existing image with updated order/primary
+          return {
+            ...existingImage,
+            displayOrder: index,
+            isPrimary: index === 0,
+          };
+        } else {
+          // New image - no id, will be created
+          return {
+            imageUrl: url,
+            altText: data.name || existingItem?.name || null,
+            isPrimary: index === 0,
+            displayOrder: index,
+            wardrobeItemId: id,
+          };
+        }
+      });
+
+      // 4. Upsert each image (update or create)
+      // eslint-disable-next-line prefer-const
+      let newImages = [];
+      for (const [index, img] of images.entries()) {
         const isPrimary = index === 0;
 
-        if (img.id) {
-          await tx.wardrobeItemImage.update({
+        let image;
+        if ("id" in img && img.id) {
+          image = await tx.wardrobeItemImage.update({
             where: { id: img.id },
             data: {
               imageUrl: img.imageUrl,
@@ -66,20 +93,20 @@ export const updateWardrobeItemRepo = async (
             },
           });
         } else {
-          await tx.wardrobeItemImage.create({
+          image = await tx.wardrobeItemImage.create({
             data: {
               wardrobeItemId: id,
               imageUrl: img.imageUrl,
-              altText: data.name ?? undefined,
+              altText: data.name ?? img.altText ?? null,
               isPrimary,
               displayOrder: index,
             },
           });
         }
+        newImages.push(image);
       }
 
-      // 4. Delete images that were removed
-      const incomingIds = normalizedImages.map((img) => img.id).filter(Boolean) as string[];
+      const incomingIds = newImages.map((img) => img.id);
 
       await tx.wardrobeItemImage.deleteMany({
         where: {
@@ -96,6 +123,7 @@ export const updateWardrobeItemRepo = async (
         images: {
           orderBy: { displayOrder: "asc" },
         },
+        category: true,
       },
     });
   });
@@ -118,6 +146,10 @@ export const getUserWardrobeItemRepo = async ({
   take = PAGE_SIZE,
   skip = 0,
 }: GetUserWardrobeRepoParams & { userId: string }) => {
+  "use cache";
+  cacheTag(`wardrobe-user-items-${userId}-${sortBy}-${sortOrder}-${search}-${take}-${skip}`);
+  cacheTag(`wardrobe-user-items-${userId}`);
+
   const where = {
     userId,
     ...(categoryId && { categoryId }),
@@ -180,6 +212,8 @@ export const getUserWardrobeItemRepo = async ({
 };
 
 export const getWardrobeItemDetailsRepo = async (itemId: string, userId: string) => {
+  "use cache";
+  cacheTag(`wardrobe-item-details-${itemId}-${userId}`);
   return await prisma.wardrobeItem.findUnique({
     where: {
       id: itemId,
@@ -187,6 +221,7 @@ export const getWardrobeItemDetailsRepo = async (itemId: string, userId: string)
       userId,
     },
     include: {
+      category: true,
       images: {
         orderBy: { displayOrder: "asc" },
         select: {

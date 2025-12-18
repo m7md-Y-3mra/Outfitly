@@ -97,8 +97,8 @@ const CustomButton: FC<MotionButtonProps> = ({
   return (
     <button
       type={type}
-      className={`${baseClasses} ${sizeClass} ${variantClasses} ${className} ${
-        isDisabled ? "opacity-60 cursor-not-allowed" : ""
+      className={`${baseClasses} ${sizeClass}  ${className} ${
+        isDisabled ? "opacity-60 cursor-not-allowed" : variantClasses
       }`}
       style={variantStyles}
       {...rest}

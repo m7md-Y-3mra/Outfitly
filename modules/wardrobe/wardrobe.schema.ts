@@ -41,7 +41,6 @@ const WardrobeItemBaseWithImagesSchema = WardrobeItemBaseSchema.extend({
 // CREATE schema
 export const CreateWardrobeItemDTOSchema = WardrobeItemBaseWithImagesSchema.pick({
   categoryId: true,
-  variantId: true,
   name: true,
   color: true,
   size: true,
@@ -54,8 +53,8 @@ export const CreateWardrobeItemDTOSchema = WardrobeItemBaseWithImagesSchema.pick
   style: true,
 }) satisfies ZodType<CreateWardrobeItemDTO>;
 
-// UPDATE schema
-export const UpdateWardrobeItemDTOSchema = WardrobeItemBaseSchema.pick({
+// UPDATE schema - reuse WardrobeItemBaseWithImagesSchema for consistency
+export const UpdateWardrobeItemDTOSchema = WardrobeItemBaseWithImagesSchema.pick({
   categoryId: true,
   variantId: true,
   name: true,
@@ -67,27 +66,16 @@ export const UpdateWardrobeItemDTOSchema = WardrobeItemBaseSchema.pick({
   source: true,
   purchasedDate: true,
   style: true,
+  imageUrls: true, // Now reusing from WardrobeItemBaseWithImagesSchema
 })
-  .extend({
-    images: z.array(
-      z.object({
-        id: z.uuid(),
-        imageUrl: z.string(),
-        altText: z.string().nullable(),
-        isPrimary: z.boolean(),
-        displayOrder: z.number(),
-        wardrobeItemId: z.uuid(),
-      }),
-    ),
-  })
   .partial()
   .extend({
-    id: z.string(), // auto-generated
+    id: z.string(), // ID is required
   }) satisfies ZodType<UpdateWardrobeItemDTO>;
 
 // GET USER WARDROBE ITEM
 export const GetUserWardrobeItemSchema = z.object({
-  categoryId: z.uuid().optional(),
+  categoryId: z.string().optional(),
   search: z.string().optional(),
   sortBy: z
     .enum(createArrayFromDiscriminatedUnion<WardrobeSortBy>("addedAt", "name"))

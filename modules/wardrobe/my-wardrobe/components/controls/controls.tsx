@@ -2,14 +2,14 @@
 import { motion } from "framer-motion";
 import Search from "./search";
 import { ChevronDown, Grid3x3, List } from "lucide-react";
-import { useState } from "react";
 import { createArrayFromDiscriminatedUnion } from "@/utils/types.utils";
 import { WardrobeSortBy } from "@/modules/wardrobe/types/dto.types";
 import { useQueryState } from "nuqs";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
+import { useViewMode } from "../../provider/viewMode.provider";
 
 const Controls = () => {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const { viewMode, toggleMode } = useViewMode();
   const [sortBy, setSortBy] = useQueryState("sortBy", {
     defaultValue: "addedAt",
     shallow: false,
@@ -18,8 +18,8 @@ const Controls = () => {
     defaultValue: "desc",
     shallow: false,
   });
-  const onViewModeChange = (value: "grid" | "list") => {
-    setViewMode(value);
+  const onViewModeChange = () => {
+    toggleMode();
   };
 
   const onSortByChange = (value: WardrobeSortBy) => {
@@ -29,6 +29,7 @@ const Controls = () => {
   const onSortOrderChange = (value: SortOrder) => {
     setSortOrder(value);
   };
+
   return (
     <div>
       {/* Search and Controls */}
@@ -46,7 +47,7 @@ const Controls = () => {
           {/* View Mode Toggle */}
           <div className="flex gap-2 bg-[#FAF1ED] dark:bg-[#1C1C20] p-1 rounded-lg">
             <button
-              onClick={() => onViewModeChange("grid")}
+              onClick={() => onViewModeChange()}
               className={`
                 p-2 rounded-lg transition-all duration-300
                 ${
@@ -60,7 +61,7 @@ const Controls = () => {
               <Grid3x3 className="w-5 h-5" />
             </button>
             <button
-              onClick={() => onViewModeChange("list")}
+              onClick={() => onViewModeChange()}
               className={`
                 p-2 rounded-lg transition-all duration-300
                 ${
