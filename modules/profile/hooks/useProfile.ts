@@ -81,36 +81,25 @@ export function useProfile() {
     setEditForm(user);
   };
 
-  const saveEditing = async () => {
-    if (!editForm || !authUser?.id) {
-      console.error("Missing editForm or authUser.id");
-      return;
-    }
-    const trimmedName = editForm.name.trim();
-    if (!trimmedName) {
-      alert("Name is required");
-      return;
-    }
-    try {
-      const updateData = {
-        name: trimmedName,
-        bio: editForm.bio.trim() || undefined,
-        location: editForm.location.trim() || undefined,
-        website: editForm.website.trim() || undefined,
-        avatarUrl: editForm.avatarUrl || undefined, // Include avatarUrl for image updates
-      };
-      console.log("Sending update data:", updateData);
-      await updateProfile(authUser.id, updateData);
-      console.log("Profile updated successfully");
-      setUser(editForm);
-      setIsEditing(false);
-      await fetchProfile();
-      console.log("Profile refreshed after save");
-    } catch (error) {
-      console.error("Failed to save profile:", error);
-      alert("Failed to save profile. Please check the console for details.");
-    }
-  };
+const saveEditing = async () => {
+  if (!editForm || !authUser?.id) return;
+
+  if (!editForm.name.trim()) {
+    alert("Name is required");
+    return;
+  }
+
+  await updateProfile(authUser.id, {
+    name: editForm.name.trim(),
+    bio: editForm.bio || undefined,
+    location: editForm.location || undefined,
+    website: editForm.website || undefined,
+    avatarUrl: editForm.avatarUrl || undefined,
+  });
+
+  await fetchProfile();
+  setIsEditing(false);
+};
 
   const updateEditForm = (field: keyof User, value: string) => {
     setEditForm((prev) => prev ? { ...prev, [field]: value } : null);

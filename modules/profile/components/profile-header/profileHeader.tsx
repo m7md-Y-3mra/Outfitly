@@ -1,11 +1,16 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Link as LinkIcon, Calendar, Upload, Edit, Trash2 } from "lucide-react";
+import { MapPin, Link as LinkIcon, Calendar, Upload, Trash2 } from "lucide-react";
 import { Card } from "../../../../components/ui/card";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { Textarea } from "../../../../components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../../../components/ui/dialog"; // Assuming you have Dialog components
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "../../../../components/ui/dialog";
 import ReactCrop, { Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import type { ProfileHeaderProps } from "./profileHeader.types";
@@ -30,269 +35,232 @@ export function ProfileHeader({
   onSaveEditing,
   onUpdateForm,
 }: ExtendedProfileHeaderProps) {
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [crop, setCrop] = useState<Crop>({ unit: "%", width: 50, height: 50, x: 25, y: 25 });
-  const [croppedImage, setCroppedImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [crop, setCrop] = useState<Crop>({
+    unit: "%",
+    width: 80,
+    height: 80,
+    x: 10,
+    y: 10,
+  });
+  const [completedCrop, setCompletedCrop] = useState<Crop | null>(null);
   const [isCropping, setIsCropping] = useState(false);
+
+  const imgRef = useRef<HTMLImageElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const safeEditForm = editForm || user;
 
-  // Handle file selection
+  /* ================== IMAGE HELPERS ================== */
+
+  const getCroppedImg = async (
+    image: HTMLImageElement,
+    crop: Crop
+  ): Promise<File> => {
+    const canvas = document.createElement("canvas");
+
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+
+    canvas.width = crop.width!;
+    canvas.height = crop.height!;
+
+    const ctx = canvas.getContext("2d")!;
+    ctx.drawImage(
+      image,
+      crop.x! * scaleX,
+      crop.y! * scaleY,
+      crop.width! * scaleX,
+      crop.height! * scaleY,
+      0,
+      0,
+      crop.width!,
+      crop.height!
+    );
+
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        resolve(
+          new File([blob!], "avatar.jpg", { type: "image/jpeg" })
+        );
+      }, "image/jpeg", 0.9);
+    });
+  };
+
+  /* ================== HANDLERS ================== */
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onload = () => setImagePreview(reader.result as string);
-      reader.readAsDataURL(file);
-      setIsCropping(true); // Open crop modal
-    }
+    if (!file) return;
+
+    setImagePreview(URL.createObjectURL(file));
+    setIsCropping(true);
   };
 
-  // Handle cropping
-  const handleCropComplete = (crop: Crop, percentageCrop: Crop) => {
-    setCrop(percentageCrop);
+  const applyCrop = async () => {
+    if (!completedCrop || !imgRef.current) return;
+
+    const croppedFile = await getCroppedImg(
+      imgRef.current,
+      completedCrop
+    );
+
+    setImageFile(croppedFile);
+    setImagePreview(URL.createObjectURL(croppedFile));
+    setIsCropping(false);
+
+    // store in edit form
+    onUpdateForm("avatarUrl", imagePreview || "");
   };
 
-  // Apply crop and generate cropped image
-  const applyCrop = () => {
-    if (imagePreview && crop.width && crop.height) {
-      // Simple crop logic (you can enhance with canvas)
-      setCroppedImage(imagePreview); // For now, just set the preview; implement real cropping if needed
-      setIsCropping(false);
-    }
-  };
-
-  // Upload image (mock function - replace with real API call)
-  const uploadImage = async (file: File): Promise<string> => {
-    // Replace with your upload logic (e.g., fetch to /api/upload-avatar)
-    const formData = new FormData();
-    formData.append("file", file);
-    const response = await fetch("/api/upload-avatarUrl", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await response.json();
-    return data.url; // Assume API returns { url: "uploaded-url" }
-  };
-
-  // Save avatar
-  const saveAvatar = async () => {
-    if (imageFile) {
-      try {
-        const uploadedUrl = await uploadImage(imageFile);
-        onUpdateForm("avatarUrl", uploadedUrl); // Update form
-        setImageFile(null);
-        setImagePreview(null);
-        setCroppedImage(null);
-      } catch (error) {
-        console.error("Upload failed:", error);
-        alert("Failed to upload image.");
-      }
-    }
-  };
-
-  // Delete avatar
   const deleteAvatar = () => {
-    onUpdateForm("avatarUrl", ""); // Reset to default or empty
+    onUpdateForm("avatarUrl", "");
     setImageFile(null);
     setImagePreview(null);
-    setCroppedImage(null);
   };
 
+  const websiteUrl = user.website.startsWith("http")
+    ? user.website
+    : `https://${user.website}`;
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <Card className="p-8 border-2 shadow-xl transition-all duration-300 mb-8 relative overflow-hidden bg-card border-primary">
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-r from-primary via-secondary to-accent opacity-10" />
-        <div className="relative z-10">
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6">
-            <div className="relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-full blur-sm opacity-75"></div>
-              <div className="relative">
-                <img
-                  src={croppedImage || user.avatarUrl}
-                  alt={getAvatarAlt(user.name)}
-                  className="w-32 h-32 rounded-full object-cover border-4 bg-background"
-                />
-                {isEditing && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      ref={fileInputRef}
-                      className="hidden"
-                    />
-                    <div className="flex gap-2">
-                      <Button size="sm" onClick={() => fileInputRef.current?.click()}>
-                        <Upload className="w-4 h-4" />
-                      </Button>
-                      <Button size="sm" onClick={deleteAvatar}>
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <Card className="p-8 mb-8 relative">
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* AVATAR */}
+            <div className="relative overflow-hidden w-32 h-32 md:w-40 md:h-40 flex-shrink-0">
+              <img
+                src={imagePreview || user.avatarUrl}
+                alt={getAvatarAlt(user.name)}
+                className="w-32 h-32 rounded-full object-cover border border-gray-300  md:w-40 md:h-40  object-center"
+              />
+
+              {isEditing && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                  <div className="flex gap-2">
+                    <Button size="sm" onClick={() => fileInputRef.current?.click()}>
+                      <Upload className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" onClick={deleteAvatar}>
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
-            {/* Rest of the component remains the same */}
-            <div className="flex-1 text-center md:text-left">
+
+            {/* INFO */}
+            <div className="flex-1">
               {isEditing ? (
                 <>
                   <Input
                     value={safeEditForm.name}
                     onChange={(e) => onUpdateForm("name", e.target.value)}
-                    className="mb-1 text-primary"
-                    placeholder="Name"
-                  />
-                  <Input
-                    value={safeEditForm.username}
-                    onChange={(e) => onUpdateForm("username", e.target.value)}
-                    className="text-lg mb-3 opacity-70 text-muted-foreground"
-                    placeholder="Username"
-                    disabled
                   />
                   <Textarea
                     value={safeEditForm.bio}
                     onChange={(e) => onUpdateForm("bio", e.target.value)}
-                    className="mb-4 max-w-2xl text-muted-foreground"
-                    placeholder="Bio"
                   />
                 </>
               ) : (
                 <>
-                  <h2 className="mb-1 text-primary">{user.name}</h2>
-                  <p className="text-lg mb-3 opacity-70 text-muted-foreground">{user.username}</p>
-                  <p className="mb-4 max-w-2xl text-muted-foreground">{user.bio}</p>
+                  <h2>{user.name}</h2>
+                  <p>{user.bio}</p>
                 </>
               )}
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm mb-4">
-                {isEditing ? (
-                  <>
-                    <div className="flex items-center gap-2 opacity-70">
-                      <MapPin className="w-4 h-4 text-primary" />
-                      <Input
-                        value={safeEditForm.location}
-                        onChange={(e) => onUpdateForm("location", e.target.value)}
-                        className="text-muted-foreground"
-                        placeholder="Location"
-                      />
-                    </div>
-                    <div className="flex items-center gap-2 opacity-70">
-                      <LinkIcon className="w-4 h-4 text-primary" />
-                      <Input
-                        value={safeEditForm.website}
-                        onChange={(e) => onUpdateForm("website", e.target.value)}
-                        className="text-primary"
-                        placeholder="Website"
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex items-center gap-2 opacity-70">
-                      <MapPin className="w-4 h-4 text-primary" />
-                      <span className="text-muted-foreground">{user.location}</span>
-                    </div>
-                    <div className="flex items-center gap-2 opacity-70">
-                      <LinkIcon className="w-4 h-4 text-primary" />
-                      <a href={`https://${user.website}`} className="hover:underline transition-colors duration-300 text-primary">
-                        {user.website}
-                      </a>
-                    </div>
-                  </>
-                )}
-                <div className="flex items-center gap-2 opacity-70">
-                  <Calendar className="w-4 h-4 text-primary" />
-                  <span className="text-muted-foreground">{user.joinDate}</span>
+
+              <div className="flex gap-4 text-sm mt-4">
+                <div className="flex gap-1 items-center">
+                  <MapPin size={14} />
+                  {isEditing ? (
+                    <Input
+                      value={safeEditForm.location}
+                      onChange={(e) =>
+                        onUpdateForm("location", e.target.value)
+                      }
+                    />
+                  ) : (
+                    user.location
+                  )}
+                </div>
+
+                <div className="flex gap-1 items-center">
+                  <LinkIcon size={14} />
+                  {isEditing ? (
+                    <Input
+                      value={safeEditForm.website}
+                      onChange={(e) =>
+                        onUpdateForm("website", e.target.value)
+                      }
+                    />
+                  ) : (
+                    <a href={websiteUrl} target="_blank">
+                      {user.website}
+                    </a>
+                  )}
+                </div>
+
+                <div className="flex gap-1 items-center">
+                  <Calendar size={14} />
+                  {user.joinDate}
                 </div>
               </div>
+
               {isEditing ? (
-                <div className="flex gap-2">
-                  <Button
-                    onClick={onSaveEditing}
-                    className="transition-all duration-300 hover:scale-105 shadow-lg bg-primary text-primary-foreground"
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    onClick={onCancelEditing}
-                    variant="outline"
-                    className="transition-all duration-300 hover:scale-105 shadow-lg"
-                  >
+                <div className="flex gap-2 mt-4">
+                  <Button onClick={onSaveEditing}>Save</Button>
+                  <Button variant="outline" onClick={onCancelEditing}>
                     Cancel
                   </Button>
                 </div>
               ) : (
-                <Button
-                  onClick={onStartEditing}
-                  className="transition-all duration-300 hover:scale-105 shadow-lg bg-primary text-primary-foreground"
-                >
+                <Button className="mt-4" onClick={onStartEditing}>
                   Edit Profile
                 </Button>
               )}
             </div>
           </div>
-          {/* Stats remain the same */}
-          <div className="grid grid-cols-3 gap-4 pt-6 border-t-2 border-border">
-            <motion.div
-              className="text-center p-4 rounded-xl transition-all duration-300 hover:shadow-lg cursor-pointer bg-muted"
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="mb-1 text-2xl font-bold bg-gradient-to-r from-[#671425] via-[#8B1D35] to-[#A82444] bg-clip-text text-transparent">
-                {user.stats.outfits}
-              </div>
-              <div className="text-sm opacity-70 text-muted-foreground">Outfits</div>
-            </motion.div>
-            <motion.div
-              className="text-center p-4 rounded-xl transition-all duration-300 hover:shadow-lg cursor-pointer bg-muted"
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="mb-1 text-2xl font-bold bg-gradient-to-r from-[#671425] via-[#8B1D35] to-[#A82444] bg-clip-text text-transparent">
-                {user.stats.followers.toLocaleString()}
-              </div>
-              <div className="text-sm opacity-70 text-muted-foreground">Followers</div>
-            </motion.div>
-            <motion.div
-              className="text-center p-4 rounded-xl transition-all duration-300 hover:shadow-lg cursor-pointer bg-muted"
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="mb-1 text-2xl font-bold bg-gradient-to-r from-[#671425] via-[#8B1D35] to-[#A82444] bg-clip-text text-transparent">
-                {user.stats.following}
-              </div>
-              <div className="text-sm opacity-70 text-muted-foreground">Following</div>
-            </motion.div>
-          </div>
-        </div>
-      </Card>
+        </Card>
+      </motion.div>
 
-      {/* Crop Modal */}
+      {/* CROP MODAL */}
       <Dialog open={isCropping} onOpenChange={setIsCropping}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Image</DialogTitle>
+            <DialogTitle>Crop Avatar</DialogTitle>
           </DialogHeader>
+
           {imagePreview && (
             <ReactCrop
               crop={crop}
-              onChange={setCrop}
-              onComplete={handleCropComplete}
+              onChange={(_, percent) => setCrop(percent)}
+              onComplete={(c) => setCompletedCrop(c)}
+              aspect={1}
             >
-              <img src={imagePreview} alt="Crop preview" />
+              <img ref={imgRef} src={imagePreview} />
             </ReactCrop>
           )}
+
           <div className="flex gap-2 mt-4">
-            <Button onClick={applyCrop}>Apply Crop</Button>
-            <Button variant="outline" onClick={() => setIsCropping(false)}>Cancel</Button>
+            <Button onClick={applyCrop}>Apply</Button>
+            <Button variant="outline" onClick={() => setIsCropping(false)}>
+              Cancel
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
-    </motion.div>
+    </>
   );
 }
