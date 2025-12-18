@@ -37,13 +37,7 @@ export function ProfileHeader({
 }: ExtendedProfileHeaderProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [crop, setCrop] = useState<Crop>({
-    unit: "%",
-    width: 80,
-    height: 80,
-    x: 10,
-    y: 10,
-  });
+  const [crop, setCrop] = useState<Crop>({ unit: "%", width: 80, height: 80, x: 10, y: 10 });
   const [completedCrop, setCompletedCrop] = useState<Crop | null>(null);
   const [isCropping, setIsCropping] = useState(false);
 
@@ -54,18 +48,12 @@ export function ProfileHeader({
 
   /* ================== IMAGE HELPERS ================== */
 
-  const getCroppedImg = async (
-    image: HTMLImageElement,
-    crop: Crop
-  ): Promise<File> => {
+  const getCroppedImg = async (image: HTMLImageElement, crop: Crop): Promise<File> => {
     const canvas = document.createElement("canvas");
-
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-
     canvas.width = crop.width!;
     canvas.height = crop.height!;
-
     const ctx = canvas.getContext("2d")!;
     ctx.drawImage(
       image,
@@ -81,11 +69,26 @@ export function ProfileHeader({
 
     return new Promise((resolve) => {
       canvas.toBlob((blob) => {
-        resolve(
-          new File([blob!], "avatar.jpg", { type: "image/jpeg" })
-        );
+        resolve(new File([blob!], "avatar.jpg", { type: "image/jpeg" }));
       }, "image/jpeg", 0.9);
     });
+  };
+
+  /* ================== UPLOAD HELPER ================== */
+
+  const uploadAvatar = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload-avatar", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) throw new Error("Upload failed");
+
+    const data = await res.json();
+    return data.url; // URL to store in DB
   };
 
   /* ================== HANDLERS ================== */
@@ -101,17 +104,22 @@ export function ProfileHeader({
   const applyCrop = async () => {
     if (!completedCrop || !imgRef.current) return;
 
-    const croppedFile = await getCroppedImg(
-      imgRef.current,
-      completedCrop
-    );
+    try {
+      const croppedFile = await getCroppedImg(imgRef.current, completedCrop);
 
-    setImageFile(croppedFile);
-    setImagePreview(URL.createObjectURL(croppedFile));
-    setIsCropping(false);
+      // 1️⃣ Upload cropped file
+      const avatarUrl = await uploadAvatar(croppedFile);
 
-    // store in edit form
-    onUpdateForm("avatarUrl", imagePreview || "");
+      // 2️⃣ Save URL in edit form
+      onUpdateForm("avatarUrl", avatarUrl);
+
+      // 3️⃣ Update preview
+      setImagePreview(avatarUrl);
+      setIsCropping(false);
+    } catch (error) {
+      console.error("Failed to upload avatar:", error);
+      alert("Failed to upload avatar. Please try again.");
+    }
   };
 
   const deleteAvatar = () => {
@@ -126,19 +134,18 @@ export function ProfileHeader({
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <Card className="p-8 mb-8 relative">
           <div className="flex flex-col md:flex-row gap-6">
             {/* AVATAR */}
-            <div className="relative overflow-hidden w-32 h-32 md:w-40 md:h-40 flex-shrink-0">
-              <img
-                src={imagePreview || user.avatarUrl}
-                alt={getAvatarAlt(user.name)}
-                className="w-32 h-32 rounded-full object-cover border border-gray-300  md:w-40 md:h-40  object-center"
-              />
+            <div className="relative w-32 h-32 md:w-40 md:h-40 flex-shrink-0">
+              <div className="w-full h-full rounded-full overflow-hidden border border-gray-300">
+                <img
+                  src={imagePreview || user.avatarUrl}
+                  alt={getAvatarAlt(user.name)}
+                  className="w-full h-full object-cover"
+                />
+              </div>
 
               {isEditing && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
