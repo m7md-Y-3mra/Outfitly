@@ -26,15 +26,18 @@ import {
 import { ALL_OCCASIONS_DUMMY, ITEMS_FOR_AI_DUMMY } from "@/app/(main)/AI-generator/page";
 import { useAuth } from "@/providers/auth/auth.provider";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
 
 export function useAIGenerator() {
+  const { user } = useAuth();
+  const { theme } = useTheme();
   const [formData, setFormData] = useState<AIGeneratorFormData>({
     occasion: "",
     weather: "",
     style: "",
     requirements: "",
   });
-  const { user } = useAuth();
+  const isDark = theme === "dark";
   console.log(user);
   const [customOccasion, setCustomOccasion] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -83,7 +86,7 @@ export function useAIGenerator() {
     setIsGenerating(false);
 
     if (!aiRes.success) return;
-
+    toast.success("Your outfits are ready!");
     setAIResults(aiRes.data);
 
     const outfits = toGeneratedOutfits(aiRes.data);
@@ -125,6 +128,13 @@ export function useAIGenerator() {
     toast.success(`${createdOutfit.data.name} Outfit created successfully!`);
   };
 
+  const scrollToResults = () => {
+    const resultsSection = document.querySelector("[data-results-section]");
+    if (resultsSection) {
+      resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   const setFormField = useCallback(
     <K extends keyof AIGeneratorFormData>(key: K, value: AIGeneratorFormData[K]) => {
       setFormData((prev) => ({ ...prev, [key]: value }));
@@ -145,6 +155,8 @@ export function useAIGenerator() {
     generatedOutfits,
     open,
     viewingOutfit,
+    isDark,
+    scrollToResults,
     onSave,
     setFormData,
     setFormField,
