@@ -76,22 +76,6 @@ export default function AIGenerator() {
         />
       </main>
 
-      <footer
-        className="relative z-10 mt-16 border-t backdrop-blur-sm"
-        style={{
-          borderColor: "var(--border)",
-          backgroundColor: "color-mix(in srgb, var(--background) 55%, transparent)",
-        }}
-      >
-        <div className="container mx-auto px-4 py-8">
-          <p
-            className="text-center text-sm opacity-70"
-            style={{ color: "var(--muted-foreground)" }}
-          >
-            © 2024 Outfitly. Powered by AI.
-          </p>
-        </div>
-      </footer>
       <Activity mode={open && viewingOutfit ? "visible" : "hidden"}>
         <AnimatePresence>
           <motion.div
@@ -108,6 +92,22 @@ export default function AIGenerator() {
           </motion.div>
         </AnimatePresence>
       </Activity>
+      <footer
+        className="relative z-10 mt-16 border-t backdrop-blur-sm"
+        style={{
+          borderColor: "var(--border)",
+          backgroundColor: "color-mix(in srgb, var(--background) 55%, transparent)",
+        }}
+      >
+        <div className="container mx-auto px-4 py-8">
+          <p
+            className="text-center text-sm opacity-70"
+            style={{ color: "var(--muted-foreground)" }}
+          >
+            © 2024 Outfitly. Powered by AI.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

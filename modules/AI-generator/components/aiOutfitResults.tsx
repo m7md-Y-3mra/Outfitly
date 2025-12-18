@@ -47,17 +47,19 @@ export function AIOutfitResults({
             {title}
           </motion.h2>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          {/* ✅ stretch items so all cards can be equal height */}
+          <div className="grid md:grid-cols-3 gap-6 items-stretch">
             {generatedOutfits.map((outfit, i) => (
               <motion.div
                 key={outfit.name + i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="h-full"
               >
                 <motion.div
                   onClick={() => onSelectOutfit(outfit.name)}
-                  className="group cursor-pointer overflow-hidden rounded-xl border-2 transition-all duration-300 hover:shadow-2xl relative"
+                  className="group cursor-pointer overflow-hidden rounded-xl border-2 transition-all duration-300 hover:shadow-2xl relative h-full flex flex-col"
                   style={{
                     borderColor: "var(--border)",
                     backgroundColor: "var(--card)",
@@ -78,8 +80,8 @@ export function AIOutfitResults({
                     }}
                   />
 
-                  {/* Image */}
-                  <div className="relative h-64 w-full overflow-hidden">
+                  {/* Image (fixed height) */}
+                  <div className="relative h-64 w-full overflow-hidden shrink-0">
                     {outfit.image ? (
                       <Image
                         src={outfit.image}
@@ -101,7 +103,7 @@ export function AIOutfitResults({
                       </div>
                     )}
 
-                    {/* Confidence badge (top-right) */}
+                    {/* Confidence badge */}
                     <div className="absolute top-3 right-3 z-20">
                       <div
                         className="px-3 py-1 rounded-full text-sm shadow-lg backdrop-blur-sm relative overflow-hidden border"
@@ -126,20 +128,29 @@ export function AIOutfitResults({
                     </div>
                   </div>
 
-                  {/* Content */}
-                  <div className="p-4 relative z-10">
-                    <h3 className="text-lg" style={{ color: "var(--outfitly-text-secondary)" }}>
+                  {/* ✅ Content: fixed space + clamp */}
+                  <div className="p-4 relative z-10 flex-1 flex flex-col">
+                    <h3
+                      className="text-lg leading-snug line-clamp-2"
+                      style={{ color: "var(--outfitly-text-secondary)" }}
+                    >
                       {outfit.name}
                     </h3>
 
                     {outfit.description ? (
                       <p
-                        className="text-sm opacity-70 mt-1"
+                        className="text-sm opacity-70 mt-2 line-clamp-3"
                         style={{ color: "var(--outfitly-text-primary)" }}
                       >
                         {outfit.description}
                       </p>
-                    ) : null}
+                    ) : (
+                      // ✅ keeps same layout height even if description missing
+                      <div className="mt-2 h-[3.9rem]" aria-hidden="true" />
+                    )}
+
+                    {/* optional: push bottom actions later if you add buttons */}
+                    <div className="mt-auto" />
                   </div>
                 </motion.div>
               </motion.div>
