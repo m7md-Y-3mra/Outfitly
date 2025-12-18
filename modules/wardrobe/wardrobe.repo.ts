@@ -25,6 +25,7 @@ export const createWardrobeItemRepo = async (
     },
     include: {
       images: true,
+      category: true,
     },
   });
 };
@@ -122,6 +123,7 @@ export const updateWardrobeItemRepo = async (
         images: {
           orderBy: { displayOrder: "asc" },
         },
+        category: true,
       },
     });
   });
@@ -219,6 +221,7 @@ export const getWardrobeItemDetailsRepo = async (itemId: string, userId: string)
       userId,
     },
     include: {
+      category: true,
       images: {
         orderBy: { displayOrder: "asc" },
         select: {

@@ -41,7 +41,7 @@ export function WardrobeGridItem({
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: (index + 1) * 0.05 }}
-        onClick={() => router.push(`/wardrobe/item/${item.id}`)}
+        onClick={() => router.push(`/my-wardrobe/item/${item.id}`)}
         className="group relative aspect-3/4 rounded-2xl overflow-hidden cursor-pointer 
                  shadow-lg hover:shadow-2xl hover:shadow-[#671425]/20 
                  transition-all duration-500 transform hover:-translate-y-1"

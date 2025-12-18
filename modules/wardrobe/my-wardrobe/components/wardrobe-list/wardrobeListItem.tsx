@@ -42,7 +42,7 @@ export function WardrobeListItem({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: (index + 1) * 0.05 }}
-        onClick={() => router.push(`/wardrobe/item/${item.id}`)}
+        onClick={() => router.push(`/my-wardrobe/item/${item.id}`)}
         className="group relative overflow-hidden rounded-2xl bg-white dark:bg-[#2A2A30] p-4 
                  hover:shadow-xl hover:shadow-gray-200/50 dark:hover:shadow-black/50 
                  transition-all duration-300 cursor-pointer"
