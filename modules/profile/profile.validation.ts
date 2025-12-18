@@ -2,10 +2,11 @@ import { z } from "zod";
 
 // Update profile schema
 export const profileUpdateSchema = z.object({
-  name: z.string().min(1, "Name is required").optional(),
+  name: z.string().min(1).optional(),
   bio: z.string().optional(),
   location: z.string().optional(),
   website: z.string().optional(),
+  avatar: z.string().optional(), 
 });
 
 // Pagination list schema

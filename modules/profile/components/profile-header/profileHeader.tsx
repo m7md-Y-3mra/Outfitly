@@ -1,14 +1,17 @@
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Link as LinkIcon, Calendar } from "lucide-react";
+import { MapPin, Link as LinkIcon, Calendar, Upload, Edit, Trash2 } from "lucide-react";
 import { Card } from "../../../../components/ui/card";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { Textarea } from "../../../../components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../../../components/ui/dialog"; // Assuming you have Dialog components
+import ReactCrop, { Crop } from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
 import type { ProfileHeaderProps } from "./profileHeader.types";
 import { getAvatarAlt } from "./profileHeader.utils";
 import type { User } from "../../profile.types";
 
-// Extend props to include edit handlers
 interface ExtendedProfileHeaderProps extends ProfileHeaderProps {
   isEditing: boolean;
   editForm: User | null;
@@ -27,8 +30,77 @@ export function ProfileHeader({
   onSaveEditing,
   onUpdateForm,
 }: ExtendedProfileHeaderProps) {
-  // Fallback to prevent null access errors
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [crop, setCrop] = useState<Crop>({ unit: "%", width: 50, aspect: 1 });
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
+  const [isCropping, setIsCropping] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const safeEditForm = editForm || user;
+
+  // Handle file selection
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onload = () => setImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
+      setIsCropping(true); // Open crop modal
+    }
+  };
+
+  // Handle cropping
+  const handleCropComplete = (crop: Crop, percentageCrop: Crop) => {
+    setCrop(percentageCrop);
+  };
+
+  // Apply crop and generate cropped image
+  const applyCrop = () => {
+    if (imagePreview && crop.width && crop.height) {
+      // Simple crop logic (you can enhance with canvas)
+      setCroppedImage(imagePreview); // For now, just set the preview; implement real cropping if needed
+      setIsCropping(false);
+    }
+  };
+
+  // Upload image (mock function - replace with real API call)
+  const uploadImage = async (file: File): Promise<string> => {
+    // Replace with your upload logic (e.g., fetch to /api/upload-avatar)
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await fetch("/api/upload-avatar", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    return data.url; // Assume API returns { url: "uploaded-url" }
+  };
+
+  // Save avatar
+  const saveAvatar = async () => {
+    if (imageFile) {
+      try {
+        const uploadedUrl = await uploadImage(imageFile);
+        onUpdateForm("avatar", uploadedUrl); // Update form
+        setImageFile(null);
+        setImagePreview(null);
+        setCroppedImage(null);
+      } catch (error) {
+        console.error("Upload failed:", error);
+        alert("Failed to upload image.");
+      }
+    }
+  };
+
+  // Delete avatar
+  const deleteAvatar = () => {
+    onUpdateForm("avatar", ""); // Reset to default or empty
+    setImageFile(null);
+    setImagePreview(null);
+    setCroppedImage(null);
+  };
 
   return (
     <motion.div
@@ -44,12 +116,32 @@ export function ProfileHeader({
               <div className="absolute -inset-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-full blur-sm opacity-75"></div>
               <div className="relative">
                 <img
-                  src={user.avatar}
+                  src={croppedImage || user.avatar}
                   alt={getAvatarAlt(user.name)}
                   className="w-32 h-32 rounded-full object-cover border-4 bg-background"
                 />
+                {isEditing && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      ref={fileInputRef}
+                      className="hidden"
+                    />
+                    <div className="flex gap-2">
+                      <Button size="sm" onClick={() => fileInputRef.current?.click()}>
+                        <Upload className="w-4 h-4" />
+                      </Button>
+                      <Button size="sm" onClick={deleteAvatar}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
+            {/* Rest of the component remains the same */}
             <div className="flex-1 text-center md:text-left">
               {isEditing ? (
                 <>
@@ -147,6 +239,7 @@ export function ProfileHeader({
               )}
             </div>
           </div>
+          {/* Stats remain the same */}
           <div className="grid grid-cols-3 gap-4 pt-6 border-t-2 border-border">
             <motion.div
               className="text-center p-4 rounded-xl transition-all duration-300 hover:shadow-lg cursor-pointer bg-muted"
@@ -178,6 +271,28 @@ export function ProfileHeader({
           </div>
         </div>
       </Card>
+
+      {/* Crop Modal */}
+      <Dialog open={isCropping} onOpenChange={setIsCropping}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Image</DialogTitle>
+          </DialogHeader>
+          {imagePreview && (
+            <ReactCrop
+              crop={crop}
+              onChange={setCrop}
+              onComplete={handleCropComplete}
+            >
+              <img src={imagePreview} alt="Crop preview" />
+            </ReactCrop>
+          )}
+          <div className="flex gap-2 mt-4">
+            <Button onClick={applyCrop}>Apply Crop</Button>
+            <Button variant="outline" onClick={() => setIsCropping(false)}>Cancel</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 }
