@@ -5,14 +5,14 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { PageHeader } from "@/components/page-header";
 import { useProfile } from "./hooks/useProfile";
-import type { TabType, Outfit, LikedProduct } from "./profile.types";  // Added imports for types
+import type { TabType, Outfit, LikedProduct } from "./profile.types";
 import { ProfileHeader } from "./components/profile-header/profileHeader";
-import { ProfileTabs } from "./components/profile-taps/profileTaps";
+import { ProfileTabs } from "./components/profile-taps/profileTaps"; // Updated import
 import { ProfileOutfitsGrid } from "./components/profile-outfits/profileOutfits";
 import { ProfileLikedProductsGrid } from "./components/profile-liked-products/likedProducts";
 import { ProfileLikedOutfitsGrid } from "./components/profile-liked-outfits/likedOutfits";
 
-function renderContent(activeTab: TabType, outfits: Outfit[], likedProducts: LikedProduct[], likedOutfits: Outfit[]) {  // Typed parameters
+function renderContent(activeTab: TabType, outfits: Outfit[], likedProducts: LikedProduct[], likedOutfits: Outfit[]) {
   switch (activeTab) {
     case "outfits":
       return <ProfileOutfitsGrid outfits={outfits} />;
@@ -71,7 +71,15 @@ export function ProfilePage() {
             onSaveEditing={saveEditing}
             onUpdateForm={updateEditForm}
           />
-          <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />
+          <ProfileTabs
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            counts={{
+              outfits: outfits.length, 
+              likedProducts: likedProducts.length, 
+              likedOutfits: likedOutfits.length,
+            }}
+          />
           <motion.div
             key={activeTab}
             initial={{ opacity: 0, y: 20 }}

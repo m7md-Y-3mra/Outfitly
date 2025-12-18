@@ -5,12 +5,22 @@ import type { ProfileTabsProps } from "./profileTaps.types";
 import { isTabActive } from "./profileTaps.utils";
 
 const tabs = [
-  { id: "outfits" as const, label: "My Outfits", icon: Grid3X3, count: 156 },
-  { id: "liked-products" as const, label: "Liked Products", icon: ShoppingBag, count: 4 },
-  { id: "liked-outfits" as const, label: "Liked Outfits", icon: Heart, count: 42 },
+  { id: "outfits" as const, label: "My Outfits", icon: Grid3X3 },
+  { id: "liked-products" as const, label: "Liked Products", icon: ShoppingBag },
+  { id: "liked-outfits" as const, label: "Liked Outfits", icon: Heart },
 ];
 
-export function ProfileTabs({ activeTab, onTabChange }: ProfileTabsProps) {
+interface ProfileTabsWithCountsProps {
+  activeTab: ProfileTabsProps["activeTab"];
+  onTabChange: ProfileTabsProps["onTabChange"];
+  counts: {
+    outfits: number;
+    likedProducts: number;
+    likedOutfits: number;
+  };
+}
+
+export function ProfileTabs({ activeTab, onTabChange, counts }: ProfileTabsWithCountsProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -22,6 +32,7 @@ export function ProfileTabs({ activeTab, onTabChange }: ProfileTabsProps) {
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = isTabActive(activeTab, tab.id);
+          const count = counts[tab.id === "outfits" ? "outfits" : tab.id === "liked-products" ? "likedProducts" : "likedOutfits"];
           return (
             <motion.button
               key={tab.id}
@@ -33,11 +44,11 @@ export function ProfileTabs({ activeTab, onTabChange }: ProfileTabsProps) {
               }`}
             >
               <Icon className="w-5 h-5" />
-              <span className="hidden sm:inline ">{tab.label}</span>
+              <span className="hidden sm:inline">{tab.label}</span>
               <Badge
                 className={`ml-1 ${isActive ? "bg-secondary text-secondary-foreground" : "bg-muted text-muted-foreground"}`}
               >
-                {tab.count}
+                {count}
               </Badge>
             </motion.button>
           );

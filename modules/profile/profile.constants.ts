@@ -1,6 +1,7 @@
 import type { User, Outfit, LikedProduct } from "./profile.types";
 
 export const mockUser: User = {
+  id: "user_12345",
   name: "Sarah Johnson",
   username: "@sarahjohnson",
   bio: "Fashion enthusiast | Style curator | Creating looks that inspire ✨",
