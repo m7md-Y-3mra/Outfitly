@@ -89,17 +89,6 @@ async function main() {
     skipDuplicates: true,
   });
 
-  await prisma.outfitItemType.createMany({
-    data: [
-      { id: 'type_top', name: 'Top' },
-      { id: 'type_bottom', name: 'Bottom' },
-      { id: 'type_shoes', name: 'Shoes' },
-      { id: 'type_outer', name: 'Outerwear' },
-      { id: 'type_dress', name: 'Dress' },
-    ],
-    skipDuplicates: true,
-  });
-
   // ==============================================================
   // 2. Users
   // ==============================================================
