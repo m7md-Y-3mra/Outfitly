@@ -1,13 +1,13 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import AnimatedBg from "./animatedBg";
 import { OutfitPreviewModal } from "./outfitModal";
 import type { IItemsForAI } from "../types/generator.types";
 import { useAIGenerator } from "../hook/useAIGenerator";
 import { PageHeader } from "@/components/page-header";
 import AIGeneratorConfigCard from "./configCards";
-import { Activity } from "react";
+import { ResultsReadyIndicator } from "./resultsIndicator";
+import { AIGeneratorLoading } from "./resultsLoader";
 
 export interface IGeneratedOutfit {
   name: string;
@@ -45,6 +45,7 @@ export default function AIGenerator() {
     handleGenerate,
     onSelectOutfit,
     setViewingOutfit,
+    scrollToResults,
   } = useAIGenerator();
 
   return (
@@ -75,26 +76,22 @@ export default function AIGenerator() {
           onSelectOutfit={onSelectOutfit}
           onGenerate={handleGenerate}
         />
+          <AIGeneratorLoading show={isGenerating} />
+
       </main>
 
-      <Activity mode={open && viewingOutfit ? "visible" : "hidden"}>
-        <AnimatePresence>
-          <motion.div
-            key="outfit-preview-modal"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="z-100000"
-          >
+      {
+          viewingOutfit && (
             <OutfitPreviewModal
               open={open}
               outfit={viewingOutfit!}
               onSave={onSave}
               onClose={() => setViewingOutfit(null)}
             />
-          </motion.div>
-        </AnimatePresence>
-      </Activity>
+
+          )
+      }
+      
     </div>
   );
 }

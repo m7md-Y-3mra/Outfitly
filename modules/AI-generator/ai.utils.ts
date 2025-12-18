@@ -30,7 +30,7 @@ Your sole function is to read USER_REQUEST, select items ONLY from ALL_WARDROBE_
 1) STRICT JSON ONLY: Output MUST be valid JSON (no markdown, no text).
 2) OUTPUT SHAPE:
    - Return ONE outfit object if you can only make 1 strong outfit.
-   - Return an ARRAY of outfit objects (2 to 3 outfits) if you can make multiple good options.
+   - Return an ARRAY of outfit objects as much as possible if you can make multiple good options.
 3) EACH OUTFIT MUST:
    - Include at least 2 items.
    - Use wardrobeItemIds that contain ONLY existing IDs from ALL_WARDROBE_ITEMS.
@@ -55,6 +55,16 @@ Your sole function is to read USER_REQUEST, select items ONLY from ALL_WARDROBE_
    - If imageUrl is not found in the images of the selected wardrobe items, your output is INVALID.
    - Fix it before responding.
 
+### CONFIDENCE RATING (MANDATORY):
+11) confidence is REQUIRED for each outfit (must be a number from 1 to 100).
+12) Rate how well the outfit matches what the user asked for in USER_REQUEST:
+   - 90-100: Perfect match - outfit fully satisfies all requirements (weather, style, occasion, specific needs)
+   - 75-89: Great match - outfit meets most requirements with minor compromises
+   - 60-74: Good match - outfit is suitable but has some notable deviations from requirements
+   - 40-59: Acceptable match - outfit works but doesn't strongly align with user preferences
+   - 1-39: Weak match - outfit meets minimum criteria but poorly matches user request
+13) Consider ALL aspects: weather appropriateness, style alignment, occasion suitability, and any specific requirements mentioned.
+
 ### AIOutfitResponse JSON SCHEMA (EACH OUTFIT OBJECT MUST MATCH THIS):
 {
   "title": "AIOutfitResponse",
@@ -67,6 +77,8 @@ Your sole function is to read USER_REQUEST, select items ONLY from ALL_WARDROBE_
 
     "style": { "type": "string" },
 
+    "confidence": { "type": "number", "minimum": 1, "maximum": 100 },  // REQUIRED: 1-100 rating
+
     "occasion": {
       "anyOf": [
         { "type": "object", "properties": { "id": { "type": "string" } }, "required": ["id"] },
@@ -77,7 +89,7 @@ Your sole function is to read USER_REQUEST, select items ONLY from ALL_WARDROBE_
 
     "wardrobeItemIds": { "type": "array", "items": { "type": "string" }, "minItems": 2 }
   },
-  "required": ["name", "style", "wardrobeItemIds", "imageUrl"]
+  "required": ["name", "style", "wardrobeItemIds", "imageUrl", "confidence"]
 }
 
 ### FINAL OUTPUT MUST BE EITHER:
@@ -99,7 +111,6 @@ USER_REQUEST (JSON):
 ${userRequestJson}
 `.trim();
 }
-
 export function transfromAIResponse(ai: AIOutfitResponse, userId: string): CreateOutfitDTO {
   return {
     name: ai.name,
@@ -155,7 +166,7 @@ export function toGeneratedOutfits(ai: AIOutfitResponse[]): IGeneratedOutfit[] {
   return ai.map((o) => ({
     name: o.name,
     description: o.description ?? "",
-    confidence: o.confidence,
+    confidence: o.confidence ?? 90,
     style: o.style ?? "",
     items: o.wardrobeItemIds,
     image: o.imageUrl ?? "",
