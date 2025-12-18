@@ -1,13 +1,13 @@
-"use client";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
+import { LandingPage } from "@/modules/landing-page";
 
 export default function Home() {
   return (
-    <div className="">
+    <div>
       <Navbar />
-
-      <Footer />
+      <LandingPage />
+      {/* <Footer /> */}
     </div>
   );
 }
