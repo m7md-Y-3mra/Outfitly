@@ -39,6 +39,7 @@ export default function AIGenerator() {
     generatedOutfits,
     open,
     viewingOutfit,
+    onSave,
     setFormData,
     setCustomOccasion,
     handleGenerate,
@@ -83,31 +84,17 @@ export default function AIGenerator() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            className="z-100000"
           >
             <OutfitPreviewModal
               open={open}
               outfit={viewingOutfit!}
+              onSave={onSave}
               onClose={() => setViewingOutfit(null)}
             />
           </motion.div>
         </AnimatePresence>
       </Activity>
-      <footer
-        className="relative z-10 mt-16 border-t backdrop-blur-sm"
-        style={{
-          borderColor: "var(--border)",
-          backgroundColor: "color-mix(in srgb, var(--background) 55%, transparent)",
-        }}
-      >
-        <div className="container mx-auto px-4 py-8">
-          <p
-            className="text-center text-sm opacity-70"
-            style={{ color: "var(--muted-foreground)" }}
-          >
-            © 2024 Outfitly. Powered by AI.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

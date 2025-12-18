@@ -100,7 +100,7 @@ ${userRequestJson}
 `.trim();
 }
 
-export function transformAIResponse(ai: AIOutfitResponse, userId: string): CreateOutfitDTO {
+export function transfromAIResponse(ai: AIOutfitResponse, userId: string): CreateOutfitDTO {
   return {
     name: ai.name,
     description: ai.description ?? null,
@@ -155,9 +155,17 @@ export function toGeneratedOutfits(ai: AIOutfitResponse[]): IGeneratedOutfit[] {
   return ai.map((o) => ({
     name: o.name,
     description: o.description ?? "",
-    confidence: 90,
+    confidence: o.confidence,
     style: o.style ?? "",
     items: o.wardrobeItemIds,
     image: o.imageUrl ?? "",
   }));
+}
+
+export function safeImageSrc(src?: unknown): string | null {
+  if (typeof src !== "string") return null;
+  const s = src.trim();
+  if (!s) return null;
+  if (s.startsWith("http://") || s.startsWith("https://") || s.startsWith("/")) return s;
+  return null;
 }

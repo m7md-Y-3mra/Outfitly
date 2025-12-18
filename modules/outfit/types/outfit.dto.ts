@@ -43,7 +43,7 @@ export type CreateOutfitDTO = {
   imageUrl?: string | null;
   isAiGenerated?: boolean;
   visibility?: string;
-  user: Prisma.UserCreateNestedOneWithoutOutfitsInput;
+  user: Prisma.UserCreateNestedOneWithoutOutfitsInput; 
   occasion?: Prisma.OccasionCreateNestedOneWithoutOutfitsInput;
   items?: Prisma.OutfitItemCreateNestedManyWithoutOutfitInput;
 };
