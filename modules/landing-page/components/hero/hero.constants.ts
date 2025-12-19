@@ -52,15 +52,13 @@ export const PARALLAX_LAYERS: ParallaxLayer[] = [
   { speed: 0.6, zIndex: 3, opacity: 0.3 },
 ];
 
-export const HERO_BACKGROUND_IMAGE = "https://images.unsplash.com/photo-1649361811423-a55616f7ab11?q=80&w=758&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+export const HERO_BACKGROUND_IMAGE =
+  "https://images.unsplash.com/photo-1649361811423-a55616f7ab11?q=80&w=758&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 export const PARALLAX_IMAGES = {
-  layer1:
-    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
-  layer2:
-    "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80",
-  layer3:
-    "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&q=80",
+  layer1: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
+  layer2: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80",
+  layer3: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&q=80",
 };
 
 export const GRADIENT_COLORS = {

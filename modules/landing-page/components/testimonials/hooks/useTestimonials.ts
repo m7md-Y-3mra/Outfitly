@@ -179,14 +179,14 @@ export function useTestimonials() {
         ease: "power1.out",
       });
     },
-    [hoveredCard]
+    [hoveredCard],
   );
 
   const setCardRef = useCallback(
     (index: number) => (el: HTMLDivElement | null) => {
       cardsRef.current[index] = el;
     },
-    []
+    [],
   );
 
   return {

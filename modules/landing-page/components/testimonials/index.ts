@@ -1,6 +1,2 @@
 export { Testimonials } from "./testimonials";
-export type {
-  TestimonialsRefs,
-  Testimonial,
-  TestimonialsConfig,
-} from "./testimonials.types";
+export type { TestimonialsRefs, Testimonial, TestimonialsConfig } from "./testimonials.types";

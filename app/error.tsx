@@ -30,34 +30,21 @@ export default function Error({
 
         <div className="space-y-3">
           <h1 className="text-4xl font-bold tracking-tight">Oops!</h1>
-          <h2 className="text-xl font-semibold text-muted-foreground">
-            Something went wrong
-          </h2>
+          <h2 className="text-xl font-semibold text-muted-foreground">Something went wrong</h2>
           <p className="text-sm text-muted-foreground/80">
             {error.message || "An unexpected error occurred. Please try again."}
           </p>
           {error.digest && (
-            <p className="text-xs text-muted-foreground/60">
-              Error ID: {error.digest}
-            </p>
+            <p className="text-xs text-muted-foreground/60">Error ID: {error.digest}</p>
           )}
         </div>
 
         <div className="flex gap-3">
-          <Button
-            onClick={reset}
-            size="lg"
-            className="gap-2"
-          >
+          <Button onClick={reset} size="lg" className="gap-2">
             <RefreshCw className="h-4 w-4" />
             Try again
           </Button>
-          <Button
-            onClick={() => router.push("/")}
-            variant="outline"
-            size="lg"
-            className="gap-2"
-          >
+          <Button onClick={() => router.push("/")} variant="outline" size="lg" className="gap-2">
             <Home className="h-4 w-4" />
             Go home
           </Button>

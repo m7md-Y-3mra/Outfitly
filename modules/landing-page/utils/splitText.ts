@@ -7,10 +7,7 @@ export interface SplitResult {
   revert: () => void;
 }
 
-export function splitText(
-  element: HTMLElement,
-  type: SplitType = "chars"
-): SplitResult {
+export function splitText(element: HTMLElement, type: SplitType = "chars"): SplitResult {
   const originalHTML = element.innerHTML;
   const text = element.textContent || "";
 
@@ -139,10 +136,7 @@ function splitIntoLines(element: HTMLElement, text: string): HTMLElement[] {
   return lines;
 }
 
-export function splitTextMultiple(
-  elements: HTMLElement[],
-  type: SplitType = "chars"
-): SplitResult {
+export function splitTextMultiple(elements: HTMLElement[], type: SplitType = "chars"): SplitResult {
   const allElements: HTMLElement[] = [];
   const reverts: (() => void)[] = [];
 

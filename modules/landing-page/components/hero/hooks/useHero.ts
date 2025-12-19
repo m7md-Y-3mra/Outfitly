@@ -21,7 +21,6 @@ export function useHero() {
   const parallaxLayer2Ref = useRef<HTMLDivElement>(null);
   const parallaxLayer3Ref = useRef<HTMLDivElement>(null);
 
-
   useEffect(() => {
     const ctx = gsap.context(() => {
       const { splitText: splitConfig, entrance } = HERO_ANIMATION_CONFIG;
@@ -39,7 +38,7 @@ export function useHero() {
         {
           opacity: 0,
           y: 40,
-        }
+        },
       );
 
       // Split text animations
@@ -94,7 +93,7 @@ export function useHero() {
           stagger: splitConfig.charStagger,
           ease: "back.out(1.7)",
         },
-        "-=0.2"
+        "-=0.2",
       );
 
       // Line 2 character animation - scale and flip
@@ -112,7 +111,7 @@ export function useHero() {
           },
           ease: "elastic.out(1, 0.5)",
         },
-        "-=0.5"
+        "-=0.5",
       );
 
       // Subheading
@@ -123,7 +122,7 @@ export function useHero() {
           y: 0,
           duration: entrance.duration * 0.8,
         },
-        "-=0.6"
+        "-=0.6",
       );
 
       // CTA buttons
@@ -134,7 +133,7 @@ export function useHero() {
           y: 0,
           duration: entrance.duration * 0.8,
         },
-        "-=0.5"
+        "-=0.5",
       );
 
       // Features
@@ -145,7 +144,7 @@ export function useHero() {
           y: 0,
           duration: entrance.duration * 0.8,
         },
-        "-=0.4"
+        "-=0.4",
       );
 
       // Scroll indicator with bounce
@@ -156,7 +155,7 @@ export function useHero() {
           y: 0,
           duration: entrance.duration * 0.5,
         },
-        "-=0.3"
+        "-=0.3",
       );
 
       // Continuous scroll indicator bounce
@@ -213,18 +212,13 @@ export function useHero() {
 
             // Scale down other elements
             gsap.to(
-              [
-                badgeRef.current,
-                subheadingRef.current,
-                ctaRef.current,
-                featuresRef.current,
-              ],
+              [badgeRef.current, subheadingRef.current, ctaRef.current, featuresRef.current],
               {
                 y: progress * 100,
                 opacity: 1 - progress * 0.5,
                 scale: 1 - progress * 0.1,
                 duration: 0.1,
-              }
+              },
             );
           },
         });

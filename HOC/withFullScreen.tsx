@@ -1,8 +1,6 @@
 import { ComponentType } from "react";
 
-const withFullScreen = <P extends object>(
-  Component: ComponentType<P>
-): ComponentType<P> => {
+const withFullScreen = <P extends object>(Component: ComponentType<P>): ComponentType<P> => {
   const WrappedComponent = (props: P) => {
     return (
       <div className="flex h-screen items-center justify-center">

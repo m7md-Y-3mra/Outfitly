@@ -7,8 +7,7 @@ export const FEATURES: Feature[] = [
     title: "AI-Powered Styling",
     description:
       "Our advanced AI analyzes your wardrobe and creates stunning outfit combinations tailored to your style and occasions. Get personalized recommendations based on weather, events, and your preferences.",
-    image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
     color: "#FAF1ED",
   },
   {
@@ -16,8 +15,7 @@ export const FEATURES: Feature[] = [
     title: "Manual Design",
     description:
       "Take full creative control. Mix and match items from your wardrobe to create unique looks that express your personality. Drag, drop, and visualize your perfect outfit.",
-    image:
-      "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80",
     color: "#F2E8E3",
   },
   {
@@ -25,8 +23,7 @@ export const FEATURES: Feature[] = [
     title: "Social Community",
     description:
       "Share your outfits, get inspired by others, and engage with a vibrant community of fashion enthusiasts worldwide. Follow trends, save favorites, and build your style network.",
-    image:
-      "https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&q=80",
     color: "#E8DDD8",
   },
   {
@@ -34,8 +31,7 @@ export const FEATURES: Feature[] = [
     title: "Smart Wardrobe",
     description:
       "Upload and organize your entire wardrobe digitally. Never forget what you own and make the most of every piece. Track wear history and discover underutilized items.",
-    image:
-      "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
     color: "#DED3CE",
   },
 ];

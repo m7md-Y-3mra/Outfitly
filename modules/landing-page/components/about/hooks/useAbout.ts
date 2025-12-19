@@ -35,10 +35,7 @@ export function usePinnedFeatures() {
         featureImagesRef.current.forEach((image, index) => {
           if (!image) return;
           gsap.set(image, {
-            clipPath:
-              index === 0
-                ? "circle(100% at 50% 50%)"
-                : "circle(0% at 50% 50%)",
+            clipPath: index === 0 ? "circle(100% at 50% 50%)" : "circle(0% at 50% 50%)",
             scale: index === 0 ? 1 : 1.2,
           });
         });
@@ -52,10 +49,7 @@ export function usePinnedFeatures() {
           scrub: 1,
           onUpdate: (self) => {
             const progress = self.progress;
-            const currentFeature = Math.min(
-              Math.floor(progress * featureCount),
-              featureCount - 1
-            );
+            const currentFeature = Math.min(Math.floor(progress * featureCount), featureCount - 1);
 
             // Update active feature state
             setActiveFeature(currentFeature);
@@ -134,7 +128,7 @@ export function usePinnedFeatures() {
                 start: "top 85%",
                 toggleActions: "play none none reverse",
               },
-            }
+            },
           );
         });
 
@@ -154,7 +148,7 @@ export function usePinnedFeatures() {
                 start: "top 80%",
                 toggleActions: "play none none reverse",
               },
-            }
+            },
           );
         });
       });
@@ -178,7 +172,7 @@ export function usePinnedFeatures() {
                 start: "top 90%",
                 toggleActions: "play none none reverse",
               },
-            }
+            },
           );
         });
       });
@@ -191,14 +185,14 @@ export function usePinnedFeatures() {
     (index: number) => (el: HTMLDivElement | null) => {
       featurePanelsRef.current[index] = el;
     },
-    []
+    [],
   );
 
   const setFeatureImageRef = useCallback(
     (index: number) => (el: HTMLDivElement | null) => {
       featureImagesRef.current[index] = el;
     },
-    []
+    [],
   );
 
   return {

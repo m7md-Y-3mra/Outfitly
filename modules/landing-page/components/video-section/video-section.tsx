@@ -2,24 +2,25 @@
 
 import { useTheme } from "next-themes";
 import { useVideoSection } from "./hooks/useVideoSection";
-import {
-  VIDEO_CONTENT,
-  VIDEO_URL,
-  VIDEO_GRADIENTS,
-} from "./video-section.constants";
+import { VIDEO_CONTENT, VIDEO_URL, VIDEO_GRADIENTS } from "./video-section.constants";
 
 export function VideoSection() {
   const { theme } = useTheme();
-  const { sectionRef, containerRef, videoRef, headingRef, progressRef, overlayTextRef, currentProgress, activeTextIndex } = useVideoSection();
+  const {
+    sectionRef,
+    containerRef,
+    videoRef,
+    headingRef,
+    progressRef,
+    overlayTextRef,
+    currentProgress,
+    activeTextIndex,
+  } = useVideoSection();
   const isDark = theme === "dark";
   const gradients = isDark ? VIDEO_GRADIENTS.dark : VIDEO_GRADIENTS.light;
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative"
-      style={{ background: gradients.section }}
-    >
+    <section ref={sectionRef} className="relative" style={{ background: gradients.section }}>
       {/* Heading */}
       <div ref={headingRef} className="py-16 px-6 text-center">
         <h2
@@ -53,10 +54,7 @@ export function VideoSection() {
           />
 
           {/* Video Overlay */}
-          <div
-            className="absolute inset-0"
-            style={{ background: gradients.overlay }}
-          />
+          <div className="absolute inset-0" style={{ background: gradients.overlay }} />
         </div>
 
         {/* Progress Bar - Desktop */}
@@ -73,9 +71,7 @@ export function VideoSection() {
               <span
                 key={item.text}
                 className={`transition-all duration-300 ${
-                  activeTextIndex === index
-                    ? "text-[#FAF1ED] font-medium"
-                    : ""
+                  activeTextIndex === index ? "text-[#FAF1ED] font-medium" : ""
                 }`}
               >
                 {item.text}
@@ -113,9 +109,7 @@ export function VideoSection() {
             >
               {VIDEO_CONTENT.overlayTexts[activeTextIndex]?.text || "Style"}
             </div>
-            <p className="text-white/80 text-lg">
-              Scroll to explore the journey
-            </p>
+            <p className="text-white/80 text-lg">Scroll to explore the journey</p>
           </div>
         </div>
 

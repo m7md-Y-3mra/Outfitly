@@ -17,9 +17,7 @@ export default function Forbidden() {
 
         <div className="space-y-3">
           <h1 className="text-6xl font-bold tracking-tight">403</h1>
-          <h2 className="text-xl font-semibold text-muted-foreground">
-            Access Forbidden
-          </h2>
+          <h2 className="text-xl font-semibold text-muted-foreground">Access Forbidden</h2>
           <p className="text-sm text-muted-foreground/80">
             You don&apos;t have permission to access this resource.
           </p>

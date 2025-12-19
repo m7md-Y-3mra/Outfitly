@@ -17,9 +17,7 @@ export default function Unauthorized() {
 
         <div className="space-y-3">
           <h1 className="text-6xl font-bold tracking-tight">401</h1>
-          <h2 className="text-xl font-semibold text-muted-foreground">
-            Unauthorized Access
-          </h2>
+          <h2 className="text-xl font-semibold text-muted-foreground">Unauthorized Access</h2>
           <p className="text-sm text-muted-foreground/80">
             You need to be authenticated to access this resource. Please sign in to continue.
           </p>
@@ -32,12 +30,7 @@ export default function Unauthorized() {
               Sign in
             </Link>
           </Button>
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="gap-2"
-          >
+          <Button asChild variant="outline" size="lg" className="gap-2">
             <Link href="/">
               <Home className="h-4 w-4" />
               Go home
