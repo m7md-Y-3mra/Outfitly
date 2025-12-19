@@ -1,223 +1,219 @@
 "use client";
 
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { AboutRefs } from "../about.types";
-import { ABOUT_ANIMATION_CONFIG, FEATURES, STATS } from "../about.constants";
+import { PinnedFeaturesRefs } from "../about.types";
+import { PINNED_ANIMATION_CONFIG, FEATURES } from "../about.constants";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function useAbout() {
+export function usePinnedFeatures() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLDivElement>(null);
-  const featuresRef = useRef<HTMLDivElement>(null);
-  const featureCardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const statsRef = useRef<HTMLDivElement>(null);
-  const statItemsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const ctaRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const featurePanelsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const featureImagesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const progressRef = useRef<HTMLDivElement>(null);
 
-  const refs: AboutRefs = {
+  const [activeFeature, setActiveFeature] = useState(0);
+
+  const refs: PinnedFeaturesRefs = {
     sectionRef,
-    headingRef,
-    featuresRef,
-    featureCardsRef,
-    statsRef,
-    statItemsRef,
-    ctaRef,
+    containerRef,
+    featurePanelsRef,
+    featureImagesRef,
+    progressRef,
   };
 
-  // Initialize scroll-triggered animations
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const { duration, ease, staggerDelay } = ABOUT_ANIMATION_CONFIG;
+      const mm = gsap.matchMedia();
+      const { entrance, maskReveal } = PINNED_ANIMATION_CONFIG;
+      const featureCount = FEATURES.length;
 
-      // Heading animation
-      gsap.fromTo(
-        headingRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration,
-          ease,
-          scrollTrigger: {
-            trigger: headingRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      // Feature cards slide in from outside the page
-      // Left cards (even index) come from left, right cards (odd index) come from right
-      featureCardsRef.current.forEach((card, index) => {
-        if (!card) return;
-
-        const isLeftCard = index % 2 === 0;
-        const xOffset = isLeftCard ? -150 : 150; // percentage offset from current position
-
-        gsap.fromTo(
-          card,
-          {
-            opacity: 0,
-            x: xOffset,
-            rotateY: isLeftCard ? -15 : 15,
-            transformPerspective: 1000,
-          },
-          {
-            opacity: 1,
-            x: 0,
-            rotateY: 0,
-            duration: duration * 1.4,
-            ease: "power3.out",
-            delay: Math.floor(index / 2) * staggerDelay, // stagger by row
-            scrollTrigger: {
-              trigger: featuresRef.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-
-        // Hover animation setup
-        card.addEventListener("mouseenter", () => {
-          gsap.to(card, {
-            scale: 1.03,
-            y: -8,
-            boxShadow: "0 25px 60px rgba(250, 241, 237, 0.25)",
-            duration: 0.4,
-            ease: "power2.out",
+      // Desktop - Full pinned experience
+      mm.add("(min-width: 1024px)", () => {
+        featurePanelsRef.current.forEach((panel, index) => {
+          if (!panel) return;
+          gsap.set(panel, {
+            opacity: index === 0 ? 1 : 0,
+            y: index === 0 ? 0 : 50,
           });
         });
 
-        card.addEventListener("mouseleave", () => {
-          gsap.to(card, {
-            scale: 1,
-            y: 0,
-            boxShadow: "0 10px 40px rgba(0, 0, 0, 0.15)",
-            duration: 0.4,
-            ease: "power2.out",
-          });
-        });
-      });
-
-      // Stats section animation
-      gsap.fromTo(
-        statsRef.current,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration,
-          ease,
-          scrollTrigger: {
-            trigger: statsRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      // Stat items counter animation
-      statItemsRef.current.forEach((item, index) => {
-        if (!item) return;
-
-        const numberEl = item.querySelector(".stat-number");
-        if (!numberEl) return;
-
-        gsap.fromTo(
-          item,
-          { opacity: 0, scale: 0.8 },
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 0.6,
-            delay: index * 0.15,
-            ease: "back.out(1.5)",
-            scrollTrigger: {
-              trigger: statsRef.current,
-              start: "top 75%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-
-        // Hover effect for stats
-        item.addEventListener("mouseenter", () => {
-          gsap.to(item, {
-            scale: 1.1,
-            duration: 0.3,
-            ease: "power2.out",
+        featureImagesRef.current.forEach((image, index) => {
+          if (!image) return;
+          gsap.set(image, {
+            clipPath:
+              index === 0
+                ? "circle(100% at 50% 50%)"
+                : "circle(0% at 50% 50%)",
+            scale: index === 0 ? 1 : 1.2,
           });
         });
 
-        item.addEventListener("mouseleave", () => {
-          gsap.to(item, {
-            scale: 1,
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        });
-      });
+        // Main pinned section
+        ScrollTrigger.create({
+          trigger: containerRef.current,
+          start: "top top",
+          end: `+=${window.innerHeight * 3}`,
+          pin: true,
+          scrub: 1,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            const currentFeature = Math.min(
+              Math.floor(progress * featureCount),
+              featureCount - 1
+            );
 
-      // CTA section animation
-      gsap.fromTo(
-        ctaRef.current,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration,
-          ease,
-          scrollTrigger: {
-            trigger: ctaRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+            // Update active feature state
+            setActiveFeature(currentFeature);
 
-      // Floating orbs parallax on scroll
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1,
-        onUpdate: (self) => {
-          const orbs = sectionRef.current?.querySelectorAll(".floating-orb");
-          orbs?.forEach((orb, index) => {
-            const direction = index % 2 === 0 ? 1 : -1;
-            gsap.to(orb, {
-              y: self.progress * 100 * direction,
-              x: self.progress * 50 * direction,
-              duration: 0.1,
+            // Animate feature transitions
+            featurePanelsRef.current.forEach((panel, index) => {
+              if (!panel) return;
+
+              if (index === currentFeature) {
+                gsap.to(panel, {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.3,
+                });
+              } else {
+                gsap.to(panel, {
+                  opacity: 0,
+                  y: index < currentFeature ? -30 : 30,
+                  duration: 0.3,
+                });
+              }
             });
-          });
-        },
+
+            // Animate image mask reveals
+            featureImagesRef.current.forEach((image, index) => {
+              if (!image) return;
+
+              if (index === currentFeature) {
+                gsap.to(image, {
+                  clipPath: "circle(100% at 50% 50%)",
+                  scale: 1,
+                  duration: maskReveal.duration,
+                  ease: maskReveal.ease,
+                });
+              } else if (index < currentFeature) {
+                gsap.to(image, {
+                  clipPath: "circle(150% at 50% 50%)",
+                  scale: 0.9,
+                  duration: 0.5,
+                });
+              } else {
+                gsap.to(image, {
+                  clipPath: "circle(0% at 50% 50%)",
+                  scale: 1.2,
+                  duration: 0.5,
+                });
+              }
+            });
+
+            // Progress indicator
+            if (progressRef.current) {
+              gsap.to(progressRef.current, {
+                scaleY: progress,
+                duration: 0.1,
+              });
+            }
+          },
+        });
+      });
+
+      // Tablet - Simplified animations
+      mm.add("(min-width: 768px) and (max-width: 1023px)", () => {
+        featurePanelsRef.current.forEach((panel, index) => {
+          if (!panel) return;
+
+          gsap.fromTo(
+            panel,
+            { opacity: 0, x: index % 2 === 0 ? -50 : 50 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.8,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: panel,
+                start: "top 85%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        });
+
+        featureImagesRef.current.forEach((image) => {
+          if (!image) return;
+
+          gsap.fromTo(
+            image,
+            { clipPath: "circle(0% at 50% 50%)", scale: 1.1 },
+            {
+              clipPath: "circle(100% at 50% 50%)",
+              scale: 1,
+              duration: 1,
+              ease: "power3.inOut",
+              scrollTrigger: {
+                trigger: image,
+                start: "top 80%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        });
+      });
+
+      // Mobile - Simple reveals
+      mm.add("(max-width: 767px)", () => {
+        featurePanelsRef.current.forEach((panel, index) => {
+          if (!panel) return;
+
+          gsap.fromTo(
+            panel,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              delay: index * 0.1,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: panel,
+                start: "top 90%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        });
       });
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  const setFeatureCardRef = useCallback(
+  const setFeaturePanelRef = useCallback(
     (index: number) => (el: HTMLDivElement | null) => {
-      featureCardsRef.current[index] = el;
+      featurePanelsRef.current[index] = el;
     },
     []
   );
 
-  const setStatItemRef = useCallback(
+  const setFeatureImageRef = useCallback(
     (index: number) => (el: HTMLDivElement | null) => {
-      statItemsRef.current[index] = el;
+      featureImagesRef.current[index] = el;
     },
     []
   );
 
   return {
     refs,
-    setFeatureCardRef,
-    setStatItemRef,
+    activeFeature,
+    setFeaturePanelRef,
+    setFeatureImageRef,
   };
 }

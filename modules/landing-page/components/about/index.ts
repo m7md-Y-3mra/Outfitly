@@ -1,2 +1,6 @@
 export { About } from "./about";
-export type { AboutRefs, Feature, Stat, AboutAnimationConfig } from "./about.types";
+export type {
+  PinnedFeaturesRefs,
+  Feature,
+  PinnedAnimationConfig,
+} from "./about.types";

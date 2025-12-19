@@ -1,2 +1,6 @@
 export { Hero } from "./hero";
-export type { HeroRefs, FloatingElement, HeroAnimationConfig, Card3DProps } from "./hero.types";
+export type {
+  HeroRefs,
+  HeroAnimationConfig,
+  ParallaxLayer,
+} from "./hero.types";

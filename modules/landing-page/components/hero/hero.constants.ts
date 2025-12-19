@@ -1,4 +1,4 @@
-import { FloatingElement, HeroAnimationConfig } from "./hero.types";
+import { HeroAnimationConfig, ParallaxLayer } from "./hero.types";
 
 export const HERO_CONTENT = {
   badge: "Your Smart Fashion Companion",
@@ -27,72 +27,52 @@ export const HERO_CONTENT = {
 } as const;
 
 export const HERO_ANIMATION_CONFIG: HeroAnimationConfig = {
-  duration: 1.2,
-  ease: "power4.out",
-  staggerDelay: 0.15,
+  splitText: {
+    charStagger: 0.03,
+    duration: 0.8,
+    ease: "power4.out",
+  },
+  parallax: {
+    intensity: {
+      desktop: 1,
+      tablet: 0.6,
+      mobile: 0.3,
+    },
+  },
+  entrance: {
+    duration: 1.2,
+    ease: "power4.out",
+    staggerDelay: 0.15,
+  },
 };
 
-export const FLOATING_ELEMENTS: FloatingElement[] = [
-  {
-    id: "element-1",
-    icon: "shirt",
-    size: 60,
-    initialPosition: { x: -200, y: -100, z: 50 },
-    animationDelay: 0,
-    rotationAxis: "y",
-  },
-  {
-    id: "element-2",
-    icon: "dress",
-    size: 70,
-    initialPosition: { x: 250, y: -150, z: 80 },
-    animationDelay: 0.5,
-    rotationAxis: "x",
-  },
-  {
-    id: "element-3",
-    icon: "shoe",
-    size: 50,
-    initialPosition: { x: -280, y: 100, z: 40 },
-    animationDelay: 1,
-    rotationAxis: "z",
-  },
-  {
-    id: "element-4",
-    icon: "bag",
-    size: 55,
-    initialPosition: { x: 300, y: 80, z: 60 },
-    animationDelay: 1.5,
-    rotationAxis: "y",
-  },
-  {
-    id: "element-5",
-    icon: "watch",
-    size: 45,
-    initialPosition: { x: -150, y: 200, z: 30 },
-    animationDelay: 2,
-    rotationAxis: "x",
-  },
-  {
-    id: "element-6",
-    icon: "pants",
-    size: 65,
-    initialPosition: { x: 180, y: 180, z: 70 },
-    animationDelay: 2.5,
-    rotationAxis: "z",
-  },
+export const PARALLAX_LAYERS: ParallaxLayer[] = [
+  { speed: 0.2, zIndex: 1, opacity: 0.4 },
+  { speed: 0.4, zIndex: 2, opacity: 0.6 },
+  { speed: 0.6, zIndex: 3, opacity: 0.3 },
 ];
 
 export const HERO_BACKGROUND_IMAGE =
   "https://images.unsplash.com/photo-1593032470861-4509830938cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JtYWwlMjB3YXJkcm9iZSUyMHN1aXRzfGVufDF8fHx8MTc2NDI0OTU0MXww&ixlib=rb-4.1.0&q=80&w=1080";
 
+export const PARALLAX_IMAGES = {
+  layer1:
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
+  layer2:
+    "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80",
+  layer3:
+    "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&q=80",
+};
+
 export const GRADIENT_COLORS = {
   light: {
-    overlay: "linear-gradient(135deg, rgba(103, 20, 37, 0.65), rgba(139, 29, 53, 0.55), rgba(76, 20, 32, 0.70))",
+    overlay:
+      "linear-gradient(135deg, rgba(103, 20, 37, 0.65), rgba(139, 29, 53, 0.55), rgba(76, 20, 32, 0.70))",
     bottom: "linear-gradient(to top, rgba(250, 241, 237, 1), transparent)",
   },
   dark: {
-    overlay: "linear-gradient(135deg, rgba(103, 20, 37, 0.80), rgba(139, 29, 53, 0.70), rgba(76, 20, 32, 0.85))",
+    overlay:
+      "linear-gradient(135deg, rgba(103, 20, 37, 0.80), rgba(139, 29, 53, 0.70), rgba(76, 20, 32, 0.85))",
     bottom: "linear-gradient(to top, rgba(26, 26, 26, 1), transparent)",
   },
 } as const;

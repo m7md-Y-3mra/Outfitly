@@ -2,37 +2,40 @@ import { RefObject } from "react";
 
 export interface HeroRefs {
   containerRef: RefObject<HTMLElement | null>;
-  headingRef: RefObject<HTMLHeadingElement | null>;
+  headingLine1Ref: RefObject<HTMLSpanElement | null>;
+  headingLine2Ref: RefObject<HTMLSpanElement | null>;
   subheadingRef: RefObject<HTMLParagraphElement | null>;
   badgeRef: RefObject<HTMLDivElement | null>;
   ctaRef: RefObject<HTMLDivElement | null>;
   featuresRef: RefObject<HTMLDivElement | null>;
   scrollIndicatorRef: RefObject<HTMLDivElement | null>;
-  floatingElementsRef: RefObject<(HTMLDivElement | null)[]>;
-  card3DRef: RefObject<HTMLDivElement | null>;
-}
-
-export interface FloatingElement {
-  id: string;
-  icon: "shirt" | "pants" | "dress" | "shoe" | "bag" | "watch";
-  size: number;
-  initialPosition: {
-    x: number;
-    y: number;
-    z: number;
-  };
-  animationDelay: number;
-  rotationAxis: "x" | "y" | "z";
+  parallaxLayer1Ref: RefObject<HTMLDivElement | null>;
+  parallaxLayer2Ref: RefObject<HTMLDivElement | null>;
+  parallaxLayer3Ref: RefObject<HTMLDivElement | null>;
 }
 
 export interface HeroAnimationConfig {
-  duration: number;
-  ease: string;
-  staggerDelay: number;
+  splitText: {
+    charStagger: number;
+    duration: number;
+    ease: string;
+  };
+  parallax: {
+    intensity: {
+      desktop: number;
+      tablet: number;
+      mobile: number;
+    };
+  };
+  entrance: {
+    duration: number;
+    ease: string;
+    staggerDelay: number;
+  };
 }
 
-export interface Card3DProps {
-  rotateX: number;
-  rotateY: number;
-  translateZ: number;
+export interface ParallaxLayer {
+  speed: number;
+  zIndex: number;
+  opacity: number;
 }
