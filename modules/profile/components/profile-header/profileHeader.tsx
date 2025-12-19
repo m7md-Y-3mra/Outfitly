@@ -194,14 +194,7 @@ export function ProfileHeader({
               </div>
 
               {isEditing && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full"
-                  style={{
-                          backgroundColor:
-                            theme === "dark"
-                              ? "var(--outfitly-bg-primary)"
-                              : "var(--outfitly-bg-secondary)",
-                        }}
-                >
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -230,13 +223,6 @@ export function ProfileHeader({
                   <Input
                     value={safeEditForm.name}
                     onChange={(e) => onUpdateForm("name", e.target.value)}
-                  />
-                  <Input
-                    value={safeEditForm.username}
-                    onChange={(e) => onUpdateForm("username", e.target.value)}
-                    className="text-sm mb-3 opacity-70 text-muted-foreground"
-                    placeholder="Username"
-                    disabled 
                   />
                   <Textarea
                     value={safeEditForm.bio}
@@ -291,11 +277,9 @@ export function ProfileHeader({
                   </Button>
                 </div>
               ) : (
-                  <div className="flex gap-2 mt-4">
                 <Button className="mt-4" onClick={onStartEditing}>
                   Edit Profile
                 </Button>
-                </div>
               )}
             </div>
           </div>
