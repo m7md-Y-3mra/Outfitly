@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+
 export interface WeatherData {
   location: string;
   temperature: number;
@@ -21,6 +22,7 @@ export interface Outfit {
   description: string;
   temperature: string;
   icon: LucideIcon;
+  season: string;  // New: e.g., "summer", "winter", "autumn", "spring"
 }
 
 export interface WardrobeItem {
@@ -28,4 +30,5 @@ export interface WardrobeItem {
   name: string;
   image: string;
   category: string;
+  season: string;  // New: e.g., "summer", "winter", "autumn", "spring"
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { WeatherData, Outfit, WardrobeItem } from "../weather.types";
 import { mockWeather, timeBasedOutfits, suitableItems } from "../weather.constants";
 import { WeatherService } from "../weather.service";
@@ -12,6 +12,31 @@ interface UseWeatherReturn {
   items: WardrobeItem[];
   handleScroll: (direction: "left" | "right") => void;
 }
+
+// Enhanced: Map weather to season primarily based on temperature (°F), with condition as tiebreaker
+const getSeasonFromWeather = (weather: WeatherData): string => {
+  const temp = weather.temperature;
+  const condition = weather.condition.toLowerCase();
+
+  // Validate temperature
+  if (typeof temp !== "number" || isNaN(temp)) {
+    return "autumn";  // Default fallback
+  }
+
+  // Temperature-based mapping
+  if (temp > 75) {
+    return "summer";  // Hot
+  } else if (temp >= 60) {
+    // Mild range: Use condition to distinguish autumn vs. summer edge
+    return condition === "sunny" ? "summer" : "autumn";
+  } else if (temp >= 45) {
+    // Cooler range: Use condition for spring vs. autumn edge
+    return condition === "rainy" || condition === "drizzle" ? "spring" : "autumn";
+  } else {
+    // Cold: Winter, but check for snowy
+    return condition === "snowy" ? "winter" : "spring";
+  }
+};
 
 export const useWeather = (): UseWeatherReturn => {
   const [weather, setWeather] = useState<WeatherData>(mockWeather);
@@ -49,5 +74,16 @@ export const useWeather = (): UseWeatherReturn => {
     fetchWeather();
   }, []);
 
-  return { weather, outfits: timeBasedOutfits, items: suitableItems, handleScroll };
+  // Filter outfits and items based on weather season
+  const filteredOutfits = useMemo(() => {
+    const season = getSeasonFromWeather(weather);
+    return timeBasedOutfits.filter((outfit) => outfit.season === season);
+  }, [weather]);
+
+  const filteredItems = useMemo(() => {
+    const season = getSeasonFromWeather(weather);
+    return suitableItems.filter((item) => item.season === season);
+  }, [weather]);
+
+  return { weather, outfits: filteredOutfits, items: filteredItems, handleScroll };
 };
