@@ -3,8 +3,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { TestimonialsRefs } from "../testimonials.types";
-import { TESTIMONIALS_CONFIG, TESTIMONIALS } from "../testimonials.constants";
+import { TESTIMONIALS_CONFIG } from "../testimonials.constants";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,14 +19,6 @@ export function useTestimonials() {
 
   const animation1Ref = useRef<gsap.core.Tween | null>(null);
   const animation2Ref = useRef<gsap.core.Tween | null>(null);
-
-  const refs: TestimonialsRefs = {
-    sectionRef,
-    headingRef,
-    track1Ref,
-    track2Ref,
-    cardsRef,
-  };
 
   // Infinite scroll animation
   useEffect(() => {
@@ -199,7 +190,10 @@ export function useTestimonials() {
   );
 
   return {
-    refs,
+    sectionRef,
+    headingRef,
+    track1Ref,
+    track2Ref,
     isPaused,
     hoveredCard,
     handleCardHover,

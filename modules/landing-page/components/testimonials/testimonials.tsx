@@ -11,7 +11,7 @@ import {
 
 export function Testimonials() {
   const { theme } = useTheme();
-  const { refs, hoveredCard, handleCardHover, handleCardLeave, handleCardMouseMove, setCardRef } =
+  const { sectionRef, headingRef, track1Ref, track2Ref, hoveredCard, handleCardHover, handleCardLeave, handleCardMouseMove, setCardRef } =
     useTestimonials();
   const isDark = theme === "dark";
   const gradients = isDark ? TESTIMONIALS_GRADIENTS.dark : TESTIMONIALS_GRADIENTS.light;
@@ -30,7 +30,7 @@ export function Testimonials() {
 
     return (
       <div
-        key={`${testimonial.id}-${rowOffset === 0 ? "a" : "b"}`}
+        key={`${testimonial.id}-${rowOffset}-${index}`}
         ref={setCardRef(cardIndex)}
         className="flex-shrink-0 w-[350px] sm:w-[400px] p-6 rounded-3xl cursor-pointer transition-colors duration-300"
         style={{
@@ -79,7 +79,7 @@ export function Testimonials() {
             transform: "translateZ(10px)",
           }}
         >
-          "{testimonial.content}"
+          &ldquo;{testimonial.content}&rdquo;
         </p>
 
         {/* Rating */}
@@ -131,7 +131,7 @@ export function Testimonials() {
 
   return (
     <section
-      ref={refs.sectionRef}
+      ref={sectionRef}
       className="py-24 relative overflow-hidden"
       style={{ background: gradients.section }}
     >
@@ -154,7 +154,7 @@ export function Testimonials() {
       />
 
       {/* Heading */}
-      <div ref={refs.headingRef} className="max-w-4xl mx-auto px-6 text-center mb-16">
+      <div ref={headingRef} className="max-w-4xl mx-auto px-6 text-center mb-16">
         {/* Badge */}
         <div
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
@@ -207,7 +207,7 @@ export function Testimonials() {
             }}
           />
 
-          <div ref={refs.track1Ref} className="flex gap-6 px-6" style={{ width: "fit-content" }}>
+          <div ref={track1Ref} className="flex gap-6 px-6" style={{ width: "fit-content" }}>
             {/* Duplicate for infinite scroll */}
             {[...row1, ...row1].map((testimonial, index) => renderCard(testimonial, index, 0))}
           </div>
@@ -233,7 +233,7 @@ export function Testimonials() {
             }}
           />
 
-          <div ref={refs.track2Ref} className="flex gap-6 px-6" style={{ width: "fit-content" }}>
+          <div ref={track2Ref} className="flex gap-6 px-6" style={{ width: "fit-content" }}>
             {/* Duplicate for infinite scroll */}
             {[...row2, ...row2].map((testimonial, index) => renderCard(testimonial, index, 100))}
           </div>

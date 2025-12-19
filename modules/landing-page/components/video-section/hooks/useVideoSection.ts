@@ -3,7 +3,6 @@
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { VideoSectionRefs } from "../video-section.types";
 import { VIDEO_CONFIG, VIDEO_CONTENT } from "../video-section.constants";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -18,15 +17,6 @@ export function useVideoSection() {
 
   const [currentProgress, setCurrentProgress] = useState(0);
   const [activeTextIndex, setActiveTextIndex] = useState(0);
-
-  const refs: VideoSectionRefs = {
-    sectionRef,
-    videoRef,
-    containerRef,
-    headingRef,
-    progressRef,
-    overlayTextRef,
-  };
 
   useEffect(() => {
     const video = videoRef.current;
@@ -190,7 +180,12 @@ export function useVideoSection() {
   }, []);
 
   return {
-    refs,
+    sectionRef,
+    containerRef,
+    videoRef,
+    headingRef,
+    progressRef,
+    overlayTextRef,
     currentProgress,
     activeTextIndex,
   };

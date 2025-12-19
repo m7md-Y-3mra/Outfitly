@@ -3,7 +3,6 @@
 import { useRef, useEffect, useCallback, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PinnedFeaturesRefs } from "../about.types";
 import { PINNED_ANIMATION_CONFIG, FEATURES } from "../about.constants";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -17,18 +16,10 @@ export function usePinnedFeatures() {
 
   const [activeFeature, setActiveFeature] = useState(0);
 
-  const refs: PinnedFeaturesRefs = {
-    sectionRef,
-    containerRef,
-    featurePanelsRef,
-    featureImagesRef,
-    progressRef,
-  };
-
   useEffect(() => {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
-      const { entrance, maskReveal } = PINNED_ANIMATION_CONFIG;
+      const { maskReveal } = PINNED_ANIMATION_CONFIG;
       const featureCount = FEATURES.length;
 
       // Desktop - Full pinned experience
@@ -211,7 +202,9 @@ export function usePinnedFeatures() {
   );
 
   return {
-    refs,
+    sectionRef,
+    containerRef,
+    progressRef,
     activeFeature,
     setFeaturePanelRef,
     setFeatureImageRef,

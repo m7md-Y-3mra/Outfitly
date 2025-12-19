@@ -6,15 +6,15 @@ import { FEATURES, PINNED_GRADIENTS } from "./about.constants";
 
 export function About() {
   const { theme } = useTheme();
-  const { refs, activeFeature, setFeaturePanelRef, setFeatureImageRef } = usePinnedFeatures();
+  const { sectionRef, containerRef, progressRef, activeFeature, setFeaturePanelRef, setFeatureImageRef } = usePinnedFeatures();
   const isDark = theme === "dark";
   const gradients = isDark ? PINNED_GRADIENTS.dark : PINNED_GRADIENTS.light;
 
   return (
-    <section ref={refs.sectionRef} className="relative">
+    <section ref={sectionRef} className="relative">
       {/* Pinned Features Container */}
       <div
-        ref={refs.containerRef}
+        ref={containerRef}
         className="relative min-h-screen"
         style={{ background: gradients.section }}
       >
@@ -22,7 +22,7 @@ export function About() {
         <div className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-50">
           <div className="relative h-32 w-1 bg-white/20 rounded-full overflow-hidden">
             <div
-              ref={refs.progressRef}
+              ref={progressRef}
               className="absolute bottom-0 left-0 w-full bg-[#FAF1ED] rounded-full origin-bottom"
               style={{ transform: "scaleY(0)" }}
             />

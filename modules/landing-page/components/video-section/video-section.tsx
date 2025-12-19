@@ -10,18 +10,18 @@ import {
 
 export function VideoSection() {
   const { theme } = useTheme();
-  const { refs, currentProgress, activeTextIndex } = useVideoSection();
+  const { sectionRef, containerRef, videoRef, headingRef, progressRef, overlayTextRef, currentProgress, activeTextIndex } = useVideoSection();
   const isDark = theme === "dark";
   const gradients = isDark ? VIDEO_GRADIENTS.dark : VIDEO_GRADIENTS.light;
 
   return (
     <section
-      ref={refs.sectionRef}
+      ref={sectionRef}
       className="relative"
       style={{ background: gradients.section }}
     >
       {/* Heading */}
-      <div ref={refs.headingRef} className="py-16 px-6 text-center">
+      <div ref={headingRef} className="py-16 px-6 text-center">
         <h2
           className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 bg-clip-text text-transparent"
           style={{ backgroundImage: gradients.text }}
@@ -39,11 +39,11 @@ export function VideoSection() {
       </div>
 
       {/* Video Container */}
-      <div ref={refs.containerRef} className="relative min-h-screen">
+      <div ref={containerRef} className="relative min-h-screen">
         {/* Video Element */}
         <div className="absolute inset-0 overflow-hidden">
           <video
-            ref={refs.videoRef}
+            ref={videoRef}
             className="w-full h-full object-cover"
             src={VIDEO_URL}
             muted
@@ -63,7 +63,7 @@ export function VideoSection() {
         <div className="hidden lg:block absolute bottom-8 left-1/2 -translate-x-1/2 w-1/2 max-w-md z-20">
           <div className="relative h-1 bg-white/20 rounded-full overflow-hidden">
             <div
-              ref={refs.progressRef}
+              ref={progressRef}
               className="absolute left-0 top-0 h-full bg-[#FAF1ED] rounded-full origin-left"
               style={{ transform: "scaleX(0)" }}
             />
@@ -86,10 +86,10 @@ export function VideoSection() {
 
         {/* Overlay Text - Desktop */}
         <div
-          ref={refs.overlayTextRef}
+          ref={overlayTextRef}
           className="hidden lg:flex absolute inset-0 items-center justify-center pointer-events-none z-10"
         >
-          {VIDEO_CONTENT.overlayTexts.map((item, index) => (
+          {VIDEO_CONTENT.overlayTexts.map((item) => (
             <div
               key={item.text}
               className="absolute text-7xl sm:text-8xl lg:text-9xl font-bold text-white/90 tracking-tight"

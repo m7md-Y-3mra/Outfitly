@@ -8,18 +8,29 @@ import {
   HERO_CONTENT,
   HERO_BACKGROUND_IMAGE,
   GRADIENT_COLORS,
-  PARALLAX_IMAGES,
   PARALLAX_LAYERS,
 } from "./hero.constants";
 
 export function Hero() {
   const { theme } = useTheme();
-  const { refs } = useHero();
+  const {
+    containerRef,
+    headingLine1Ref,
+    headingLine2Ref,
+    subheadingRef,
+    badgeRef,
+    ctaRef,
+    featuresRef,
+    scrollIndicatorRef,
+    parallaxLayer1Ref,
+    parallaxLayer2Ref,
+    parallaxLayer3Ref,
+  } = useHero();
   const isDark = theme === "dark";
 
   return (
     <section
-      ref={refs.containerRef}
+      ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ perspective: "1000px" }}
     >
@@ -44,7 +55,7 @@ export function Hero() {
       <div className="absolute inset-0 pointer-events-none hidden lg:block">
         {/* Layer 1 - Slowest */}
         <div
-          ref={refs.parallaxLayer1Ref}
+          ref={parallaxLayer1Ref}
           className="absolute w-80 h-80 rounded-full blur-2xl"
           style={{
             background: "radial-gradient(circle, rgba(250, 241, 237, 0.2) 0%, transparent 70%)",
@@ -57,7 +68,7 @@ export function Hero() {
 
         {/* Layer 2 - Medium */}
         <div
-          ref={refs.parallaxLayer2Ref}
+          ref={parallaxLayer2Ref}
           className="absolute w-96 h-96 rounded-full blur-3xl"
           style={{
             background: "radial-gradient(circle, rgba(139, 29, 53, 0.25) 0%, transparent 70%)",
@@ -70,7 +81,7 @@ export function Hero() {
 
         {/* Layer 3 - Fastest */}
         <div
-          ref={refs.parallaxLayer3Ref}
+          ref={parallaxLayer3Ref}
           className="absolute w-64 h-64 rounded-full blur-xl"
           style={{
             background: "radial-gradient(circle, rgba(250, 241, 237, 0.15) 0%, transparent 70%)",
@@ -114,7 +125,7 @@ export function Hero() {
         >
           {/* Badge */}
           <div
-            ref={refs.badgeRef}
+            ref={badgeRef}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-md"
             style={{
               background:
@@ -138,7 +149,7 @@ export function Hero() {
             }}
           >
             <span
-              ref={refs.headingLine1Ref}
+              ref={headingLine1Ref}
               className="block"
               style={{
                 transform: "translateZ(20px)",
@@ -148,7 +159,7 @@ export function Hero() {
               {HERO_CONTENT.heading.line1}
             </span>
             <span
-              ref={refs.headingLine2Ref}
+              ref={headingLine2Ref}
               className="block mt-2 bg-clip-text "
               style={{
                 backgroundImage:
@@ -166,7 +177,7 @@ export function Hero() {
 
           {/* Subheading */}
           <p
-            ref={refs.subheadingRef}
+            ref={subheadingRef}
             className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed"
             style={{
               color: "rgba(250, 241, 237, 0.9)",
@@ -177,7 +188,7 @@ export function Hero() {
           </p>
 
           {/* CTA Buttons */}
-          <div ref={refs.ctaRef} className="flex flex-wrap justify-center gap-4 sm:gap-6 pt-4">
+          <div ref={ctaRef} className="flex flex-wrap justify-center gap-4 sm:gap-6 pt-4">
             <Button
               size="lg"
               className="group px-8 sm:px-10 py-6 sm:py-7 text-base sm:text-lg rounded-full transition-all duration-300 hover:scale-105 relative overflow-hidden"
@@ -220,7 +231,7 @@ export function Hero() {
           </div>
 
           {/* Feature Pills */}
-          <div ref={refs.featuresRef} className="flex flex-wrap justify-center gap-4 sm:gap-6 pt-8">
+          <div ref={featuresRef} className="flex flex-wrap justify-center gap-4 sm:gap-6 pt-8">
             {HERO_CONTENT.features.map((feature, index) => (
               <div
                 key={index}
@@ -257,7 +268,7 @@ export function Hero() {
           </div>
 
           {/* Scroll Indicator */}
-          <div ref={refs.scrollIndicatorRef} className="pt-12 sm:pt-16">
+          <div ref={scrollIndicatorRef} className="pt-12 sm:pt-16">
             <div className="inline-block cursor-pointer hover:scale-110 transition-transform">
               <div
                 className="w-6 h-10 rounded-full flex items-start justify-center p-2"

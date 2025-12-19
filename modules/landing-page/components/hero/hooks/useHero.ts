@@ -3,7 +3,6 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { HeroRefs } from "../hero.types";
 import { HERO_ANIMATION_CONFIG, PARALLAX_LAYERS } from "../hero.constants";
 import { splitText } from "../../../utils/splitText";
 
@@ -22,19 +21,6 @@ export function useHero() {
   const parallaxLayer2Ref = useRef<HTMLDivElement>(null);
   const parallaxLayer3Ref = useRef<HTMLDivElement>(null);
 
-  const refs: HeroRefs = {
-    containerRef,
-    headingLine1Ref,
-    headingLine2Ref,
-    subheadingRef,
-    badgeRef,
-    ctaRef,
-    featuresRef,
-    scrollIndicatorRef,
-    parallaxLayer1Ref,
-    parallaxLayer2Ref,
-    parallaxLayer3Ref,
-  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -59,13 +45,10 @@ export function useHero() {
       // Split text animations
       let line1Chars: HTMLElement[] = [];
       let line2Chars: HTMLElement[] = [];
-      let revertLine1: () => void;
-      let revertLine2: () => void;
 
       if (headingLine1Ref.current) {
         const result = splitText(headingLine1Ref.current, "chars");
         line1Chars = result.elements;
-        revertLine1 = result.revert;
 
         gsap.set(line1Chars, {
           opacity: 0,
@@ -78,7 +61,6 @@ export function useHero() {
       if (headingLine2Ref.current) {
         const result = splitText(headingLine2Ref.current, "chars");
         line2Chars = result.elements;
-        revertLine2 = result.revert;
 
         gsap.set(line2Chars, {
           opacity: 0,
@@ -290,5 +272,17 @@ export function useHero() {
     return () => ctx.revert();
   }, []);
 
-  return { refs };
+  return {
+    containerRef,
+    headingLine1Ref,
+    headingLine2Ref,
+    subheadingRef,
+    badgeRef,
+    ctaRef,
+    featuresRef,
+    scrollIndicatorRef,
+    parallaxLayer1Ref,
+    parallaxLayer2Ref,
+    parallaxLayer3Ref,
+  };
 }
