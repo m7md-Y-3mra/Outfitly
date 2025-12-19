@@ -1,9 +1,7 @@
 import type { Crop } from "react-image-crop";
 
-/* ================== AVATAR HELPERS ================== */
-
 export const getAvatarAlt = (userName: string): string =>
-  userName ? `${userName}'s avatar` : "User avatar";
+  userName ? `${userName.slice(0, 2).toUpperCase()}` : "User avatar";
 
 export const normalizeWebsite = (value: string): string => {
   const trimmed = value.trim();
@@ -24,7 +22,6 @@ export const isValidWebsiteFinal = (value: string): boolean => {
   }
 };
 
-/* ================== IMAGE CROP & UPLOAD ================== */
 
 export const getCroppedImg = async (image: HTMLImageElement, crop: Crop): Promise<File> => {
   const canvas = document.createElement("canvas");
