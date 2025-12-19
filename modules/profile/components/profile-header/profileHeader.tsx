@@ -1,4 +1,6 @@
-import { useState, useRef } from "react";
+"use client";
+
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Link as LinkIcon, Calendar, Upload, Trash2 } from "lucide-react";
 import { Card } from "../../../../components/ui/card";
@@ -8,22 +10,11 @@ import { Textarea } from "../../../../components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../../../components/ui/dialog";
 import ReactCrop, { Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import type { ProfileHeaderProps } from "./profileHeader.types";
-import { getAvatarAlt } from "./profileHeader.utils";
-import type { User } from "../../profile.types";
-import { updateProfile } from "../../profile.service"; // make sure path is correct
-import { useTheme } from "next-themes";
-import React from "react";
-import { isValidWebsiteFinal, normalizeWebsite } from "./profileHeader.utils";
 
-interface ExtendedProfileHeaderProps extends ProfileHeaderProps {
-  isEditing: boolean;
-  editForm: User | null;
-  onStartEditing: () => void;
-  onCancelEditing: () => void;
-  onSaveEditing: () => void;
-  onUpdateForm: (field: keyof User, value: string) => void;
-}
+import type { ExtendedProfileHeaderProps } from "./profileHeader.types";
+import { getAvatarAlt, normalizeWebsite, isValidWebsiteFinal, getCroppedImg, uploadAvatar } from "./profileHeader.utils";
+import { updateProfile } from "../../profile.service";
+import { useTheme } from "next-themes";
 
 export function ProfileHeader({
   user,
@@ -36,7 +27,6 @@ export function ProfileHeader({
 }: ExtendedProfileHeaderProps) {
   const { theme } = useTheme();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [crop, setCrop] = useState<Crop>({ unit: "%", width: 80, height: 80, x: 10, y: 10 });
   const [completedCrop, setCompletedCrop] = useState<Crop | null>(null);
   const [isCropping, setIsCropping] = useState(false);
@@ -47,54 +37,6 @@ export function ProfileHeader({
 
   const safeEditForm = editForm || user;
 
-  /* ================== IMAGE HELPERS ================== */
-  const getCroppedImg = async (image: HTMLImageElement, crop: Crop): Promise<File> => {
-    const canvas = document.createElement("canvas");
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width!;
-    canvas.height = crop.height!;
-    const ctx = canvas.getContext("2d")!;
-    ctx.drawImage(
-      image,
-      crop.x! * scaleX,
-      crop.y! * scaleY,
-      crop.width! * scaleX,
-      crop.height! * scaleY,
-      0,
-      0,
-      crop.width!,
-      crop.height!,
-    );
-
-    return new Promise((resolve) => {
-      canvas.toBlob(
-        (blob) => {
-          resolve(new File([blob!], "avatar.jpg", { type: "image/jpeg" }));
-        },
-        "image/jpeg",
-        0.9,
-      );
-    });
-  };
-
-  /* ================== UPLOAD HELPER ================== */
-  const uploadAvatar = async (file: File): Promise<string> => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const res = await fetch("/api/upload-avatar", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!res.ok) throw new Error("Upload failed");
-
-    const data = await res.json();
-    return data.url;
-  };
-
-  /* ================== HANDLERS ================== */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -110,7 +52,6 @@ export function ProfileHeader({
       const croppedFile = await getCroppedImg(imgRef.current, completedCrop);
       const avatarUrl = await uploadAvatar(croppedFile);
 
-      // update form state and preview
       onUpdateForm("avatarUrl", avatarUrl);
       setImagePreview(avatarUrl);
       setIsCropping(false);
@@ -122,12 +63,9 @@ export function ProfileHeader({
 
   const deleteAvatar = async () => {
     try {
-      // reset UI
       onUpdateForm("avatarUrl", "");
-      setImageFile(null);
       setImagePreview(null);
 
-      // update DB immediately
       if (safeEditForm?.id) {
         await updateProfile(safeEditForm.id, { avatarUrl: "" });
       }
@@ -137,7 +75,17 @@ export function ProfileHeader({
     }
   };
 
-  const websiteUrl = user.website.startsWith("http") ? user.website : `https://${user.website}`;
+  const handleWebsiteBlur = () => {
+    if (!safeEditForm) return;
+
+    if (!isValidWebsiteFinal(safeEditForm.website)) {
+      setWebsiteError("Please enter a valid website (example.com)");
+      return;
+    }
+
+    onUpdateForm("website", normalizeWebsite(safeEditForm.website));
+    setWebsiteError(null);
+  };
 
   /* ================== RENDER AVATAR ================== */
   const renderAvatar = () => {
@@ -151,7 +99,6 @@ export function ProfileHeader({
       );
     }
 
-    // fallback to initials
     const initials = user.name
       .split(" ")
       .map((n) => n[0])
@@ -161,14 +108,7 @@ export function ProfileHeader({
 
     return (
       <div
-        className="
-    w-full h-full 
-    flex items-center justify-center 
-    rounded-full 
-    text-white text-2xl font-extrabold 
-    shadow-lg 
-    animate-gradient animate-float
-    "
+        className="w-full h-full flex items-center justify-center rounded-full text-white text-2xl font-extrabold shadow-lg animate-gradient animate-float"
         style={{
           background: `linear-gradient( var(--outfitly-gradient-start), var(--outfitly-gradient-mid), var(--outfitly-gradient-end))`,
           backgroundSize: "200% 200%",
@@ -180,18 +120,19 @@ export function ProfileHeader({
     );
   };
 
+  const websiteUrl = user.website.startsWith("http") ? user.website : `https://${user.website}`;
+
   return (
     <>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <Card
           className="p-8 border-2 shadow-xl transition-all duration-300 mb-8 relative overflow-hidden"
           style={{
-            borderColor:
-              theme === "dark" ? "var(--outfitly-bg-tertiary)" : "var(--outfitly-bg-secondary)",
+            borderColor: theme === "dark" ? "var(--outfitly-bg-tertiary)" : "var(--outfitly-bg-secondary)",
             backgroundColor: "var(--card)",
           }}
         >
-          <div className="flex flex-col items-center md:flex-row gap-8"> {/* Increased gap for better spacing */}
+          <div className="flex flex-col items-center md:flex-row gap-8">
             {/* AVATAR */}
             <div className="relative w-32 h-32 md:w-40 md:h-40 flex-shrink-0">
               <div
@@ -213,19 +154,10 @@ export function ProfileHeader({
                     onChange={handleFileChange}
                   />
                   <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      className="hover:scale-105 transition-transform duration-200"
-                      onClick={() => fileInputRef.current?.click()}
-                    >
+                    <Button size="sm" onClick={() => fileInputRef.current?.click()}>
                       <Upload className="w-4 h-4" />
                     </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      className="hover:scale-105 transition-transform duration-200"
-                      onClick={deleteAvatar}
-                    >
+                    <Button size="sm" variant="destructive" onClick={deleteAvatar}>
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
@@ -234,7 +166,7 @@ export function ProfileHeader({
             </div>
 
             {/* INFO */}
-            <div className="flex-1 text-center md:text-left"> {/* Centered on mobile, left-aligned on desktop */}
+            <div className="flex-1 text-center md:text-left">
               {isEditing ? (
                 <div className="space-y-4">
                   <Input
@@ -253,22 +185,14 @@ export function ProfileHeader({
                 </div>
               ) : (
                 <>
-                  <h2
-                    className="mb-2 text-3xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-gradient"
-                    style={{
-                      background: `linear-gradient(to right, var(--outfitly-gradient-start), var(--outfitly-gradient-mid), var(--outfitly-gradient-end))`,
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    }}
-                  >
+                  <h2 className="mb-2 text-3xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-gradient">
                     {user.name}
                   </h2>
                   <p className="mb-6 max-w-2xl text-muted-foreground text-lg leading-relaxed">{user.bio}</p>
                 </>
               )}
 
-              <div className="flex flex-wrap gap-6 text-sm mt-6 justify-center md:justify-start"> {/* Flex-wrap for mobile */}
+              <div className="flex flex-wrap gap-6 text-sm mt-6 justify-center md:justify-start">
                 <div className="flex gap-2 items-center hover:text-primary transition-colors duration-300">
                   <MapPin size={16} className="text-muted-foreground" />
                   {isEditing ? (
@@ -289,25 +213,9 @@ export function ProfileHeader({
                     <Input
                       placeholder="Your website"
                       value={safeEditForm.website}
-                      onChange={(e) => {
-                        // JUST STORE WHAT USER TYPES
-                        onUpdateForm("website", e.target.value);
-                        setWebsiteError(null);
-                      }}
-                      onBlur={(e) => {
-                        const value = e.target.value;
-
-                        if (!isValidWebsiteFinal(value)) {
-                          setWebsiteError("Please enter a valid website (example.com)");
-                          return;
-                        }
-
-                        // normalize ONLY after user is done
-                        onUpdateForm("website", normalizeWebsite(value));
-                      }}
+                      onChange={(e) => onUpdateForm("website", e.target.value)}
+                      onBlur={handleWebsiteBlur}
                     />
-
-
                   ) : (
                     <a
                       href={websiteUrl}
@@ -317,11 +225,8 @@ export function ProfileHeader({
                     >
                       {user.website}
                     </a>
-                    
                   )}
-                  {websiteError && (
-                    <p className="text-xs text-red-500 mt-1">{websiteError}</p>
-                  )}
+                  {websiteError && <p className="text-xs text-red-500 mt-1">{websiteError}</p>}
                 </div>
 
                 <div className="flex gap-2 items-center">
@@ -332,25 +237,15 @@ export function ProfileHeader({
 
               {isEditing ? (
                 <div className="flex gap-4 mt-6 justify-center md:justify-start">
-                  <Button
-                    onClick={onSaveEditing}
-                    className="hover:scale-105 transition-transform duration-200 px-6"
-                  >
+                  <Button onClick={onSaveEditing} className="px-6">
                     Save Changes
                   </Button>
-                  <Button
-                    variant="outline"
-                    onClick={onCancelEditing}
-                    className="hover:scale-105 transition-transform duration-200 px-6"
-                  >
+                  <Button variant="outline" onClick={onCancelEditing} className="px-6">
                     Cancel
                   </Button>
                 </div>
               ) : (
-                <Button
-                  className="mt-6 hover:scale-105 transition-transform duration-200 px-8"
-                  onClick={onStartEditing}
-                >
+                <Button className="mt-6 px-8" onClick={onStartEditing}>
                   Edit Profile
                 </Button>
               )}
@@ -365,30 +260,14 @@ export function ProfileHeader({
           <DialogHeader>
             <DialogTitle className="text-center">Crop Your Avatar</DialogTitle>
           </DialogHeader>
-
           {imagePreview && (
-            <ReactCrop
-              crop={crop}
-              onChange={(_, percent) => setCrop(percent)}
-              onComplete={(c) => setCompletedCrop(c)}
-              aspect={1}
-            >
+            <ReactCrop crop={crop} onChange={(_, percent) => setCrop(percent)} onComplete={(c) => setCompletedCrop(c)} aspect={1}>
               <img ref={imgRef} src={imagePreview} className="max-w-full h-auto" />
             </ReactCrop>
           )}
-
           <div className="flex gap-4 mt-6 justify-center">
-            <Button
-              onClick={applyCrop}
-              className="hover:scale-105 transition-transform duration-200"
-            >
-              Apply Crop
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setIsCropping(false)}
-              className="hover:scale-105 transition-transform duration-200"
-            >
+            <Button onClick={applyCrop}>Apply Crop</Button>
+            <Button variant="outline" onClick={() => setIsCropping(false)}>
               Cancel
             </Button>
           </div>
