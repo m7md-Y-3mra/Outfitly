@@ -52,8 +52,7 @@ export const PARALLAX_LAYERS: ParallaxLayer[] = [
   { speed: 0.6, zIndex: 3, opacity: 0.3 },
 ];
 
-export const HERO_BACKGROUND_IMAGE =
-  "https://images.unsplash.com/photo-1593032470861-4509830938cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JtYWwlMjB3YXJkcm9iZSUyMHN1aXRzfGVufDF8fHx8MTc2NDI0OTU0MXww&ixlib=rb-4.1.0&q=80&w=1080";
+export const HERO_BACKGROUND_IMAGE = "https://images.unsplash.com/photo-1649361811423-a55616f7ab11?q=80&w=758&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
 export const PARALLAX_IMAGES = {
   layer1:
