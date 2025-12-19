@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { findAllCategoriesAction } from "@/modules/category/category.action";
 import { findAllBrandsAction } from "@/modules/brand/brand.action";
 import WardrobeFrom from "@/modules/wardrobe/wardrobe-form/wardrobeFrom";
 import { Skeleton } from "@/components/ui/skeleton";
+
+export const metadata: Metadata = {
+  title: "Add Item",
+  description: "Add a new item to your wardrobe collection.",
+};
 
 // Server component to fetch categories
 async function CategoriesLoader() {

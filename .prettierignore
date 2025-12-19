@@ -27,3 +27,5 @@ components.json
 .env
 .env.local
 .env*.local
+public/*
+components/loading/loading.css

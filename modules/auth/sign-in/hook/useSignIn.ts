@@ -5,7 +5,7 @@ import { INITIAL_VALUES } from "../signIn.constants";
 import { TFormValues } from "../signIn.types";
 import { signInAction } from "../../auth.actions";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 const useSignIn = () => {
   const navigate = useRouter();
   const handleSignIn = async (

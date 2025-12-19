@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "framer-motion";
 import { Instagram, Twitter, Facebook, Mail, MapPin, Phone } from "lucide-react";
 

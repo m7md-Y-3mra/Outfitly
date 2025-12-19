@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 
 export function AddNewListCard() {
   const router = useRouter();

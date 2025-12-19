@@ -1,13 +1,16 @@
-"use client";
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
+import type { Metadata } from "next";
+import { LandingPage } from "@/modules/landing-page";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Discover your personal style with Outfitly. Organize your wardrobe, explore outfit ideas, and elevate your fashion game.",
+};
 
 export default function Home() {
   return (
-    <div className="">
-      <Navbar />
-
-      <Footer />
+    <div>
+      <LandingPage />
     </div>
   );
 }

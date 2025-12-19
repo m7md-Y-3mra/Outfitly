@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Bell, Sun, Moon, Menu, X } from "lucide-react";
+import { Sun, Moon, Menu, X } from "lucide-react";
 
 import { Button } from "../ui/button";
 import { Logo } from "../logo/logo";
@@ -36,7 +36,7 @@ export function Navbar() {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex gap-8">
               {NAV_LINKS.map((link) => (
-                <Link key={link.label} href={link.href}>
+                <Link key={link.label} href={link.href} prefetch={false}>
                   <motion.span
                     whileHover={{ y: -2 }}
                     className={`opacity-80 hover:opacity-100 transition-all duration-300 ${
@@ -52,7 +52,7 @@ export function Navbar() {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-4">
-              <Link href="/notifications">
+              {/* <Link href="/notifications">
                 <Button
                   variant="ghost"
                   className="hover:bg-transparent p-2 relative"
@@ -71,7 +71,7 @@ export function Navbar() {
                     3
                   </span>
                 </Button>
-              </Link>
+              </Link> */}
 
               <CustomButton
                 variant="ghost"
@@ -82,7 +82,7 @@ export function Navbar() {
                 {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </CustomButton>
 
-              <Link href="/login">
+              <Link href="/sign-in">
                 <Button
                   variant="ghost"
                   className="hover:bg-transparent"
@@ -92,7 +92,7 @@ export function Navbar() {
                 </Button>
               </Link>
 
-              <Link href="/login">
+              <Link href="/sign-up">
                 <Button
                   className="hover:scale-105 hover:shadow-lg transition-all"
                   style={{
@@ -107,7 +107,7 @@ export function Navbar() {
 
             {/* Mobile Icons */}
             <div className="lg:hidden flex items-center gap-2">
-              <Link href="/notifications" className="relative p-2">
+              {/* <Link href="/notifications" className="relative p-2">
                 <Bell className="w-5 h-5" style={{ color: NAVBAR_COLORS.link }} />
                 <span
                   className="absolute -top-1 -right-1 w-4 h-4 rounded-full text-xs flex items-center justify-center"
@@ -120,7 +120,7 @@ export function Navbar() {
                 >
                   3
                 </span>
-              </Link>
+              </Link> */}
 
               <CustomButton
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -171,7 +171,7 @@ export function Navbar() {
               ))}
 
               <div className="pt-4 space-y-3">
-                <Link href="/login">
+                <Link href="/sign-in">
                   <Button
                     variant="ghost"
                     className="w-full"
@@ -181,7 +181,7 @@ export function Navbar() {
                   </Button>
                 </Link>
 
-                <Link href="/login">
+                <Link href="/sign-up">
                   <Button
                     className="w-full"
                     style={{

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 
 import { PAGE_HEADER_CLASSES } from "./pageHeader.constants";
 import { getRadialPattern } from "./pageHeader.utils";

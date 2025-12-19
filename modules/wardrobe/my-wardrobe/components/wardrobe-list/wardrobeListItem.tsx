@@ -1,7 +1,7 @@
 import { GetUserWardrobeItemResponse } from "@/modules/wardrobe/types/dto.types";
 import { motion } from "framer-motion";
 import { Edit, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import Image from "next/image";
 import { useDeleteWardrobeItem } from "../../hooks/useDeleteWardrobeItem";
 import { DeleteConfirmationDialog } from "../delete-confirmation-dialog";

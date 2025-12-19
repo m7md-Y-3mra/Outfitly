@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useDeleteWardrobeItem } from "@/modules/wardrobe/my-wardrobe/hooks/useDeleteWardrobeItem";
 
 export const useItemDetailsActions = (itemId: string, itemName: string) => {

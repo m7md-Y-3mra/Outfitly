@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { S3_BUCKET_NAME } from "@/config/env.config";
 import Uploader from "@/components/uploader";
 import { Form, FormikProvider } from "formik";
