@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import ItemDetailsPage from "@/modules/wardrobe/wardrobe-item-details";
+
+export const metadata: Metadata = {
+  title: "Item Details",
+  description: "View details of your wardrobe item.",
+};
 
 type ItemDetailPageProps = {
   params: Promise<{ id: string }>;
