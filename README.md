@@ -1,5 +1,12 @@
 # Outfitly
 
+![Next.js](https://img.shields.io/badge/Next.js-16.x-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-19.x-blue?style=for-the-badge&logo=react)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16.x-blue?style=for-the-badge&logo=postgresql)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=for-the-badge&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-38B2AC?style=for-the-badge&logo=tailwind-css)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
+
 A modern full-stack web application for personal wardrobe management and AI-powered outfit styling. Built with Next.js 16, React 19, and TypeScript.
 
 ## Features
@@ -30,15 +37,8 @@ A modern full-stack web application for personal wardrobe management and AI-powe
 
 ### Admin Dashboard
 - User management
-- Product catalog management
 - Outfit moderation
 - Platform settings
-
-### E-Commerce Integration
-- Product catalog with brands and categories
-- Product variants (size, color)
-- Shopping cart and order management
-- Product reviews and ratings
 
 ## Tech Stack
 
@@ -157,9 +157,7 @@ Key models include:
 - **User** - User accounts and profiles
 - **WardrobeItem** - Personal clothing items
 - **Outfit** - Collections of styled items
-- **Product** - E-commerce product catalog
-- **Brand** / **Category** - Product organization
-- **Order** - Purchase orders
+- **Occasion** - Outfit occasions (wedding, office, casual, etc.)
 
 Run `npm run studio` to explore the database visually with Prisma Studio.
 
@@ -173,4 +171,4 @@ Run `npm run studio` to explore the database visually with Prisma Studio.
 
 ## License
 
-This project is proprietary software. All rights reserved.
+This project is licensed under the MIT License.
