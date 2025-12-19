@@ -1,36 +1,176 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Outfitly
+
+A modern full-stack web application for personal wardrobe management and AI-powered outfit styling. Built with Next.js 16, React 19, and TypeScript.
+
+## Features
+
+### Wardrobe Management
+- Add, organize, and categorize clothing items
+- Support for multiple categories: tops, bottoms, shoes, accessories, and more
+- Assign styles (Casual, Formal, Work, Sporty, Streetwear, Loungewear, Party)
+- Track seasonal availability and item metadata (color, size, brand, notes)
+- Image upload and management
+
+### AI-Powered Outfit Generator
+- Intelligent outfit recommendations using Groq SDK with Llama 3.3 70B
+- Considers weather, style preferences, occasions, and specific requirements
+- Returns multiple outfit options with confidence ratings
+- Smart item selection from your personal wardrobe
+
+### Outfit Management
+- Create custom outfits from wardrobe items
+- Assign occasions to outfits
+- Privacy settings (private, friends, public)
+- Like and favorite functionality
+
+### Explore & Social
+- Browse outfits from other users
+- Discover outfits by occasion
+- Like and save favorite outfits
+
+### Admin Dashboard
+- User management
+- Product catalog management
+- Outfit moderation
+- Platform settings
+
+### E-Commerce Integration
+- Product catalog with brands and categories
+- Product variants (size, color)
+- Shopping cart and order management
+- Product reviews and ratings
+
+## Tech Stack
+
+| Category | Technologies |
+|----------|-------------|
+| Framework | Next.js 16, React 19 |
+| Language | TypeScript (strict mode) |
+| Database | PostgreSQL, Prisma ORM |
+| Authentication | JWT, Argon2 password hashing |
+| UI Components | shadcn/ui, Radix UI |
+| Styling | Tailwind CSS 4, Framer Motion, GSAP |
+| State Management | Zustand |
+| Forms | Formik, Zod validation |
+| AI | Groq SDK (Llama 3.3 70B) |
+| File Storage | AWS S3 / Tigris |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18+
+- PostgreSQL database
+- AWS S3 or Tigris account (for file storage)
+- Groq API key (for AI features)
+
+### Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/outfitly"
+
+# Authentication
+SESSION_SECRET="your-session-secret"
+NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="your-encryption-key"
+
+# AWS S3 / Tigris Storage
+AWS_ACCESS_KEY_ID="your-access-key"
+AWS_SECRET_ACCESS_KEY="your-secret-key"
+AWS_ENDPOINT_URL_S3="your-endpoint-url"
+AWS_REGION="your-region"
+S3_BUCKET_NAME="your-bucket-name"
+
+# AI
+GROQ_API_KEY="your-groq-api-key"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Install dependencies
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Generate Prisma client
+npm run prisma:generate
 
-## Learn More
+# Run database migrations
+npm run migrate
 
-To learn more about Next.js, take a look at the following resources:
+# Seed the database (optional)
+npm run seed
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Start development server
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run format` | Format code with Prettier |
+| `npm run type-check` | Run TypeScript type checking |
+| `npm run check` | Run all code quality checks |
+| `npm run prisma:generate` | Generate Prisma client |
+| `npm run migrate` | Deploy database migrations |
+| `npm run migration:create` | Create new migration |
+| `npm run seed` | Seed database with initial data |
+| `npm run studio` | Open Prisma Studio |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+├── app/                    # Next.js App Router
+│   ├── (main)/            # Main application routes
+│   ├── (admin)/           # Admin dashboard routes
+│   ├── (auth)/            # Authentication routes
+│   └── api/               # API routes
+├── modules/               # Feature modules
+│   ├── wardrobe/          # Wardrobe management
+│   ├── outfit/            # Outfit management
+│   ├── AI-generator/      # AI outfit generation
+│   ├── auth/              # Authentication
+│   ├── explore/           # Explore feature
+│   ├── user/              # User management
+│   └── dashboard/         # Admin dashboard
+├── components/            # Reusable UI components
+│   └── ui/                # Base UI components (shadcn/ui)
+├── lib/                   # Utilities and helpers
+├── hooks/                 # Custom React hooks
+├── config/                # Configuration files
+├── prisma/                # Database schema and migrations
+└── public/                # Static assets
+```
+
+## Database Schema
+
+Key models include:
+
+- **User** - User accounts and profiles
+- **WardrobeItem** - Personal clothing items
+- **Outfit** - Collections of styled items
+- **Product** - E-commerce product catalog
+- **Brand** / **Category** - Product organization
+- **Order** - Purchase orders
+
+Run `npm run studio` to explore the database visually with Prisma Studio.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is proprietary software. All rights reserved.
