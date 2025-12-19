@@ -99,7 +99,10 @@ export const WeatherWidget: React.FC<{ weather: WeatherData }> = ({ weather }) =
                   <MapPin className="w-5 h-5" style={{ color: "var(--outfitly-text-light)" }} />
                 </div>
 
-                <span className="text-xl transition-colors duration-300" style={{ color: titleColor }}>
+                <span
+                  className="text-xl transition-colors duration-300"
+                  style={{ color: titleColor }}
+                >
                   {weather.location}
                 </span>
               </div>
@@ -121,7 +124,10 @@ export const WeatherWidget: React.FC<{ weather: WeatherData }> = ({ weather }) =
                 </div>
 
                 <div>
-                  <div className="text-2xl mb-1 transition-colors duration-300" style={{ color: accentColor }}>
+                  <div
+                    className="text-2xl mb-1 transition-colors duration-300"
+                    style={{ color: accentColor }}
+                  >
                     {weather.condition}
                   </div>
 
@@ -152,12 +158,18 @@ export const WeatherWidget: React.FC<{ weather: WeatherData }> = ({ weather }) =
                         </span>
                       </div>
 
-                      <span className="text-sm opacity-70 transition-colors duration-300" style={{ color: secondaryColor }}>
+                      <span
+                        className="text-sm opacity-70 transition-colors duration-300"
+                        style={{ color: secondaryColor }}
+                      >
                         {d.label}
                       </span>
                     </div>
 
-                    <div className="transition-colors duration-300 pl-10" style={{ color: accentColor }}>
+                    <div
+                      className="transition-colors duration-300 pl-10"
+                      style={{ color: accentColor }}
+                    >
                       {d.value}
                     </div>
                   </div>
