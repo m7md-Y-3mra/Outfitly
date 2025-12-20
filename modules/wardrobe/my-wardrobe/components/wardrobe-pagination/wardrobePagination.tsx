@@ -39,7 +39,7 @@ const WardrobePagination = ({
           <Button
             variant="outline"
             onClick={() => handlePageChange(page + 1)}
-            disabled={page === totalPages}
+            disabled={page >= totalPages}
           >
             Next
             <ChevronRight className="mr-2 h-4 w-4" />
