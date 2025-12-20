@@ -8,6 +8,7 @@ import {
   findLikedOutfits,
   findLikedProducts,
   updateUserProfile,
+  findUserWardrobeItems,
 } from "./profile.repo";
 import { zodValidation } from "@/utils/zod.utils";
 import { profileListQuerySchema, profileUpdateSchema } from "./profile.validation";
@@ -60,4 +61,14 @@ export const updateProfile = async (
   } catch (error) {
     throw new CustomError({ message: "Failed to update profile", statusCode: 500 });
   }
+};
+
+export const getUserWardrobeItemsPaginated = async (userId: string, query: IPaginationQuery) => {
+  const {
+    page,
+    limit,
+    order = "desc",
+    field = "createdAt",
+  } = zodValidation(profileListQuerySchema, query);
+  return findUserWardrobeItems(userId, { page, limit }, order, field);
 };

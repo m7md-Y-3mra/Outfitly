@@ -26,6 +26,17 @@ export interface LikedProduct {
   price: string;
 }
 
+export interface WardrobeItem {
+  id: string;
+  name: string;
+  image: string;
+  category: string; // Added for completeness
+  season: string;
+  style: string;
+  createdAt?: string;
+}
+
+
 export interface IPaginationQuery {
   page: number;
   limit: number;

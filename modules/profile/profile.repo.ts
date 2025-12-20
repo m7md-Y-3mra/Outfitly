@@ -3,7 +3,8 @@ import { Outfit, User } from "@/app/generated/prisma/client";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 import { createPaginationForPrisma, createPaginationMetaData } from "@/lib/database.util";
 import prisma from "@/lib/prisma";
-import type { User as UIUser, Outfit as UIOutfit, LikedProduct } from "./profile.types";
+import type { User as UIUser, Outfit as UIOutfit, LikedProduct, WardrobeItem as UIWardrobeItem, WardrobeItem } from "./profile.types";
+
 
 // Find user profile
 export const findUserProfile = async (userId: string): Promise<UIUser | null> => {
@@ -139,4 +140,33 @@ export const updateUserProfile = async (
       avatarUrl: data.avatarUrl,
     },
   });
+};
+
+export const findUserWardrobeItems = async (
+  userId: string,
+  query: { page: number; limit: number }, // Changed to match the call
+  order: SortOrder = "desc",
+  field: Extract<keyof WardrobeItem, "createdAt" | "name"> = "createdAt",
+): Promise<IPaginationResult<UIWardrobeItem>> => {
+  const pagination = createPaginationForPrisma({ ...query, order, field }); // Reconstruct full query for pagination
+  const allItems = await prisma.wardrobeItem.findMany({
+    where: { userId },
+    include: { images: true, category: true },
+    orderBy: { [field]: order },
+    ...pagination,
+  });
+
+  const total = await prisma.wardrobeItem.count({ where: { userId } });
+  const meta = createPaginationMetaData(query.limit, query.page, total);
+
+  const mappedData: UIWardrobeItem[] = allItems.map((item) => ({
+    id: item.id,
+    name: item.name,
+    image: item.images[0]?.imageUrl || "",
+    category: item.category?.name || "",
+    season: item.season,
+    style: item.style,
+  }));
+
+  return { data: mappedData, meta };
 };
