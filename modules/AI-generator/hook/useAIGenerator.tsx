@@ -1,14 +1,12 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-
 import type { AIOutfitResponse, IItemsForAI } from "../types/generator.types";
 import type {
   AIGeneratorFormData,
   IGeneratedOutfit,
   IOutfitForModal,
 } from "../components/aiGenerator";
-
 import {
   createPrompt,
   getItemsByIds,
@@ -16,7 +14,6 @@ import {
   toUserRequirements,
   transfromAIResponse,
 } from "../ai.utils";
-
 import {
   createOutfitAction,
   generateAIOutfitAction,
@@ -144,7 +141,7 @@ export function useAIGenerator() {
     },
     [],
   );
- 
+
   return {
     formData,
     filteredFromDB,
