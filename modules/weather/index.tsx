@@ -10,12 +10,31 @@ import { useWeather } from "./hooks/useWeather";
 import { WeatherWidget } from "./components/weather-widget/weatherWidget";
 import { OutfitCard } from "./components/outfit-card/outfitCard";
 import { WardrobeItemCard } from "./components/wardrobe-item-card/wardrobeItemCard";
+import {useProfile} from "../profile/hooks/useProfile"
+import { LikedProduct } from "../profile/profile.types";
+import type { Outfit, WardrobeItem } from "../profile/profile.types";
+import {timeBasedOutfits, suitableItems} from "./weather.constants"
+import { useState, useEffect, useMemo } from "react"; 
+import {  getSeasonFromWeather } from "./hooks/useWeather";
 
 export default function WeatherPage() {
   const { theme } = useTheme();
-  const { weather, outfits, items, handleScroll } = useWeather();
+  const { weather, handleScroll } = useWeather();
+  const { outfits: userOutfits, items: userItems, loading: profileLoading } = useProfile();  
 
-  return (
+  const season = useMemo(() => getSeasonFromWeather(weather), [weather]);
+  const filteredOutfits = useMemo(() => {
+    if (!userOutfits) return [];
+    return userOutfits.filter((outfit) => outfit.season === season);
+  }, [userOutfits, season]);
+  
+  const filteredItems = useMemo(() => {
+    if (!userItems) return [];
+    return userItems.filter((item) => item.season === season);
+  }, [userItems, season]);
+  
+  
+   return (
     <div style={{ backgroundColor: "var(--outfitly-bg-primary)" }}>
       <Navbar />
       <main className="pt-20 pb-16">
@@ -48,14 +67,22 @@ export default function WeatherPage() {
                   backgroundClip: "text",
                 }}
               >
-                Perfect outfits for today:
+               Perfect outfits for today ({season} weather): 
               </h2>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {outfits.map((outfit, index) => (
-                <OutfitCard key={index} outfit={outfit} index={index} />
-              ))}
-            </div>
+
+             {profileLoading ? (
+              <p>Loading your outfits...</p>  // <-- Add loading state
+            ) : filteredOutfits.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {filteredOutfits.map((outfit, index) => (
+                  <OutfitCard key={outfit.id || index} outfit={outfit} index={index} />
+                ))}
+              </div>
+            ) : (
+              <p>No outfits match this weather. Try adding more to your profile!</p>  // <-- Fallback
+            )}
+            
           </motion.div>
 
           {/* Wardrobe Items Section */}
@@ -83,37 +110,43 @@ export default function WeatherPage() {
                 <ChevronRight size={16} />
               </CustomButton>
             </div>
-            <div className="relative">
-              <div id="items-scroll" className="flex overflow-x-auto space-x-4 scroll-smooth pb-4">
-                {items.map((item, index) => (
-                  <WardrobeItemCard key={index} item={item} index={index} />
-                ))}
+                     {profileLoading ? (
+              <p>Loading your wardrobe...</p>  // <-- Add loading state
+            ) : filteredItems.length > 0 ? (
+              <div className="relative">
+                <div id="items-scroll" className="flex overflow-x-auto space-x-4 scroll-smooth pb-4">
+                  {filteredItems.map((item, index) => (
+                    <WardrobeItemCard key={item.id || index} item={item} index={index} />
+                  ))}
+                </div>
+                <button
+                  onClick={() => handleScroll("left")}
+                  className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow-md"
+                  style={{
+                    backgroundColor: theme === "dark" ? "var(--card)" : "var(--card)",
+                    opacity: 0.7,
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.7")}
+                >
+                  &#8592;
+                </button>
+                <button
+                  onClick={() => handleScroll("right")}
+                  className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow-md"
+                  style={{
+                    backgroundColor: theme === "dark" ? "var(--card)" : "var(--card)",
+                    opacity: 0.7,
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.7")}
+                >
+                  &#8594;
+                </button>
               </div>
-              <button
-                onClick={() => handleScroll("left")}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow-md"
-                style={{
-                  backgroundColor: theme === "dark" ? "var(--card)" : "var(--card)",
-                  opacity: 0.7,
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.7")}
-              >
-                &#8592;
-              </button>
-              <button
-                onClick={() => handleScroll("right")}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow-md"
-                style={{
-                  backgroundColor: theme === "dark" ? "var(--card)" : "var(--card)",
-                  opacity: 0.7,
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.7")}
-              >
-                &#8594;
-              </button>
-            </div>
+            ) : (
+              <p>No wardrobe items match this weather. Add more in your profile!</p>  // <-- Fallback
+            )}
           </motion.div>
         </div>
       </main>

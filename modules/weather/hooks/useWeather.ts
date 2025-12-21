@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { WeatherData, Outfit, WardrobeItem } from "../weather.types";
 import { mockWeather, timeBasedOutfits, suitableItems } from "../weather.constants";
 import { WeatherService } from "../weather.service";
@@ -8,13 +8,11 @@ import { validateWeatherData } from "../weather.validation";
 
 interface UseWeatherReturn {
   weather: WeatherData;
-  outfits: Outfit[];
-  items: WardrobeItem[];
   handleScroll: (direction: "left" | "right") => void;
 }
 
 // Enhanced: Map weather to season primarily based on temperature (°F), with condition as tiebreaker
-const getSeasonFromWeather = (weather: WeatherData): string => {
+export const getSeasonFromWeather = (weather: WeatherData): string => {
   const temp = weather.temperature;
   const condition = weather.condition.toLowerCase();
 
@@ -75,15 +73,7 @@ export const useWeather = (): UseWeatherReturn => {
   }, []);
 
   // Filter outfits and items based on weather season
-  const filteredOutfits = useMemo(() => {
-    const season = getSeasonFromWeather(weather);
-    return timeBasedOutfits.filter((outfit) => outfit.season === season);
-  }, [weather]);
 
-  const filteredItems = useMemo(() => {
-    const season = getSeasonFromWeather(weather);
-    return suitableItems.filter((item) => item.season === season);
-  }, [weather]);
 
-  return { weather, outfits: filteredOutfits, items: filteredItems, handleScroll };
+  return { weather, handleScroll };
 };

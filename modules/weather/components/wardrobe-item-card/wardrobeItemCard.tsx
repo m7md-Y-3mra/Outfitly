@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Card } from "../../../../components/ui/card"; // Or '@/components/ui/card'
 import { Badge } from "../../../../components/ui/badge"; // Or '@/components/ui/badge'
 import { useTheme } from "next-themes";
-import { WardrobeItem } from "../../weather.types";
+import { WardrobeItem } from "../../../profile/profile.types";
 
 interface WardrobeItemCardProps {
   item: WardrobeItem;

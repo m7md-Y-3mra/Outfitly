@@ -18,7 +18,6 @@ export const timeBasedOutfits: Outfit[] = [
   {
     id: 1,
     time: "Morning",
-    timeRange: "6AM - 12PM",
     name: "Fresh Start Look",
     image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80",
     description: "Light layers for the cool morning",
@@ -29,7 +28,6 @@ export const timeBasedOutfits: Outfit[] = [
   {
     id: 2,
     time: "Afternoon",
-    timeRange: "12PM - 6PM",
     name: "Peak Sun Style",
     image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80",
     description: "Comfortable for warmer temps",
@@ -40,7 +38,6 @@ export const timeBasedOutfits: Outfit[] = [
   {
     id: 3,
     time: "Evening",
-    timeRange: "6PM - 12AM",
     name: "Cool Down Outfit",
     image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80",
     description: "Perfect for cooling evenings",
@@ -51,7 +48,6 @@ export const timeBasedOutfits: Outfit[] = [
   {
     id: 4,
     time: "Night",
-    timeRange: "12AM - 6AM",
     name: "Nighttime Chic",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
     description: "Cozy and stylish for late nights",
