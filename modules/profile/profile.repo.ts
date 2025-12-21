@@ -5,7 +5,6 @@ import { createPaginationForPrisma, createPaginationMetaData } from "@/lib/datab
 import prisma from "@/lib/prisma";
 import type { User as UIUser, Outfit as UIOutfit, LikedProduct, WardrobeItem as UIWardrobeItem, WardrobeItem } from "./profile.types";
 
-
 // Find user profile
 export const findUserProfile = async (userId: string): Promise<UIUser | null> => {
   const user = await prisma.user.findUnique({
@@ -150,20 +149,24 @@ export const updateUserProfile = async (
 
 export const findUserWardrobeItems = async (
   userId: string,
-  query: { page: number; limit: number }, // Changed to match the call
-  order: SortOrder = "desc",
-  field: Extract<keyof WardrobeItem, "createdAt" | "name"> = "createdAt",
+  query: IPaginationQuery,
 ): Promise<IPaginationResult<UIWardrobeItem>> => {
-  const pagination = createPaginationForPrisma({ ...query, order, field }); // Reconstruct full query for pagination
+  const { page, limit, order = "desc", field = "addedAt" } = query;
+
+  const pagination = createPaginationForPrisma({ page, limit });
+
+  // Construct orderBy: Use type assertion to allow dynamic keys (Prisma's typing is strict)
+  const orderBy = (field && order ? { [field]: order } : { addedAt: "desc" }) as Record<string, SortOrder>;
+
   const allItems = await prisma.wardrobeItem.findMany({
     where: { userId },
     include: { images: true, category: true },
-    orderBy: { [field]: order },
+    orderBy,
     ...pagination,
   });
 
   const total = await prisma.wardrobeItem.count({ where: { userId } });
-  const meta = createPaginationMetaData(query.limit, query.page, total);
+  const meta = createPaginationMetaData(limit, page, total);
 
   const mappedData: UIWardrobeItem[] = allItems.map((item) => ({
     id: item.id,

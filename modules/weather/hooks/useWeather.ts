@@ -18,18 +18,18 @@ export const getSeasonFromWeather = (weather: WeatherData): string => {
 
   // Validate temperature
   if (typeof temp !== "number" || isNaN(temp)) {
-    return "autumn"; // Default fallback
+    return "fall";  // <-- Changed from "autumn" to "fall" to match data types (e.g., Prisma enum "FALL")
   }
 
   // Temperature-based mapping
   if (temp > 75) {
     return "summer"; // Hot
   } else if (temp >= 60) {
-    // Mild range: Use condition to distinguish autumn vs. summer edge
-    return condition === "sunny" ? "summer" : "autumn";
+    // Mild range: Use condition to distinguish fall vs. summer edge
+    return condition === "sunny" ? "summer" : "fall";  // <-- Changed "autumn" to "fall"
   } else if (temp >= 45) {
-    // Cooler range: Use condition for spring vs. autumn edge
-    return condition === "rainy" || condition === "drizzle" ? "spring" : "autumn";
+    // Cooler range: Use condition for spring vs. fall edge
+    return condition === "rainy" || condition === "drizzle" ? "spring" : "fall";  // <-- Changed "autumn" to "fall"
   } else {
     // Cold: Winter, but check for snowy
     return condition === "snowy" ? "winter" : "spring";

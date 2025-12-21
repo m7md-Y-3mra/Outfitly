@@ -1,8 +1,8 @@
 export interface IPaginationQuery {
   page: number;
   limit: number;
-  order?: "asc" | "desc";
-  field?: "createdAt" | "name";
+  order?: "asc" | "desc" | Record<string, "asc" | "desc">;  
+  field?: "createdAt" | "name" | "addedAt"; 
 }
 export interface IMetaPagination {
   total: number;

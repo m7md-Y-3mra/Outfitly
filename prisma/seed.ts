@@ -21,7 +21,6 @@ async function main() {
     'Product',
     'UserAddress',
     'ProductColor',
-    'OutfitItemType',
     'Occasion',
     'Category',
     'Brand',
@@ -209,25 +208,47 @@ async function main() {
   // ==============================================================
   await prisma.outfit.createMany({
     data: [
-      {
-        id: 'outfit_01',
-        name: 'Smart Casual Friday',
-        description: 'Perfect office look',
-        imageUrl: 'https://images.unsplash.com/photo-1505022610485-0249ba5b3675',
-        visibility: 'public',
-        userId: 'u_ava',
-        occasionId: 'occ_office',
-      },
-      {
-        id: 'outfit_02',
-        name: 'Date Night',
-        description: 'Elegant and chic',
-        imageUrl: 'https://images.unsplash.com/photo-1534030347209-467a33b1e9b7',
-        visibility: 'private',
-        userId: 'u_emma',
-        occasionId: 'occ_date',
-      },
-    ],
+        {
+          id: 'outfit_01',
+          name: 'Smart Casual Friday',
+          description: 'Perfect office look',
+          imageUrl: 'https://images.unsplash.com/photo-1505022610485-0249ba5b3675',
+          visibility: 'public',
+          userId: 'u_ava',
+          occasionId: 'occ_office',
+          season: 'SUMMER',  // <-- Added: Matches hot weather
+        },
+        {
+          id: 'outfit_02',
+          name: 'Date Night',
+          description: 'Elegant and chic',
+          imageUrl: 'https://images.unsplash.com/photo-1534030347209-467a33b1e9b7',
+          visibility: 'private',
+          userId: 'u_emma',
+          occasionId: 'occ_date',
+          season: 'FALL',  // <-- Added: Matches mild/autumn weather
+        },
+        {
+          id: 'outfit_03',
+          name: 'Winter Warmth',
+          description: 'Cozy for cold days',
+          imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5',
+          visibility: 'public',
+          userId: 'u_liam',
+          occasionId: 'occ_winter',
+          season: 'WINTER',  // <-- Added: Matches cold weather
+        },
+        {
+          id: 'outfit_04',
+          name: 'Spring Fresh',
+          description: 'Light and breezy',
+          imageUrl: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab',
+          visibility: 'public',
+          userId: 'u_sophia',
+          occasionId: 'occ_casual',
+          season: 'SPRING',  // <-- Added: Matches cool/rainy weather
+        },
+      ],
     skipDuplicates: true,
   });
 

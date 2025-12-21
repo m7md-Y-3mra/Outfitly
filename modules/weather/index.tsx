@@ -21,18 +21,26 @@ export default function WeatherPage() {
   const { theme } = useTheme();
   const { weather, handleScroll } = useWeather();
   const { outfits: userOutfits, items: userItems, loading: profileLoading } = useProfile();  
-
+  console.log("User Outfits:", userOutfits);
+  console.log("User Items:", userItems);
   const season = useMemo(() => getSeasonFromWeather(weather), [weather]);
   const filteredOutfits = useMemo(() => {
     if (!userOutfits) return [];
     return userOutfits.filter((outfit) => outfit.season === season);
   }, [userOutfits, season]);
   
-  const filteredItems = useMemo(() => {
-    if (!userItems) return [];
-    return userItems.filter((item) => item.season === season);
-  }, [userItems, season]);
-  
+const filteredItems = useMemo(() => {
+  if (!userItems) return [];
+  return userItems.filter((item) => {
+    const itemSeason = item.season?.toLowerCase();  // Normalize to lowercase (e.g., "SUMMER" -> "summer")
+    const currentSeason = season.toLowerCase();     // Normalize season too
+    return (
+      itemSeason === currentSeason ||               // Exact match
+      itemSeason === "all-year" ||                  // Special case for all-year
+      itemSeason?.includes(currentSeason)           // Comma-separated (e.g., "spring,summer" includes "summer")
+    );
+  });
+}, [userItems, season]);
   
    return (
     <div style={{ backgroundColor: "var(--outfitly-bg-primary)" }}>
