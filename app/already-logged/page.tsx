@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { CheckCircle, Home, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export function AlreadyLoggedPage() {
+export default function AlreadyLoggedPage() {
   const router = useRouter();
 
   return (
