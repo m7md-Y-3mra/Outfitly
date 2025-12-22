@@ -8,6 +8,7 @@ export const userValidationSchema = z.object({
   emailVerified: z.boolean(),
   password: z.string().min(8),
   avatarUrl: z.url().nullable(),
+  role: z.enum(["ADMIN", "USER"]).optional().default("USER"),
   isActive: z.boolean(),
   bio: z.string().nullable(),
   location: z.string().nullable(),

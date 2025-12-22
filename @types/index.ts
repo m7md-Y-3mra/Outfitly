@@ -9,6 +9,7 @@ export interface ITokenPayload extends JwtPayload {
   sub: User["id"];
   fullName: User["fullName"];
   email: User["email"];
+  role: User["role"];
 }
 export type TVerifyTokenResult = { success: true; payload: ITokenPayload };
 

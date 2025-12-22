@@ -40,8 +40,6 @@ const useWardrobeForm = ({ initialData, onSuccess, categories }: UseWardrobeForm
             ? new Date(values.purchasedDate)
             : values.purchasedDate;
 
-        console.log(values.imageUrls);
-
         const updateData: UpdateWardrobeItemDTO = {
           id: initialData.id,
           name: values.name,

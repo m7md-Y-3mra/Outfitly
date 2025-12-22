@@ -275,7 +275,7 @@ export default function Uploader({
           ) : (
             <div className="flex flex-col items-center gap-y-3">
               <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
-              <Button>Select Files</Button>
+              <Button type="button">Select Files</Button>
             </div>
           )}
         </CardContent>
@@ -288,7 +288,6 @@ export default function Uploader({
               // Determine image source - existing images use url, new uploads use objectUrl
               const imageSrc = isExisting ? url! : objectUrl!;
               const imageAlt = isExisting ? `Image ${id}` : file?.name || "Uploaded image";
-              console.log(imageSrc);
               return (
                 <div key={id} className="flex flex-col gap-1">
                   <div className="relative aspect-square rounded-lg overflow-hidden">
@@ -301,6 +300,7 @@ export default function Uploader({
                     />
 
                     <Button
+                      type="button"
                       variant="destructive"
                       size="icon"
                       className="absolute top-2 right-2"

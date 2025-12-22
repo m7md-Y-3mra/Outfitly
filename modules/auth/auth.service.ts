@@ -26,11 +26,9 @@ export async function signIn(
   const normalizedEmail = creds.email.toLowerCase().trim();
 
   const user = await userService.findUserByEmail(normalizedEmail);
-  console.log(user);
   const isPasswordValid = await verifyPassword(creds.password, user.password);
 
   if (!isPasswordValid) {
-    console.log("throw");
     throw new CustomError({ message: "Invalid credentials", statusCode: 500 });
   }
 
@@ -38,6 +36,7 @@ export async function signIn(
     sub: user.id,
     email: user.email,
     fullName: user.fullName,
+    role: user.role,
   };
 
   const token = await generateToken(tokenPayload);
@@ -55,6 +54,7 @@ export async function revalidateUser(): Promise<TSignInResult> {
     sub: user.id,
     email: user.email,
     fullName: user.fullName,
+    role: user.role,
   };
 
   const newToken = await generateToken(newTokenPayload);
@@ -86,4 +86,9 @@ export const getAuthedUserAndRefresh = async () => {
   cookiesStore.set("user-token", verifiedUser.token);
 
   return verifiedUser;
+};
+
+export const logOut = async () => {
+  const cookiesStore = await cookies();
+  cookiesStore.delete("user-token");
 };

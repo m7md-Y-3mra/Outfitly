@@ -1,14 +1,12 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-
 import type { AIOutfitResponse, IItemsForAI } from "../types/generator.types";
 import type {
   AIGeneratorFormData,
   IGeneratedOutfit,
   IOutfitForModal,
 } from "../components/aiGenerator";
-
 import {
   createPrompt,
   getItemsByIds,
@@ -16,17 +14,16 @@ import {
   toUserRequirements,
   transfromAIResponse,
 } from "../ai.utils";
-
 import {
   createOutfitAction,
   generateAIOutfitAction,
   getItemsForGeneratorAction,
   getOccasionsForAIAction,
 } from "../generator.actions";
-import { ALL_OCCASIONS_DUMMY, ITEMS_FOR_AI_DUMMY } from "@/app/(main)/AI-generator/page";
 import { useAuth } from "@/providers/auth/auth.provider";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
+import { ALL_OCCASIONS_DUMMY, ITEMS_FOR_AI_DUMMY } from "../constants";
 
 export function useAIGenerator() {
   const { user } = useAuth();

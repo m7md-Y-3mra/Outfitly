@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import SignInCard from "./signInCard";
 import { Logo } from "@/components/logo/logo";
 import { SocialLoginButtons } from "./socialSignIn";
+import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
+  const nav = useRouter();
   return (
     <div className="min-h-screen transition-colors duration-300 bg-gradient-to-br from-[var(--outfitly-bg-primary)] via-[var(--outfitly-bg-secondary)] to-[var(--outfitly-bg-primary)] relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -63,7 +65,7 @@ export default function SignInPage() {
             <p className="text-[var(--outfitly-text-primary)]/60">
               Don&apos;t have an account?{" "}
               <button
-                onClick={() => console.log("Sign Up clicked")}
+                onClick={() => nav.push("/sign-up")}
                 className="text-[var(--outfitly-primary)] hover:text-[var(--outfitly-primary-hover)] dark:hover:text-[var(--outfitly-primary-active)] transition-colors duration-300"
               >
                 Sign Up

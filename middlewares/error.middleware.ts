@@ -1,5 +1,4 @@
 import { ApiResponseError, ApiResponseSuccess } from "@/@types/response.type";
-import { ApiError } from "@google/genai";
 import CustomError from "../utils/CustomError";
 import z, { ZodError } from "zod";
 import { HttpStatusError } from "@/@types/status-code.type";
@@ -13,6 +12,7 @@ import {
 import { prismaKnownErrorMessage } from "../utils/prisma.utils";
 import { TSuccessConfig } from "@/@types";
 import { errors as JoseErrors } from "jose";
+import Groq from "groq-sdk";
 
 export function errorMiddleware<Args extends unknown[], Return>(
   actionFn: (...args: Args) => Promise<Return>,
@@ -116,7 +116,22 @@ export function errorMiddleware<Args extends unknown[], Return>(
       // 🔥 CustomError
       // ---------------------------
 
-      if (err instanceof ApiError) {
+      if (err instanceof Error && err.message.includes("GROQ_API_KEY")) {
+        console.log("hhhhhhh");
+        return {
+          success: false,
+          statusCode: 500,
+          message: "AI service configuration error. Please contact support.",
+        };
+      }
+      if (err instanceof Groq.APIConnectionError) {
+        return {
+          success: false,
+          statusCode: 503,
+          message: "Unable to connect to AI service. Please check your internet connection.",
+        };
+      }
+      if (err instanceof Groq.APIError) {
         const status = err.status as number | undefined;
         const msg = String(err.message ?? "");
 
@@ -138,14 +153,12 @@ export function errorMiddleware<Args extends unknown[], Return>(
           };
         }
 
-        // 400: usually bad request (prompt too large / invalid schema / invalid params)
+        // 400: bad request (prompt too large / invalid schema / invalid params)
         if (status === 400) {
           return {
             success: false,
             statusCode: 400,
             message: "AI request is invalid. Please adjust your input and try again.",
-            // optional: return the provider message for debugging (only if you want)
-            // errors: { ai: [msg] },
           };
         }
 
@@ -153,12 +166,12 @@ export function errorMiddleware<Args extends unknown[], Return>(
         if (status === 401 || status === 403) {
           return {
             success: false,
-            statusCode: 500, // or 401 if you want to expose it; usually hide provider auth issues
+            statusCode: 500, // hide provider auth issues from client
             message: "AI service is not configured correctly (API key/permissions).",
           };
         }
 
-        // Fallback for any other Gemini API error
+        // Fallback for any other Groq API error
         return {
           success: false,
           statusCode: 500,
@@ -178,7 +191,6 @@ export function errorMiddleware<Args extends unknown[], Return>(
       // ---------------------------
 
       console.error("Unexpected Server Action Error:", err);
-
       return {
         success: false,
         message: "Something went wrong.",

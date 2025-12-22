@@ -13,6 +13,10 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
 
 enum WardrobeStyle {
   CASUAL
@@ -39,19 +43,21 @@ model User {
   emailVerified Boolean   @default(false)
   password      String
   avatarUrl     String?
-  bio           String?   // Added
-  location      String?   // Added
-  website       String?   // Added
+  bio           String?
+  location      String?
+  website       String?
   isActive      Boolean   @default(true)
   lastLogin     DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  // Add these for following/followers
-  following     User[]    @relation("UserFollows")  // Users this user is following
-  followers     User[]    @relation("UserFollows")  // Users following this user
+  role          UserRole  @default(USER)
 
-  // Relations (unchanged)
+  // following/followers
+  following     User[]    @relation("UserFollows")
+  followers     User[]    @relation("UserFollows")
+
+  // Relations
   addresses       UserAddress[]
   orders          Order[]
   cartItems       CartItem[]
