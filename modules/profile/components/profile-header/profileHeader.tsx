@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import { motion } from "framer-motion";
 import { MapPin, Link as LinkIcon, Calendar, Upload, Trash2 } from "lucide-react";
@@ -10,6 +9,7 @@ import { Textarea } from "../../../../components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../../../components/ui/dialog";
 import ReactCrop, { Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
+import Image from "next/image";
 
 import type { ExtendedProfileHeaderProps } from "./profileHeader.types";
 import { getAvatarAlt } from "./profileHeader.utils";
@@ -41,7 +41,7 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
   const renderAvatar = () => {
     if (imagePreview || safeEditForm.avatarUrl) {
       return (
-        <img
+        <Image
           src={imagePreview || safeEditForm.avatarUrl}
           alt={getAvatarAlt(user.name || "User Avatar")}
           className="w-full h-full object-cover"
@@ -222,7 +222,7 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
               onComplete={(c: Crop) => setCompletedCrop(c)}
               aspect={1}
             >
-              <img ref={imgRef} src={imagePreview} className="max-w-full h-auto" alt="image" />
+              <Image  ref={imgRef} src={imagePreview} className="max-w-full h-auto" alt="image" />
             </ReactCrop>
           )}
 
