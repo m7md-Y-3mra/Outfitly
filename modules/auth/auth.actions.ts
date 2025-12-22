@@ -3,6 +3,7 @@ import { errorMiddleware } from "@/middlewares/error.middleware";
 import {
   getAuthedUserAndRefresh,
   getUserFromSession,
+  logOut,
   revalidateUser,
   signIn,
   signUp,
@@ -30,4 +31,9 @@ export const getUserAndRefreshAction = errorMiddleware(getAuthedUserAndRefresh, 
 export const getUserFromSessionAction = errorMiddleware(getUserFromSession, {
   statusCode: 200,
   message: "User session retrieved successfully!",
+});
+
+export const logOutAction = errorMiddleware(logOut, {
+  statusCode: 200,
+  message: "logged out successfully!",
 });

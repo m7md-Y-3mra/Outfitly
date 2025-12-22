@@ -10,6 +10,8 @@ import { useNavbar } from "./useNavbar";
 import CustomButton from "../custom-button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { MiniLoader } from "./miniLoader";
+import { logOutAction } from "@/modules/auth/auth.actions";
+import { toast } from "sonner";
 
 export function Navbar() {
   const {
@@ -24,6 +26,7 @@ export function Navbar() {
     user,
     theme,
     authStatus,
+    onLogout,
     setIsUserMenuOpen,
     onToggleTheme,
     toggleMenu,
@@ -32,13 +35,6 @@ export function Navbar() {
   } = useNavbar();
 
   const isAuthLoading = authStatus === "loading";
-
-  const onLogout = async () => {
-    // ✅ plug your logout logic
-    // await logout()
-    setIsUserMenuOpen(false);
-    closeMenu();
-  };
 
   return (
     <motion.nav
