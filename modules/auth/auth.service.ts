@@ -87,3 +87,8 @@ export const getAuthedUserAndRefresh = async () => {
 
   return verifiedUser;
 };
+
+export const logOut = async () => {
+  const cookiesStore = await cookies();
+  cookiesStore.delete("user-token");
+};

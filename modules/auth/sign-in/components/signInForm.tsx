@@ -5,9 +5,14 @@ import { motion } from "framer-motion";
 import useSignIn from "../hook/useSignIn";
 import { Mail, Lock } from "lucide-react";
 import CustomButton from "@/components/custom-button";
+import { useMemo } from "react";
 
 const SignInForm = () => {
   const { formik } = useSignIn();
+  const disabled = useMemo(() => {
+    const { email, password } = formik.values;
+    return !email.trim() || !password.trim() || formik.isSubmitting;
+  }, [formik]);
   return (
     <FormikProvider value={formik}>
       <Form className="space-y-6">
@@ -29,7 +34,6 @@ const SignInForm = () => {
           icon={<Lock size={18} />}
         />
 
-        {/* Forgot Password Link */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -49,8 +53,9 @@ const SignInForm = () => {
           loadingText=""
           variant="motion"
           loading={formik.isSubmitting}
-          size="md" // or "lg" if you want a bit taller
-          className="w-full py-4 rounded-xl bg-gradient-to-r from-[#671425] to-[#8B1D35] hover:from-[#6A1526] hover:to-[#9A1E3A] text-white shadow-lg shadow-[#671425]/30 hover:shadow-xl hover:shadow-[#671425]/40 group"
+          size="md"
+          disabled={disabled}
+          className="cursor-pointer w-full py-4 rounded-xl bg-gradient-to-r from-[#671425] to-[#8B1D35] hover:from-[#6A1526] hover:to-[#9A1E3A] text-white shadow-lg shadow-[#671425]/30 hover:shadow-xl hover:shadow-[#671425]/40 group"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
