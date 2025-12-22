@@ -16,11 +16,11 @@ const SignUpForm = () => {
 
     return (
       !fullName?.trim() ||
-      !email?.trim() ||
-      !password?.trim() ||
-      !confirmPassword?.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim() ||
       !terms ||
-      password !== confirmPassword ||
+      !confirmPassword.trim() ||
       formik.isSubmitting
     );
   }, [formik]);
@@ -62,7 +62,7 @@ const SignUpForm = () => {
           variant="motion"
           loading={formik.isSubmitting}
           size="md"
-          className="w-full py-4 rounded-xl bg-gradient-to-r from-[#671425] to-[#8B1D35] hover:from-[#6A1526] hover:to-[#9A1E3A] text-white shadow-lg shadow-[#671425]/30 hover:shadow-xl hover:shadow-[#671425]/40 group"
+          className="cursor-pointer w-full py-4 rounded-xl bg-gradient-to-r from-[#671425] to-[#8B1D35] hover:from-[#6A1526] hover:to-[#9A1E3A] text-white shadow-lg shadow-[#671425]/30 hover:shadow-xl hover:shadow-[#671425]/40 group"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}

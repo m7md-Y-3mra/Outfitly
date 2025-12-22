@@ -1,15 +1,18 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useCallback, useMemo } from "react";
 import { NAV_LINKS, NAVBAR_COLORS } from "./navbar.constants";
 import { useAuth } from "@/providers/auth/auth.provider";
 import { useTheme } from "next-themes";
+import { logOutAction } from "@/modules/auth/auth.actions";
+import { toast } from "sonner";
 
 export function useNavbar() {
   const pathname = usePathname();
-  const { user, authStatus } = useAuth();
+  const { user, authStatus, applySignedOut } = useAuth();
   console.log(user);
+  const nav = useRouter();
   const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -42,6 +45,17 @@ export function useNavbar() {
     return base;
   }, [isAdmin]);
 
+  const onLogout = async () => {
+    const res = await logOutAction();
+    if (!res.success) {
+      toast.error("Failed to logout, please try again!");
+    }
+    applySignedOut();
+    nav.push("/sign-in");
+    setIsUserMenuOpen(false);
+    closeMenu();
+  };
+
   const onToggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
   return {
     isOpen,
@@ -56,8 +70,9 @@ export function useNavbar() {
     isAdmin,
     user,
     authStatus,
-    onToggleTheme,
+    onLogout,
     setIsUserMenuOpen,
+    onToggleTheme,
     toggleMenu,
     closeMenu,
     isActive,
