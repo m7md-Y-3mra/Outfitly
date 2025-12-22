@@ -44,7 +44,7 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
       return (
         <img
           src={imagePreview || safeEditForm.avatarUrl}
-          alt={getAvatarAlt(user.name)}
+          alt={getAvatarAlt(user.name || "User Avatar")}
           className="w-full h-full object-cover"
         />
       );

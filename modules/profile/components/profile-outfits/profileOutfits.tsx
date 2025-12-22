@@ -20,8 +20,7 @@ export function ProfileOutfitsGrid({ outfits }: ProfileOutfitsGridProps) {
               <div className="relative overflow-hidden">
                 <motion.img
                   src={outfit.image}
-                  alt={getOutfitAlt(outfit.title)}
-                  className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
+                  alt={getOutfitAlt(outfit.title || "Untitled Outfit")}
                 />
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">

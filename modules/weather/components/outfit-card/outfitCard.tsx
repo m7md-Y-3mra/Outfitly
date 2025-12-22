@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Sun } from "lucide-react";
 import { Card } from "../../../../components/ui/card"; // Or '@/components/ui/card'
 import { Badge } from "../../../../components/ui/badge"; // Or '@/components/ui/badge'
 import { useTheme } from "next-themes";
@@ -45,15 +45,14 @@ export const OutfitCard: React.FC<OutfitCardProps> = ({ outfit, index }) => {
                     "linear-gradient(135deg, var(--outfitly-gradient-start) 0%, var(--outfitly-gradient-mid) 100%)",
                 }}
               >
-                <TimeIcon
-                  className="w-5 h-5"
+                {outfit.icon ? <outfit.icon  className="w-5 h-5"
                   style={{
                     color:
                       theme === "dark"
                         ? "var(--outfitly-text-primary)"
                         : "var(--outfitly-text-light)",
-                  }}
-                />
+                  }} /> : <Sun />}  
+                
               </div>
               <div>
                 <div
@@ -70,7 +69,7 @@ export const OutfitCard: React.FC<OutfitCardProps> = ({ outfit, index }) => {
                   className="text-xs opacity-70 transition-colors duration-300"
                   style={{ color: "var(--outfitly-text-primary)" }}
                 >
-                  {outfit.timeRange}
+                  {outfit.timeRang}
                 </div>
               </div>
             </div>
