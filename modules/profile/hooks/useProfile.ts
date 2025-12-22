@@ -10,7 +10,6 @@ import {
   getUserWardrobeItemsPaginated,
 } from "../profile.service";
 import type { IPaginationQuery } from "@/@types/database.type";
-import { timeBasedOutfits, suitableItems } from "../../weather/weather.constants";
 export function useProfile() {
   const { user: authUser } = useAuth(); // Get current user ID
   const [activeTab, setActiveTab] = useState<TabType>("outfits");
