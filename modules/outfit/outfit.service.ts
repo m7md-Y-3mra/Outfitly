@@ -42,4 +42,4 @@ export const createOutfitService = async (data: CreateOutfitDTO) => {
 
 export const getOutfitsCount = async () => {
   return await getCount();
-} 
+};

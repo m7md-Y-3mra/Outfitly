@@ -37,11 +37,11 @@ class UserService {
   }
 
   async getUsersCount() {
-    return await userRepo.getCount()
+    return await userRepo.getCount();
   }
 
   async getActiveUsersCount() {
-    return await userRepo.getActivesCount()
+    return await userRepo.getActivesCount();
   }
 }
 

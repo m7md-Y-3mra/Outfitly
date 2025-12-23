@@ -5,7 +5,7 @@ export const formatCount = (value: number): string => {
 export const formatEngagementRate = (
   activeUsers: number,
   totalUsers: number,
-  decimals = 1
+  decimals = 1,
 ): string => {
   if (totalUsers === 0) return "0%";
 

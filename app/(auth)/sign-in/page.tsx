@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 
 const SignIn = () => {
   return (
-    <Suspense fallback={<Loading/>}>
+    <Suspense fallback={<Loading />}>
       <SignInPage />
     </Suspense>
-  )
+  );
 };
 
 export default SignIn;

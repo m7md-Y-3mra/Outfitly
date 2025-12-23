@@ -32,9 +32,9 @@ class UserRepo {
     return prisma.user.count({
       where: {
         isActive: true,
-      }
-    })
-  } 
+      },
+    });
+  }
 }
 const userRepo = new UserRepo();
 export default userRepo;

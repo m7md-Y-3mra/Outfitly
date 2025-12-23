@@ -216,10 +216,7 @@ export function useHero() {
         });
 
         // Heading parallax on scroll
-        const headingElements = [
-          headingLine1Ref.current,
-          headingLine2Ref.current,
-        ].filter(Boolean);
+        const headingElements = [headingLine1Ref.current, headingLine2Ref.current].filter(Boolean);
 
         const otherElements = [
           badgeRef.current,
@@ -262,10 +259,7 @@ export function useHero() {
 
       // Tablet parallax - reduced intensity
       mm.add("(min-width: 768px) and (max-width: 1023px)", () => {
-        const headingElements = [
-          headingLine1Ref.current,
-          headingLine2Ref.current,
-        ].filter(Boolean);
+        const headingElements = [headingLine1Ref.current, headingLine2Ref.current].filter(Boolean);
 
         if (headingElements.length > 0) {
           ScrollTrigger.create({
@@ -288,10 +282,7 @@ export function useHero() {
 
       // Mobile - minimal parallax
       mm.add("(max-width: 767px)", () => {
-        const headingElements = [
-          headingLine1Ref.current,
-          headingLine2Ref.current,
-        ].filter(Boolean);
+        const headingElements = [headingLine1Ref.current, headingLine2Ref.current].filter(Boolean);
 
         if (headingElements.length > 0) {
           ScrollTrigger.create({
