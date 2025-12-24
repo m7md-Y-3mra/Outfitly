@@ -12,34 +12,34 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart";
 
+// ✅ Dummy data from your schema idea: "Wardrobe items added this week"
 const chartData = [
-  { day: "Mon", likes: 450, shares: 320 },
-  { day: "Tue", likes: 380, shares: 250 },
-  { day: "Wed", likes: 520, shares: 180 },
-  { day: "Thu", likes: 610, shares: 420 },
-  { day: "Fri", likes: 850, shares: 550 },
-  { day: "Sat", likes: 950, shares: 680 },
-  { day: "Sun", likes: 720, shares: 480 },
+  { day: "Mon", items: 12 },
+  { day: "Tue", items: 9 },
+  { day: "Wed", items: 18 },
+  { day: "Thu", items: 14 },
+  { day: "Fri", items: 22 },
+  { day: "Sat", items: 27 },
+  { day: "Sun", items: 16 },
 ];
 
 const chartConfig = {
-  likes: {
-    label: "Likes",
-    color: "#671425", // Dark burgundy
-  },
-  shares: {
-    label: "Shares",
-    color: "#9e2a4b", // Lighter burgundy/rose
+  items: {
+    label: "Items Added",
+    color: "#671425",
   },
 } satisfies ChartConfig;
 
-export function OutfitEngagementChart() {
+export function ItemsAddedThisWeekChart() {
+  const max = Math.max(...chartData.map((d) => d.items));
+
   return (
     <Card className="flex flex-col h-full shadow-sm border-border/40 rounded-2xl overflow-hidden">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold">Outfit Engagement</CardTitle>
-        <CardDescription>Likes and shares this week</CardDescription>
+        <CardTitle className="text-xl font-semibold">Wardrobe Activity</CardTitle>
+        <CardDescription>Items added this week</CardDescription>
       </CardHeader>
+
       <CardContent>
         <ChartContainer config={chartConfig} className="h-full w-full min-h-[300px]">
           <BarChart accessibilityLayer data={chartData} barCategoryGap={20}>
@@ -49,29 +49,32 @@ export function OutfitEngagementChart() {
               stroke="var(--border)"
               strokeOpacity={0.4}
             />
+
             <XAxis
               dataKey="day"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value}
               stroke="var(--muted-foreground)"
             />
+
             <YAxis
               tickLine={false}
               axisLine={false}
               tickMargin={10}
               tickCount={5}
-              domain={[0, 1000]}
+              domain={[0, Math.ceil(max * 1.25)]}
               stroke="var(--muted-foreground)"
             />
+
             <ChartTooltip
               cursor={{ fill: "var(--muted)", opacity: 0.2 }}
               content={<ChartTooltipContent indicator="dot" />}
             />
+
             <ChartLegend content={<ChartLegendContent />} />
-            <Bar dataKey="likes" fill="var(--color-likes)" radius={[4, 4, 0, 0]} barSize={20} />
-            <Bar dataKey="shares" fill="var(--color-shares)" radius={[4, 4, 0, 0]} barSize={20} />
+
+            <Bar dataKey="items" fill="var(--color-items)" radius={[4, 4, 0, 0]} barSize={24} />
           </BarChart>
         </ChartContainer>
       </CardContent>

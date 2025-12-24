@@ -323,3 +323,34 @@ export const getWardrobeItemsFiltered = async (
 
   return items;
 };
+
+export const getCatsCount = async () => {
+  return prisma.wardrobeItem.groupBy({
+    by: ["categoryId"],
+    _count: { _all: true },
+  });
+};
+
+export const findManyByIds = async (ids: string[]) => {
+  return await prisma.category.findMany({
+    where: { id: { in: ids } },
+    select: { id: true, name: true },
+  });
+};
+
+export const findAddedLastWeek = async () => {
+  const from = new Date();
+  from.setHours(0, 0, 0, 0);
+  from.setDate(from.getDate() - 6);
+
+  const items = await prisma.wardrobeItem.findMany({
+    where: { addedAt: { gte: from } },
+    select: { addedAt: true },
+  });
+
+  return items;
+};
+
+export const getCount = () => {
+  return prisma.wardrobeItem.count();
+};

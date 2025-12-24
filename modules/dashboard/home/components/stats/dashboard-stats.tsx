@@ -19,9 +19,6 @@ export function DashboardStats() {
               >
                 <Icon className={`h-6 w-6 ${stat.iconColor}`} />
               </div>
-              <span className="text-sm font-semibold text-green-600 bg-green-100 dark:bg-green-900/20 px-2 py-1 rounded-full">
-                {stat.change}
-              </span>
             </div>
             <div className="mt-4">
               <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>

@@ -35,6 +35,18 @@ class UserService {
       throw err;
     }
   }
+
+  async getUsersCount() {
+    return await userRepo.getCount();
+  }
+
+  async getActiveUsersCount() {
+    return await userRepo.getActivesCount();
+  }
+
+  async getUsersByMonth() {
+    return await userRepo.getMonthlyUsers();
+  }
 }
 
 const userService = new UserService();

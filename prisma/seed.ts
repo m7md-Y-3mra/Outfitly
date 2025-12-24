@@ -1,4 +1,6 @@
+import { WardrobeStyle } from '@/app/generated/prisma/enums';
 import prisma from '@/lib/prisma';
+
 
 async function main() {
   console.log('🧹 Deleting all existing data...');
@@ -35,7 +37,7 @@ async function main() {
   console.log('✅ Database wiped clean! Starting fresh seed...\n');
 
   // ==============================================================
-  // 1. Brands, Categories, Colors, Occasions, OutfitItemType
+  // 1. Brands, Categories, Colors, Occasions
   // ==============================================================
   await prisma.brand.createMany({
     data: [
@@ -98,12 +100,13 @@ async function main() {
       { id: 'u_ava', fullName: 'Ava Martinez', email: 'ava@example.com', password: 'hashed', emailVerified: true },
       { id: 'u_sophia', fullName: 'Sophia Patel', email: 'sophia@example.com', password: 'hashed', emailVerified: true },
       { id: 'u_noah', fullName: 'Noah Kim', email: 'noah@example.com', password: 'hashed', emailVerified: true },
+      { fullName: 'Moamen Yazouri', email: 'moamen@admin.com', password: '$argon2id$v=19$m=65536,t=3,p=4$j4bzKPpwk0Tt9OAf2trQ4Q$aisWdvJ6pDc2+TO8VAxacpeoD/P/WVY0SSfVj6DL074', emailVerified: true, role: 'ADMIN' },
     ],
     skipDuplicates: true,
   });
 
   // ==============================================================
-  // 3. Products + a few real variants (so purchased items can link)
+  // 3. Products + Variants
   // ==============================================================
   await prisma.product.createMany({
     data: [
@@ -115,7 +118,6 @@ async function main() {
     skipDuplicates: true,
   });
 
-  // Real variants (only these exist → safe to reference)
   await prisma.productVariant.createMany({
     data: [
       { id: 'var_nike_1', sku: 'NK-AF1-WHT-40', size: '40', colorId: 'col_white', quantity: 20, productId: 'p_nike_af1' },
@@ -130,7 +132,7 @@ async function main() {
   const validVariantIds = ['var_nike_1', 'var_nike_2', 'var_levis_1', 'var_zara_1', 'var_uniqlo_1'];
 
   // ==============================================================
-  // 4. WARDROBE ITEMS – 156+ items (the numbers you want!)
+  // 4. WARDROBE ITEMS – 156+ items
   // ==============================================================
   const wardrobeItems = [];
   const users = ['u_emma', 'u_liam', 'u_ava', 'u_sophia', 'u_noah'];
@@ -139,6 +141,15 @@ async function main() {
   const colors = ['Black', 'White', 'Beige', 'Navy', 'Gray', 'Olive'];
   const sizes = ['XS', 'S', 'M', 'L', '38', '39', '40', '41', '42'];
   const seasons = ['all-year', 'spring,summer', 'fall,winter'];
+  const styles: WardrobeStyle[] = [
+    WardrobeStyle.CASUAL,
+    WardrobeStyle.FORMAL,
+    WardrobeStyle.WORK,
+    WardrobeStyle.SPORTY,
+    WardrobeStyle.STREETWEAR,
+    WardrobeStyle.LOUNGEWEAR,
+    WardrobeStyle.PARTY,
+  ];
   const catgs = await prisma.category.findMany();
   const Categories = catgs.map(c => c.id);
 
@@ -149,13 +160,14 @@ async function main() {
     wardrobeItems.push({
       id: `ward_${String(i + 1).padStart(3, '0')}`,
       userId: users[Math.floor(Math.random() * users.length)],
-      categoryId: Categories[Math.floor(Math.random() * users.length)],
+      categoryId: Categories[Math.floor(Math.random() * Categories.length)], // FIXED: was using users.length
       variantId,
       name: itemNames[Math.floor(Math.random() * itemNames.length)],
       brand: brands[Math.floor(Math.random() * brands.length)],
       color: colors[Math.floor(Math.random() * colors.length)],
       size: sizes[Math.floor(Math.random() * sizes.length)],
       season: seasons[Math.floor(Math.random() * seasons.length)],
+      style: styles[Math.floor(Math.random() * styles.length)], // ADDED: required field
       notes: Math.random() > 0.8 ? 'My favorite!' : '',
       source: isPurchased ? 'purchased' : Math.random() > 0.8 ? 'ai-suggested' : 'manual',
       purchasedDate: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
@@ -168,7 +180,7 @@ async function main() {
   });
 
   // ==============================================================
-  // 5. Images for wardrobe items (real Unsplash URLs)
+  // 5. Images for wardrobe items
   // ==============================================================
   const imageUrls = [
     'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
@@ -204,64 +216,89 @@ async function main() {
   });
 
   // ==============================================================
-  // 6. A few sample outfits
+  // 6. Sample outfits
   // ==============================================================
   await prisma.outfit.createMany({
     data: [
-        {
-          id: 'outfit_01',
-          name: 'Smart Casual Friday',
-          description: 'Perfect office look',
-          imageUrl: 'https://images.unsplash.com/photo-1505022610485-0249ba5b3675',
-          visibility: 'public',
-          userId: 'u_ava',
-          occasionId: 'occ_office',
-          season: 'SUMMER',  // <-- Added: Matches hot weather
-        },
-        {
-          id: 'outfit_02',
-          name: 'Date Night',
-          description: 'Elegant and chic',
-          imageUrl: 'https://images.unsplash.com/photo-1534030347209-467a33b1e9b7',
-          visibility: 'private',
-          userId: 'u_emma',
-          occasionId: 'occ_date',
-          season: 'FALL',  // <-- Added: Matches mild/autumn weather
-        },
-        {
-          id: 'outfit_03',
-          name: 'Winter Warmth',
-          description: 'Cozy for cold days',
-          imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5',
-          visibility: 'public',
-          userId: 'u_liam',
-          occasionId: 'occ_winter',
-          season: 'WINTER',  // <-- Added: Matches cold weather
-        },
-        {
-          id: 'outfit_04',
-          name: 'Spring Fresh',
-          description: 'Light and breezy',
-          imageUrl: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab',
-          visibility: 'public',
-          userId: 'u_sophia',
-          occasionId: 'occ_casual',
-          season: 'SPRING',  // <-- Added: Matches cool/rainy weather
-        },
-      ],
+      {
+        id: 'outfit_01',
+        name: 'Smart Casual Friday',
+        description: 'Perfect office look',
+        imageUrl: 'https://images.unsplash.com/photo-1505022610485-0249ba5b3675',
+        visibility: 'public',
+        userId: 'u_ava',
+        occasionId: 'occ_office',
+      },
+      {
+        id: 'outfit_02',
+        name: 'Date Night',
+        description: 'Elegant and chic',
+        imageUrl: 'https://images.unsplash.com/photo-1534030347209-467a33b1e9b7',
+        visibility: 'private',
+        userId: 'u_emma',
+        occasionId: 'occ_date',
+      },
+      {
+        id: 'outfit_03',
+        name: 'Weekend Casual',
+        description: 'Comfortable and stylish',
+        imageUrl: 'https://images.unsplash.com/photo-1552374196-c4e7ffc6e126',
+        visibility: 'public',
+        userId: 'u_liam',
+        occasionId: 'occ_casual',
+      },
+    ],
     skipDuplicates: true,
   });
 
-  console.log('SEED COMPLETED SUCCESSFULLY!');
-  console.log('156+ wardrobe items • Multiple images • Purchased & manual items • Ready for your UI');
+  // ==============================================================
+  // 7. OutfitItems - Connect outfits with wardrobe items
+  // ==============================================================
+  // Get wardrobe items for each user who has outfits
+  const avaItems = wardrobeItems.filter(w => w.userId === 'u_ava').slice(0, 4);
+  const emmaItems = wardrobeItems.filter(w => w.userId === 'u_emma').slice(0, 3);
+  const liamItems = wardrobeItems.filter(w => w.userId === 'u_liam').slice(0, 3);
+
+  const outfitItemsData = [
+    // Outfit 01 - Ava's Smart Casual Friday
+    ...avaItems.map((item, idx) => ({
+      id: `oi_01_${idx}`,
+      outfitId: 'outfit_01',
+      wardrobeItemId: item.id,
+    })),
+    // Outfit 02 - Emma's Date Night
+    ...emmaItems.map((item, idx) => ({
+      id: `oi_02_${idx}`,
+      outfitId: 'outfit_02',
+      wardrobeItemId: item.id,
+    })),
+    // Outfit 03 - Liam's Weekend Casual
+    ...liamItems.map((item, idx) => ({
+      id: `oi_03_${idx}`,
+      outfitId: 'outfit_03',
+      wardrobeItemId: item.id,
+    })),
+  ];
+
+  await prisma.outfitItem.createMany({
+    data: outfitItemsData,
+    skipDuplicates: true,
+  });
+
+  console.log('\n✅ SEED COMPLETED SUCCESSFULLY!');
+  console.log(`📦 Created:`);
+  console.log(`   - 156 wardrobe items with images`);
+  console.log(`   - 3 outfits with ${outfitItemsData.length} outfit items`);
+  console.log(`   - 5 products with variants`);
+  console.log(`   - 6 users (including admin)`);
+  console.log(`   - All supporting data (brands, categories, colors, occasions)`);
 }
 
 main()
   .catch((e) => {
-    console.error('Seed failed:', e);
+    console.error('❌ Seed failed:', e);
     process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
   });
-

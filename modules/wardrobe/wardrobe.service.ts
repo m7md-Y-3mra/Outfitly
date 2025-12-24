@@ -10,7 +10,11 @@ import {
 import {
   createWardrobeItemRepo,
   deleteWardrobeItemRepo,
+  findAddedLastWeek,
+  findManyByIds,
   findWardrobeItemById,
+  getCatsCount,
+  getCount,
   getUserWardrobeItemRepo,
   getWardrobeItemDetailsRepo,
   getWardrobeItemsFiltered,
@@ -131,4 +135,20 @@ export const getWardrobeStatsService = async (): Promise<GetWardrobeStatsRespons
 export const getFilteredItemsForGenerator = async (filters: IGeneratorFilters, userId: string) => {
   const items = await getWardrobeItemsFiltered(filters, userId);
   return items;
+};
+
+export const getCatsCountService = async () => {
+  return await getCatsCount();
+};
+
+export const getCatsByIdsService = async (ids: string[]) => {
+  return await findManyByIds(ids);
+};
+
+export const findItemsInLastWeekService = async () => {
+  return await findAddedLastWeek();
+};
+
+export const getCountService = async () => {
+  return await getCount();
 };
