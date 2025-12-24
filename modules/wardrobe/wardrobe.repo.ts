@@ -329,11 +329,11 @@ export const getCatsCount = async () => {
     by: ["categoryId"],
     _count: { _all: true },
   });
-}
+};
 
 export const findManyByIds = async (ids: string[]) => {
   return await prisma.category.findMany({
-  where: { id: { in: ids } },
-  select: { id: true, name: true },
-});
-}
+    where: { id: { in: ids } },
+    select: { id: true, name: true },
+  });
+};

@@ -70,10 +70,10 @@ export const getCatsChartData = async () => {
   const groupedCats = await getCatsCountService();
   const ids = groupedCats.map((c) => c.categoryId);
   const catsById = await getCatsByIdsService(ids);
-  const catMap = new Map(catsById.map(c => [c.id, c.name]));
+  const catMap = new Map(catsById.map((c) => [c.id, c.name]));
   const chartData = groupedCats.map((gc) => ({
-      category: catMap.get(gc.categoryId) ?? "Unknown",
-      count: gc._count._all,
+    category: catMap.get(gc.categoryId) ?? "Unknown",
+    count: gc._count._all,
   }));
   return chartData;
-}
+};

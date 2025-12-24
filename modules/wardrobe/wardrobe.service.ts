@@ -135,10 +135,10 @@ export const getFilteredItemsForGenerator = async (filters: IGeneratorFilters, u
   return items;
 };
 
-export const getCatsCountService = async() => {
+export const getCatsCountService = async () => {
   return await getCatsCount();
-}
+};
 
 export const getCatsByIdsService = async (ids: string[]) => {
   return await findManyByIds(ids);
-}
+};
