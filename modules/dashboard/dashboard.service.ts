@@ -63,4 +63,4 @@ export const getUsersForChart = async () => {
   const usersByMonthFromDB = await userService.getUsersByMonth();
   const chartData = toChartData(usersByMonthFromDB);
   return chartData;
-}
+};

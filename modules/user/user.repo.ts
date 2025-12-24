@@ -37,21 +37,18 @@ class UserRepo {
   }
 
   async getMonthlyUsers() {
-    const monthlyUsers = await prisma.$queryRaw<
-      Array<{ month: string; users: bigint }>
-      >`
+    const monthlyUsers = await prisma.$queryRaw<Array<{ month: string; users: bigint }>>`
         SELECT 
           TO_CHAR(created_at, 'Month') as month,
           COUNT(*)::int as users
         FROM users
-        WHERE created_at >= ${new Date('2024-01-01')}
-          AND created_at < ${new Date('2025-01-01')}
+        WHERE created_at >= ${new Date("2024-01-01")}
+          AND created_at < ${new Date("2025-01-01")}
         GROUP BY DATE_TRUNC('month', created_at), TO_CHAR(created_at, 'Month')
         ORDER BY DATE_TRUNC('month', created_at)
       `;
-      return monthlyUsers;
-    }
-
+    return monthlyUsers;
+  }
 }
 const userRepo = new UserRepo();
 export default userRepo;
