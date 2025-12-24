@@ -14,6 +14,7 @@ import {
   findManyByIds,
   findWardrobeItemById,
   getCatsCount,
+  getCount,
   getUserWardrobeItemRepo,
   getWardrobeItemDetailsRepo,
   getWardrobeItemsFiltered,
@@ -147,3 +148,7 @@ export const getCatsByIdsService = async (ids: string[]) => {
 export const findItemsInLastWeekService = async () => {
   return await findAddedLastWeek();
 };
+
+export const getCountService = async() => {
+  return await getCount();
+}

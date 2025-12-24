@@ -2,7 +2,7 @@ export const formatCount = (value: number): string => {
   return value.toLocaleString();
 };
 
-export const formatEngagementRate = (
+export const formatRate = (
   activeUsers: number,
   totalUsers: number,
   decimals = 1,

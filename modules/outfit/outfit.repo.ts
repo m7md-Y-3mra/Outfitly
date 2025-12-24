@@ -102,3 +102,10 @@ export const getAllOccasions = () => {
 export const getCount = () => {
   return prisma.outfit.count();
 };
+
+export const getUniqueItemsFromOutfits = () => {
+  return prisma.outfitItem.findMany({
+    select: { wardrobeItemId: true },
+    distinct: ["wardrobeItemId"],
+  })
+}

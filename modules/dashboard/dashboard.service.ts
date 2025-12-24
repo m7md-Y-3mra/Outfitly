@@ -1,14 +1,15 @@
 "use server";
 
-import { Activity, Heart, ShoppingBag, Users } from "lucide-react";
+import { Activity, Heart, Layers, ShoppingBag, TrendingUp, Users } from "lucide-react";
 import userService from "../user/user.service";
-import { formatCount, formatEngagementRate } from "./utils/number.utils";
-import { getOutfitsCount } from "../outfit/outfit.service";
+import { formatCount, formatRate } from "./utils/number.utils";
+import { getOutfitsCount, getUsedItemsService } from "../outfit/outfit.service";
 import { toChartData } from "./utils/charts.utils";
 import {
   findItemsInLastWeekService,
   getCatsByIdsService,
   getCatsCountService,
+  getCountService,
 } from "../wardrobe/wardrobe.service";
 import { dayNames } from "./home/constants";
 
@@ -61,7 +62,7 @@ export const getActivesForStats = async () => {
 export const getEngagmentPercentage = async () => {
   const totalUsers = await userService.getUsersCount();
   const totalActives = await userService.getActiveUsersCount();
-  const percentage = formatEngagementRate(totalActives, totalUsers);
+  const percentage = formatRate(totalActives, totalUsers);
   return percentage;
 };
 
@@ -109,3 +110,36 @@ export const getWardrobChartData = async () => {
   }));
   return chartData;
 };
+
+export const getItemsKPI = async () => {
+  const itemsCounts = await getCountService();
+  const outfitsCount = await getOutfitsCount();
+  const value = String(Number(itemsCounts/outfitsCount).toFixed(1)) + " " + "items";
+
+  return {
+      label: "Avgerege Items For Outfits",
+      value, 
+      icon: Layers,
+      iconBg: "bg-blue-100 dark:bg-blue-900/20",
+      iconColor: "text-blue-600 dark:text-blue-400",
+      progressColor: "bg-blue-100 dark:bg-blue-900/20 [&>*]:bg-blue-600 dark:[&>*]:bg-blue-400",
+  }
+}
+
+export const getOutfitKPI = async () => {
+  const uniqueUsedItems = await getUsedItemsService();
+  const itemsCount = await getCountService();
+
+  const value = formatRate(uniqueUsedItems.length, itemsCount);
+  const progress = ((uniqueUsedItems.length/ itemsCount) * 100).toFixed(1);
+  
+  return   {
+      label: "Outfit Usage Rate",
+      value,
+      progress,
+      icon: TrendingUp,
+      iconBg: "bg-cyan-100 dark:bg-cyan-900/20",
+      iconColor: "text-cyan-600 dark:text-cyan-400",
+      progressColor: "bg-cyan-100 dark:bg-cyan-900/20 [&>*]:bg-cyan-600 dark:[&>*]:bg-cyan-400",
+    }
+}
