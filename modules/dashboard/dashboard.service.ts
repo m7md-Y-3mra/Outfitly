@@ -5,6 +5,7 @@ import userService from "../user/user.service";
 import { formatCount, formatEngagementRate } from "./utils/number.utils";
 import { getOutfitsCount } from "../outfit/outfit.service";
 import { toChartData } from "./utils/charts.utils";
+import { getCatsByIdsService, getCatsCountService } from "../wardrobe/wardrobe.service";
 
 export const getUsersForStats = async () => {
   const numberOfUsers = await userService.getUsersCount();
@@ -62,5 +63,17 @@ export const getEngagmentPercentage = async () => {
 export const getUsersForChart = async () => {
   const usersByMonthFromDB = await userService.getUsersByMonth();
   const chartData = toChartData(usersByMonthFromDB);
+  return chartData;
+};
+
+export const getCatsChartData = async () => {
+  const groupedCats = await getCatsCountService();
+  const ids = groupedCats.map((c) => c.categoryId);
+  const catsById = await getCatsByIdsService(ids);
+  const catMap = new Map(catsById.map((c) => [c.id, c.name]));
+  const chartData = groupedCats.map((gc) => ({
+    category: catMap.get(gc.categoryId) ?? "Unknown",
+    count: gc._count._all,
+  }));
   return chartData;
 };

@@ -323,3 +323,17 @@ export const getWardrobeItemsFiltered = async (
 
   return items;
 };
+
+export const getCatsCount = async () => {
+  return prisma.wardrobeItem.groupBy({
+    by: ["categoryId"],
+    _count: { _all: true },
+  });
+};
+
+export const findManyByIds = async (ids: string[]) => {
+  return await prisma.category.findMany({
+    where: { id: { in: ids } },
+    select: { id: true, name: true },
+  });
+};
