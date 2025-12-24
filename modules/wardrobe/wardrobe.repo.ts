@@ -338,7 +338,7 @@ export const findManyByIds = async (ids: string[]) => {
   });
 };
 
-export const findAddedLastWeek = async() => {
+export const findAddedLastWeek = async () => {
   const from = new Date();
   from.setHours(0, 0, 0, 0);
   from.setDate(from.getDate() - 6);
@@ -349,4 +349,4 @@ export const findAddedLastWeek = async() => {
   });
 
   return items;
-}
+};

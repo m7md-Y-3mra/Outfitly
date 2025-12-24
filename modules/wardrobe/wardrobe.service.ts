@@ -144,6 +144,6 @@ export const getCatsByIdsService = async (ids: string[]) => {
   return await findManyByIds(ids);
 };
 
-export const findItemsInLastWeekService = async() => {
+export const findItemsInLastWeekService = async () => {
   return await findAddedLastWeek();
-}
+};
