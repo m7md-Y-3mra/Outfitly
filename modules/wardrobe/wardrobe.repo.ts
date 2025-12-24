@@ -337,3 +337,16 @@ export const findManyByIds = async (ids: string[]) => {
     select: { id: true, name: true },
   });
 };
+
+export const findAddedLastWeek = async () => {
+  const from = new Date();
+  from.setHours(0, 0, 0, 0);
+  from.setDate(from.getDate() - 6);
+
+  const items = await prisma.wardrobeItem.findMany({
+    where: { addedAt: { gte: from } },
+    select: { addedAt: true },
+  });
+
+  return items;
+};
