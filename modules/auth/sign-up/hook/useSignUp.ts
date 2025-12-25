@@ -5,8 +5,10 @@ import { formikSignUpSchema } from "../validation/signUp.validation";
 import { TCreateUser } from "@/modules/user/user.types";
 import { signUpAction } from "../../auth.actions";
 import { toast } from "sonner";
+import { useRouter } from "nextjs-toploader/app";
 
 const useSignUp = () => {
+  const router = useRouter();
   const handleSignUp = async (
     values: TFormValues,
     resetForm: () => void,
@@ -18,11 +20,10 @@ const useSignUp = () => {
       password: values.password,
     };
     const data = await signUpAction(userData);
-    console.log(data);
     if (data.success) {
       toast.success("User created successfully");
+      router.push("sign-in");
     }
-    console.log(data);
     resetForm();
     setSubmitting(false);
   };

@@ -7,9 +7,11 @@ import { signInAction } from "../../auth.actions";
 import { toast } from "sonner";
 import { useRouter } from "nextjs-toploader/app";
 import { useAuth } from "@/providers/auth/auth.provider";
+
 const useSignIn = () => {
   const navigate = useRouter();
   const { applySignedIn } = useAuth();
+
   const handleSignIn = async (
     values: TFormValues,
     resetForm: () => void,
@@ -19,7 +21,6 @@ const useSignIn = () => {
     setSubmitting(false);
 
     if (!data.success) {
-      console.log(data.statusCode);
       if (data.statusCode == 400) toast.error("Invalid Credentials!");
       else toast.error("Internal Server Error!");
       return;
@@ -30,6 +31,7 @@ const useSignIn = () => {
     navigate.push("/");
     resetForm();
   };
+
   const formik = useFormik<TFormValues>({
     initialValues: INITIAL_VALUES,
     onSubmit: (values, { resetForm, setSubmitting }) => {
@@ -40,6 +42,7 @@ const useSignIn = () => {
     validateOnChange: false,
     validateOnBlur: false,
   });
+
   return { formik };
 };
 export default useSignIn;

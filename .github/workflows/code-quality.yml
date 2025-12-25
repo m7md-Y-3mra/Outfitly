@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: generate prisma client
-        run: npm run prisma:generate
+        run: npm run generate
 
       - name: Prettier Check
         run: npm run check-format
