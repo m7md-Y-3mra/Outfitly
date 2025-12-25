@@ -26,7 +26,8 @@
     "dashboard": "Dashboard",
     "signIn": "Sign In",
     "signUp": "Sign Up",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "logoutFailed": "Failed to logout, please try again!"
   },
   "Auth": {
     "signIn": {

@@ -2,11 +2,12 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useCallback, useMemo } from "react";
-import { NAV_LINKS, NAVBAR_COLORS } from "./navbar.constants";
+import { NAVBAR_COLORS } from "./navbar.constants";
 import { useAuth } from "@/providers/auth/auth.provider";
 import { useTheme } from "next-themes";
 import { logOutAction } from "@/modules/auth/auth.actions";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export function useNavbar() {
   const pathname = usePathname();
@@ -16,6 +17,7 @@ export function useNavbar() {
   const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const t = useTranslations("Navigation");
 
   const toggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
   const closeMenu = useCallback(() => setIsOpen(false), []);
@@ -38,17 +40,24 @@ export function useNavbar() {
   }, [user]);
 
   const finalLinks = useMemo(() => {
-    const base = [...NAV_LINKS];
-    if (isAdmin && !base.some((l) => l.href === "/dashboard")) {
-      base.push({ label: "Dashboard", href: "/dashboard" });
+    const navLinks = [
+      { label: t("home"), href: "/" },
+      { label: t("wardrobe"), href: "/my-wardrobe" },
+      { label: t("aiGenerator"), href: "/ai-generator" },
+      { label: t("weather"), href: "/weather" },
+      { label: t("explore"), href: "/explore" },
+      { label: t("profile"), href: "/profile" },
+    ];
+    if (isAdmin) {
+      navLinks.push({ label: t("dashboard"), href: "/dashboard" });
     }
-    return base;
-  }, [isAdmin]);
+    return navLinks;
+  }, [isAdmin, t]);
 
   const onLogout = async () => {
     const res = await logOutAction();
     if (!res.success) {
-      toast.error("Failed to logout, please try again!");
+      toast.error(t("logoutFailed"));
     }
     applySignedOut();
     nav.push("/sign-in");
@@ -59,7 +68,6 @@ export function useNavbar() {
   const onToggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
   return {
     isOpen,
-    NAV_LINKS,
     iconColor,
     NAVBAR_COLORS,
     isLoggedIn,
