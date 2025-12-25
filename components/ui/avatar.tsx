@@ -14,29 +14,26 @@ const Avatar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElem
 );
 Avatar.displayName = "Avatar";
 
-const AvatarImage = React.forwardRef<
-  HTMLImageElement,
-  React.ImgHTMLAttributes<HTMLImageElement>
->(({ className, src, ...props }, ref) => {
-  if (!src) return null
+const AvatarImage = React.forwardRef<HTMLImageElement, React.ImgHTMLAttributes<HTMLImageElement>>(
+  ({ className, src, ...props }, ref) => {
+    if (!src) return null;
 
-  return (
-    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
-    <img
-      ref={ref}
-      src={src}
-      className={cn("aspect-square h-full w-full", className)}
-      {...props}
-    />
-  )
-})
+    return (
+      // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+      <img
+        ref={ref}
+        src={src}
+        className={cn("aspect-square h-full w-full", className)}
+        {...props}
+      />
+    );
+  },
+);
 
-AvatarImage.displayName = "AvatarImage"
-
+AvatarImage.displayName = "AvatarImage";
 
 const AvatarFallback = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-
     <div
       ref={ref}
       className={cn(
@@ -45,8 +42,6 @@ const AvatarFallback = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTM
       )}
       {...props}
     />
-
-
   ),
 );
 AvatarFallback.displayName = "AvatarFallback";
