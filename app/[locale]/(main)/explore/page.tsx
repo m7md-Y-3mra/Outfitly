@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import ExplorePage from "@/modules/explore";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Explore Outfits",
-  description:
-    "Explore outfit ideas and get inspired. Discover new styles and trends to elevate your wardrobe.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Explore");
+  return {
+    title: t("pageTitle"),
+    description: t("pageDescription"),
+  };
+}
 
 const Explore = () => {
   return <ExplorePage />;

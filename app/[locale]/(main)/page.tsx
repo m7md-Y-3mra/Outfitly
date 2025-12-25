@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { LandingPage } from "@/modules/landing-page";
-import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -8,11 +7,9 @@ export const metadata: Metadata = {
     "Discover your personal style with Outfitly. Organize your wardrobe, explore outfit ideas, and elevate your fashion game.",
 };
 
-export default async function Home() {
-  const t = await getTranslations("HomePage");
+export default function Home() {
   return (
     <div>
-      <h1>{t("title")}</h1>
       <LandingPage />
     </div>
   );

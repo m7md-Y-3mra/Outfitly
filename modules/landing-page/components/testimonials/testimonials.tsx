@@ -4,14 +4,15 @@ import { Star, Quote, Sparkles } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useTestimonials } from "./hooks/useTestimonials";
 import {
-  TESTIMONIALS_CONTENT,
   TESTIMONIALS,
   TESTIMONIALS_GRADIENTS,
 } from "./testimonials.constants";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export function Testimonials() {
   const { theme } = useTheme();
+  const t = useTranslations("HomePage.testimonials");
   const {
     sectionRef,
     headingRef,
@@ -178,7 +179,7 @@ export function Testimonials() {
         >
           <Star className="w-4 h-4" style={{ color: "#FFB800", fill: "#FFB800" }} />
           <span className="text-sm font-medium" style={{ color: isDark ? "#FAF1ED" : "#671425" }}>
-            {TESTIMONIALS_CONTENT.badge}
+            {t("badge")}
           </span>
         </div>
 
@@ -186,7 +187,7 @@ export function Testimonials() {
           className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent"
           style={{ backgroundImage: gradients.text }}
         >
-          {TESTIMONIALS_CONTENT.heading.title}
+          {t("heading")}
         </h2>
         <p
           className="text-lg sm:text-xl max-w-2xl mx-auto"
@@ -194,7 +195,7 @@ export function Testimonials() {
             color: isDark ? "rgba(250, 241, 237, 0.8)" : "rgba(103, 20, 37, 0.8)",
           }}
         >
-          {TESTIMONIALS_CONTENT.heading.subtitle}
+          {t("subtitle")}
         </p>
       </div>
 
@@ -263,9 +264,9 @@ export function Testimonials() {
           }}
         >
           {[
-            { value: "4.9", label: "Average Rating" },
-            { value: "50K+", label: "Happy Users" },
-            { value: "98%", label: "Would Recommend" },
+            { value: "4.9", label: t("stats.avgRating") },
+            { value: "50K+", label: t("stats.happyUsers") },
+            { value: "98%", label: t("stats.recommend") },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div

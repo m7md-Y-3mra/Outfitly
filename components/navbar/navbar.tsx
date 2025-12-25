@@ -6,14 +6,15 @@ import { Sun, Moon, Menu, X, ChevronDown, ShieldAlert } from "lucide-react";
 import { Button } from "../ui/button";
 import { Logo } from "../logo/logo";
 import { useNavbar } from "./useNavbar";
-
 import CustomButton from "../custom-button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { MiniLoader } from "./miniLoader";
 import { logOutAction } from "@/modules/auth/auth.actions";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export function Navbar() {
+  const t = useTranslations("Navigation");
   const {
     isOpen,
     iconColor,
@@ -113,7 +114,7 @@ export function Navbar() {
                       className="hover:bg-transparent"
                       style={{ color: iconColor }}
                     >
-                      Sign In
+                      {t("signIn")}
                     </Button>
                   </Link>
 
@@ -125,7 +126,7 @@ export function Navbar() {
                         color: NAVBAR_COLORS.textLight,
                       }}
                     >
-                      Get Started
+                      {t("signUp")}
                     </Button>
                   </Link>
                 </>
@@ -200,7 +201,7 @@ export function Navbar() {
                             className="block px-3 py-2 rounded-xl text-sm transition-colors"
                             style={{ color: NAVBAR_COLORS.link }}
                           >
-                            Profile
+                            {t("profile")}
                           </Link>
 
                           {isAdmin && (
@@ -210,7 +211,7 @@ export function Navbar() {
                               className="block px-3 py-2 rounded-xl text-sm transition-colors"
                               style={{ color: NAVBAR_COLORS.link }}
                             >
-                              Dashboard
+                              {t("dashboard")}
                             </Link>
                           )}
 
@@ -220,7 +221,7 @@ export function Navbar() {
                             className="w-full text-left px-3 py-2 rounded-xl text-sm transition-colors"
                             style={{ color: NAVBAR_COLORS.link }}
                           >
-                            Sign out
+                            {t("signOut")}
                           </button>
                         </div>
                       </motion.div>
@@ -294,7 +295,7 @@ export function Navbar() {
                         className="w-full"
                         style={{ color: NAVBAR_COLORS.primary }}
                       >
-                        Sign In
+                        {t("signIn")}
                       </Button>
                     </Link>
 
@@ -306,7 +307,7 @@ export function Navbar() {
                           color: NAVBAR_COLORS.textLight,
                         }}
                       >
-                        Get Started
+                        {t("signUp")}
                       </Button>
                     </Link>
                   </>
@@ -355,7 +356,7 @@ export function Navbar() {
                           className="w-full justify-start"
                           style={{ color: NAVBAR_COLORS.link }}
                         >
-                          Profile
+                          {t("profile")}
                         </Button>
                       </Link>
 
@@ -366,7 +367,7 @@ export function Navbar() {
                             className="w-full justify-start"
                             style={{ color: NAVBAR_COLORS.link }}
                           >
-                            Dashboard
+                            {t("dashboard")}
                           </Button>
                         </Link>
                       )}
@@ -377,7 +378,7 @@ export function Navbar() {
                         style={{ color: NAVBAR_COLORS.link }}
                         onClick={onLogout}
                       >
-                        Sign out
+                        {t("signOut")}
                       </Button>
                     </div>
                   </div>

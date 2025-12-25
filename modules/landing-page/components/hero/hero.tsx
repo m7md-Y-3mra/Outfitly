@@ -5,15 +5,16 @@ import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { useHero } from "./hooks/useHero";
 import {
-  HERO_CONTENT,
   HERO_BACKGROUND_IMAGE,
   GRADIENT_COLORS,
   PARALLAX_LAYERS,
 } from "./hero.constants";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export function Hero() {
   const { theme } = useTheme();
+  const t = useTranslations("HomePage.hero");
   const {
     containerRef,
     headingLine1Ref,
@@ -137,7 +138,7 @@ export function Hero() {
             }}
           >
             <Sparkles className="w-5 h-5 text-[#FAF1ED]" />
-            <span className="text-[#FAF1ED] font-medium">{HERO_CONTENT.badge}</span>
+            <span className="text-[#FAF1ED] font-medium">{t("badge")}</span>
           </div>
 
           {/* Main Heading with SplitText Animation */}
@@ -158,7 +159,7 @@ export function Hero() {
                 transformStyle: "preserve-3d",
               }}
             >
-              {HERO_CONTENT.heading.line1}
+              {t("headingLine1")}
             </span>
             <span
               ref={headingLine2Ref}
@@ -173,7 +174,7 @@ export function Hero() {
                 transformStyle: "preserve-3d",
               }}
             >
-              {HERO_CONTENT.heading.line2}
+              {t("headingLine2")}
             </span>
           </h1>
 
@@ -186,7 +187,7 @@ export function Hero() {
               textShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
             }}
           >
-            {HERO_CONTENT.subheading}
+            {t("subheading")}
           </p>
 
           {/* CTA Buttons */}
@@ -202,7 +203,7 @@ export function Hero() {
               }}
             >
               <span className="relative z-10 flex items-center gap-2 font-semibold">
-                {HERO_CONTENT.cta.primary}
+                {t("ctaPrimary")}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
               {/* Shine effect */}
@@ -228,45 +229,66 @@ export function Hero() {
               }}
             >
               <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-              {HERO_CONTENT.cta.secondary}
+              {t("ctaSecondary")}
             </Button>
           </div>
 
           {/* Feature Pills */}
           <div ref={featuresRef} className="flex flex-wrap justify-center gap-4 sm:gap-6 pt-8">
-            {HERO_CONTENT.features.map((feature, index) => (
+            {/* AI Feature */}
+            <div
+              className="group flex items-center gap-3 px-5 sm:px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 cursor-default"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(250, 241, 237, 0.12), rgba(250, 241, 237, 0.04))",
+                border: "1px solid rgba(250, 241, 237, 0.15)",
+                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
+              }}
+            >
               <div
-                key={index}
-                className="group flex items-center gap-3 px-5 sm:px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 cursor-default"
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
                 style={{
                   background:
-                    "linear-gradient(135deg, rgba(250, 241, 237, 0.12), rgba(250, 241, 237, 0.04))",
-                  border: "1px solid rgba(250, 241, 237, 0.15)",
-                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
+                    "linear-gradient(135deg, rgba(250, 241, 237, 0.25), rgba(250, 241, 237, 0.1))",
+                  boxShadow: "inset 0 1px 1px rgba(255, 255, 255, 0.1)",
                 }}
               >
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, rgba(250, 241, 237, 0.25), rgba(250, 241, 237, 0.1))",
-                    boxShadow: "inset 0 1px 1px rgba(255, 255, 255, 0.1)",
-                  }}
-                >
-                  {feature.icon === "wand" ? (
-                    <Wand2 className="w-5 h-5 text-[#FAF1ED]" />
-                  ) : (
-                    <Users className="w-5 h-5 text-[#FAF1ED]" />
-                  )}
-                </div>
-                <div className="text-left">
-                  <div className="text-xs sm:text-sm text-[#FAF1ED]/70">{feature.label}</div>
-                  <div className="text-sm sm:text-base text-[#FAF1ED] font-medium">
-                    {feature.description}
-                  </div>
+                <Wand2 className="w-5 h-5 text-[#FAF1ED]" />
+              </div>
+              <div className="text-left">
+                <div className="text-xs sm:text-sm text-[#FAF1ED]/70">{t("featureAI")}</div>
+                <div className="text-sm sm:text-base text-[#FAF1ED] font-medium">
+                  {t("featureAIDesc")}
                 </div>
               </div>
-            ))}
+            </div>
+            {/* Users Feature */}
+            <div
+              className="group flex items-center gap-3 px-5 sm:px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 cursor-default"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(250, 241, 237, 0.12), rgba(250, 241, 237, 0.04))",
+                border: "1px solid rgba(250, 241, 237, 0.15)",
+                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
+              }}
+            >
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(250, 241, 237, 0.25), rgba(250, 241, 237, 0.1))",
+                  boxShadow: "inset 0 1px 1px rgba(255, 255, 255, 0.1)",
+                }}
+              >
+                <Users className="w-5 h-5 text-[#FAF1ED]" />
+              </div>
+              <div className="text-left">
+                <div className="text-xs sm:text-sm text-[#FAF1ED]/70">{t("featureUsers")}</div>
+                <div className="text-sm sm:text-base text-[#FAF1ED] font-medium">
+                  {t("featureUsersDesc")}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Scroll Indicator */}

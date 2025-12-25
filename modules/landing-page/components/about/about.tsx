@@ -2,11 +2,14 @@
 
 import { useTheme } from "next-themes";
 import { usePinnedFeatures } from "./hooks/useAbout";
-import { FEATURES, PINNED_GRADIENTS } from "./about.constants";
+import { PINNED_GRADIENTS } from "./about.constants";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { Sparkles, Palette, Share2, Shield } from "lucide-react";
 
 export function About() {
   const { theme } = useTheme();
+  const t = useTranslations("HomePage.about");
   const {
     sectionRef,
     containerRef,
@@ -17,6 +20,37 @@ export function About() {
   } = usePinnedFeatures();
   const isDark = theme === "dark";
   const gradients = isDark ? PINNED_GRADIENTS.dark : PINNED_GRADIENTS.light;
+
+  const FEATURES = [
+    {
+      icon: Sparkles,
+      title: t("aiStyling.title"),
+      description: t("aiStyling.description"),
+      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
+      color: "#FAF1ED",
+    },
+    {
+      icon: Palette,
+      title: t("manualDesign.title"),
+      description: t("manualDesign.description"),
+      image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80",
+      color: "#F2E8E3",
+    },
+    {
+      icon: Share2,
+      title: t("socialCommunity.title"),
+      description: t("socialCommunity.description"),
+      image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&q=80",
+      color: "#E8DDD8",
+    },
+    {
+      icon: Shield,
+      title: t("smartWardrobe.title"),
+      description: t("smartWardrobe.description"),
+      image: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
+      color: "#DED3CE",
+    },
+  ];
 
   return (
     <section ref={sectionRef} className="relative">
