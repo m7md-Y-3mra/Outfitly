@@ -47,6 +47,10 @@ class UserService {
   async getUsersByMonth() {
     return await userRepo.getMonthlyUsers();
   }
+
+  async getUsersWithOutfitsService() {
+    return await userRepo.getUserWithOutfitsCounts();
+  }
 }
 
 const userService = new UserService();

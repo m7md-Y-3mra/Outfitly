@@ -9,6 +9,7 @@ import {
   createOutfit,
   findAll,
   getCount,
+  getOutfitsForDashboard,
   getUniqueItemsFromOutfits,
   likeOutfit,
   unlikeOutfit,
@@ -54,3 +55,7 @@ export const getOutfitsCount = async () => {
 export const getUsedItemsService = async () => {
   return await getUniqueItemsFromOutfits();
 };
+
+export const getOutfitsForDashboardService = async () => {
+    return await getOutfitsForDashboard();
+} 

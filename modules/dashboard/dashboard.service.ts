@@ -2,8 +2,8 @@
 
 import { Activity, Heart, Layers, ShoppingBag, TrendingUp, Users } from "lucide-react";
 import userService from "../user/user.service";
-import { formatCount, formatRate } from "./utils/number.utils";
-import { getOutfitsCount, getUsedItemsService } from "../outfit/outfit.service";
+import { formatCompact, formatCount, formatRate } from "./utils/number.utils";
+import { getOutfitsCount, getOutfitsForDashboardService, getUsedItemsService } from "../outfit/outfit.service";
 import { toChartData } from "./utils/charts.utils";
 import {
   findItemsInLastWeekService,
@@ -12,6 +12,7 @@ import {
   getCountService,
 } from "../wardrobe/wardrobe.service";
 import { dayNames } from "./home/constants";
+import { toStatus } from "./utils/outfits.util";
 
 export const getUsersForStats = async () => {
   const numberOfUsers = await userService.getUsersCount();
@@ -143,3 +144,30 @@ export const getOutfitKPI = async () => {
     progressColor: "bg-cyan-100 dark:bg-cyan-900/20 [&>*]:bg-cyan-600 dark:[&>*]:bg-cyan-400",
   };
 };
+
+export const getUsersForTables = async () => {
+  const usersFromDB = await userService.getUsersWithOutfitsService();
+
+  return usersFromDB.map((u) => ({
+    id: u.id, 
+    name: u.fullName ?? "—",
+    email: u.email,
+    outfits: u._count.outfits,
+    status: u.isActive ? "Active" : "Inactive",
+    joined: u.createdAt.toISOString().slice(0, 10), 
+  }));
+}
+
+export const getOutfitForDashboard = async () => {
+  const outfits = await getOutfitsForDashboardService();
+
+  return outfits.map((o, idx) => ({
+    id: idx + 1,                 
+    outfitId: o.id,              
+    name: o.name,
+    creator: o.user.fullName ?? "—",
+    likes: formatCompact(o._count.likedBy), 
+    date: o.createdAt.toISOString().slice(0, 10),
+    status: toStatus(o.visibility),
+  }));
+}

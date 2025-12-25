@@ -49,6 +49,25 @@ class UserRepo {
       `;
     return monthlyUsers;
   }
+
+  async getUserWithOutfitsCounts() {
+      const users = await prisma.user.findMany({
+        select: {
+          id: true,
+          fullName: true,
+          email: true,
+          isActive: true,
+          createdAt: true,
+          _count: {
+            select: { outfits: true },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      });
+
+      return users;
+
+  }
 }
 const userRepo = new UserRepo();
 export default userRepo;
