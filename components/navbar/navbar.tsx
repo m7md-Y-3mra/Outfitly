@@ -55,22 +55,24 @@ export function Navbar() {
           <div className="flex items-center justify-between">
             <Logo size="md" animated={false} linkTo="/" />
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex gap-8">
-              {finalLinks.map((link) => (
-                <Link key={link.label} href={link.href} prefetch={false}>
-                  <motion.span
-                    whileHover={{ y: -2 }}
-                    className={`opacity-80 hover:opacity-100 transition-all duration-300 ${
-                      isActive(link.href) ? "font-semibold opacity-100" : ""
-                    }`}
-                    style={{ color: NAVBAR_COLORS.link }}
-                  >
-                    {link.label}
-                  </motion.span>
-                </Link>
-              ))}
-            </div>
+            {/* Desktop Navigation - only show when logged in */}
+            {isLoggedIn && (
+              <div className="hidden lg:flex gap-8">
+                {finalLinks.map((link) => (
+                  <Link key={link.label} href={link.href} prefetch={false}>
+                    <motion.span
+                      whileHover={{ y: -2 }}
+                      className={`opacity-80 hover:opacity-100 transition-all duration-300 ${
+                        isActive(link.href) ? "font-semibold opacity-100" : ""
+                      }`}
+                      style={{ color: NAVBAR_COLORS.link }}
+                    >
+                      {link.label}
+                    </motion.span>
+                  </Link>
+                ))}
+              </div>
+            )}
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-4">
@@ -256,19 +258,21 @@ export function Navbar() {
             className="overflow-hidden lg:hidden"
           >
             <div className="pt-6 pb-2 space-y-4">
-              {finalLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  onClick={closeMenu}
-                  className={`block py-2 transition-opacity duration-300 ${
-                    isActive(link.href) ? "opacity-100" : "opacity-80 hover:opacity-100"
-                  }`}
-                  style={{ color: NAVBAR_COLORS.link }}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {/* Mobile navigation links - only show when logged in */}
+              {isLoggedIn &&
+                finalLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={closeMenu}
+                    className={`block py-2 transition-opacity duration-300 ${
+                      isActive(link.href) ? "opacity-100" : "opacity-80 hover:opacity-100"
+                    }`}
+                    style={{ color: NAVBAR_COLORS.link }}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
 
               <div className="pt-4 space-y-3">
                 {isAuthLoading ? (
