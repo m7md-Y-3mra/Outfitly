@@ -2,38 +2,12 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { MapPin, Droplets, Wind, Eye, Thermometer, Clock } from "lucide-react";
+import { MapPin} from "lucide-react";
 import { Card } from "../../../../components/ui/card";
-import type { WeatherData } from "../../weather.types";
-import type { WeatherWidgetProps, WeatherDetailItem } from "./weatherWidget.types";
+import type { WeatherWidgetProps} from "./weatherWidget.types";
 import { WeatherIcon } from "../weather-icon/weatherIcon";  
+import WeatherDetails from "../weather-details/weatherDetails";
 
-const buildWeatherDetails = (weather: WeatherData): WeatherDetailItem[] => [
-  {
-    key: "feelsLike",
-    label: "Feels Like",
-    value: `${weather.feelsLike}°F`,
-    iconEl: <Thermometer className="w-4 h-4" />,
-  },
-  {
-    key: "time",
-    label: "Time",
-    value: `${weather.time}`,
-    iconEl: <Clock className="w-4 h-4" />,
-  },
-  {
-    key: "windSpeed",
-    label: "Wind Speed",
-    value: `${weather.windSpeed} mph`,
-    iconEl: <Wind className="w-4 h-4" />,
-  },
-  {
-    key: "tempC",
-    label: "Temperature (C)",
-    value: `${weather.temperatureCelsius}°C`,
-    iconEl: <Eye className="w-4 h-4" />,
-  },
-];
 
 export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
   weather,
@@ -41,8 +15,6 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
 }) => {
   if (!weather) return <p>No weather data available</p>;
   if (loading) return <p className="p-8">Loading weather...</p>;
-
-  const details = buildWeatherDetails(weather);
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
@@ -77,26 +49,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
             </div>
 
             {/* Details Grid */}
-            <div className="grid grid-cols-2 gap-4 mt-6">
-              {details.map((d) => (
-                <div
-                  key={d.key}
-                  className="p-4 rounded-xl transition-all duration-300 bg-[var(--outfitly-bg-secondary)] dark:bg-[var(--outfitly-bg-primary)]"
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-[rgba(103,20,37,0.1)]">
-                      {d.iconEl}
-                    </div>
-                    <span className="text-sm text-[var(--outfitly-text-secondary)] dark:text-[var(--outfitly-text-primary)] opacity-70 transition-colors duration-300">
-                      {d.label}
-                    </span>
-                  </div>
-                  <div className="pl-10 text-[var(--outfitly-primary)] dark:text-[var(--outfitly-text-primary)] transition-colors duration-300">
-                    {d.value}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <WeatherDetails weather={weather}/>
           </div>
 
           {/* Right */}
