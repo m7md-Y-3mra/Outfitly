@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { MapPin, Droplets, Wind, Eye, Thermometer, Clock } from "lucide-react";
 import { Card } from "../../../../components/ui/card";
 import type { WeatherData } from "../../weather.types";
+import type { WeatherWidgetProps } from "./weatherWidget.types";
 
 const getWeatherIconEl = (condition?: string) => {
   const c = (condition || "").toLowerCase();
@@ -52,7 +53,7 @@ const buildWeatherDetails = (weather: WeatherData): WeatherDetailItem[] => [
   },
 ];
 
-export const WeatherWidget: React.FC<{ weather: WeatherData | null; loading: boolean }> = ({
+export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
   weather,
   loading,
 }) => {
