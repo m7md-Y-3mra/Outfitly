@@ -43,6 +43,9 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
           src={imagePreview || safeEditForm.avatarUrl}
           alt={getAvatarAlt(user.name || "User Avatar")}
           className="w-full h-full object-cover"
+          width={100}
+          height={200}
+          loading="eager"
         />
       );
     }
@@ -188,11 +191,10 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
 
       {/* CROP MODAL */}
       <Dialog open={isCropping} onOpenChange={setIsCropping}>
-        <DialogContent className="max-w-md">
+        <DialogContent aria-describedby={undefined} className="max-w-md">
           <DialogHeader>
             <DialogTitle className="text-center">Crop Your Avatar</DialogTitle>
           </DialogHeader>
-
           {imagePreview && (
             <ReactCrop
               crop={crop}
@@ -200,7 +202,7 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
               onComplete={(c: Crop) => setCompletedCrop(c)}
               aspect={1}
             >
-              <Image ref={imgRef} src={imagePreview} className="max-w-full h-auto" alt="image" />
+              <Image ref={imgRef} src={imagePreview} className="max-w-full h-auto" alt="image" width={500} height={500} />
             </ReactCrop>
           )}
 
