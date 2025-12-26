@@ -12,6 +12,7 @@ import { MiniLoader } from "./miniLoader";
 import { logOutAction } from "@/modules/auth/auth.actions";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from "./language-switcher";
 
 export function Navbar() {
   const t = useTranslations("Navigation");
@@ -76,7 +77,7 @@ export function Navbar() {
             )}
 
             {/* Desktop CTA */}
-            <div className="hidden lg:flex items-center gap-4">
+            <div className="hidden lg:flex items-center">
               {isAdmin && !isAuthLoading && (
                 <Link href="/admin/issues">
                   <Button
@@ -89,6 +90,8 @@ export function Navbar() {
                   </Button>
                 </Link>
               )}
+
+              <LanguageSwitcher />
 
               <CustomButton
                 variant="ghost"
@@ -154,9 +157,9 @@ export function Navbar() {
                       </AvatarFallback>
                     </Avatar>
 
-                    <span className="max-w-[120px] truncate" style={{ color: NAVBAR_COLORS.link }}>
+                    {/* <span className="max-w-[120px] truncate" style={{ color: NAVBAR_COLORS.link }}>
                       {user?.fullName || user?.email}
-                    </span>
+                    </span> */}
 
                     <ChevronDown
                       className="w-4 h-4 opacity-80"
@@ -233,6 +236,8 @@ export function Navbar() {
 
             {/* Mobile Icons */}
             <div className="lg:hidden flex items-center gap-2">
+              <LanguageSwitcher />
+
               <CustomButton onClick={onToggleTheme} className="p-2" style={{ color: iconColor }}>
                 {theme === "dark" ? (
                   <Sun className="w-5 h-5" style={{ color: iconColor }} />

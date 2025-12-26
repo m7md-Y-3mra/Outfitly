@@ -27,7 +27,8 @@
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "signOut": "Sign Out",
-    "logoutFailed": "Failed to logout, please try again!"
+    "logoutFailed": "Failed to logout, please try again!",
+    "switchLanguage": "Switch language"
   },
   "Auth": {
     "signIn": {
