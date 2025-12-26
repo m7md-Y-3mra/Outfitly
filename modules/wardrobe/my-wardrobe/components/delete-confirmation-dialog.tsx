@@ -36,7 +36,7 @@ export function DeleteConfirmationDialog({
     <Dialog open={open} onOpenChange={!isPending ? onOpenChange : undefined}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t("title", { itemName })}</DialogTitle>
+          <DialogTitle>{t("title", { itemName: itemName ?? "" })}</DialogTitle>
           <DialogDescription>{t("description")}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
