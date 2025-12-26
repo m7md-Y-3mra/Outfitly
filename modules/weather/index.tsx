@@ -9,7 +9,7 @@ import { OutfitCard } from "./components/outfit-card/outfitCard";
 import { WardrobeItemCard } from "./components/wardrobe-item-card/wardrobeItemCard";
 import { useProfile } from "../profile/hooks/useProfile";
 import { useMemo } from "react";
-import { getSeasonFromWeather } from "./hooks/useWeather";
+import { getSeasonFromWeather } from "./weather.utils";
 
 export default function WeatherPage() {
   const { weather, loading: weatherLoading} = useWeather();
