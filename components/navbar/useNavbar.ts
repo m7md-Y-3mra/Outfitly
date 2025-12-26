@@ -11,7 +11,6 @@ import { toast } from "sonner";
 export function useNavbar() {
   const pathname = usePathname();
   const { user, authStatus, applySignedOut } = useAuth();
-  console.log(user);
   const nav = useRouter();
   const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
