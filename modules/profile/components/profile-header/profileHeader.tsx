@@ -202,7 +202,14 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
               onComplete={(c: Crop) => setCompletedCrop(c)}
               aspect={1}
             >
-              <Image ref={imgRef} src={imagePreview} className="max-w-full h-auto" alt="image" width={500} height={500} />
+              <Image
+                ref={imgRef}
+                src={imagePreview}
+                className="max-w-full h-auto"
+                alt="image"
+                width={500}
+                height={500}
+              />
             </ReactCrop>
           )}
 

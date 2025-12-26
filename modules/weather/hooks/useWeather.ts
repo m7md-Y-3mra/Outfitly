@@ -25,22 +25,30 @@ export const useWeather = () => {
       }
     };
     loadWeather();
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const season = useMemo(() => (weather ? getSeasonFromWeather(weather) : "fall"), [weather]);
 
-  const filteredOutfits = useMemo(() => 
-    userOutfits?.filter((outfit) => outfit.season === season) || [], 
-    [userOutfits, season]
+  const filteredOutfits = useMemo(
+    () => userOutfits?.filter((outfit) => outfit.season === season) || [],
+    [userOutfits, season],
   );
 
   const filteredItems = useMemo(() => {
     const currentSeason = season.toLowerCase();
-    return userItems?.filter((item) => {
-      const itemSeason = item.season?.toLowerCase();
-      return itemSeason === currentSeason || itemSeason === "all-year" || itemSeason?.includes(currentSeason);
-    }) || [];
+    return (
+      userItems?.filter((item) => {
+        const itemSeason = item.season?.toLowerCase();
+        return (
+          itemSeason === currentSeason ||
+          itemSeason === "all-year" ||
+          itemSeason?.includes(currentSeason)
+        );
+      }) || []
+    );
   }, [userItems, season]);
 
   const handleScroll = useCallback((direction: "left" | "right") => {
