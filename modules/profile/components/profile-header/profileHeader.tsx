@@ -17,8 +17,6 @@ import { getAvatarAlt } from "./profileHeader.utils";
 import { useProfileHeader } from "./useProfileHeader";
 
 export function ProfileHeader(props: ExtendedProfileHeaderProps) {
-
-
   const {
     imagePreview,
     crop,

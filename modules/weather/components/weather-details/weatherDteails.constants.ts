@@ -1,4 +1,4 @@
-import {WeatherDetailConfig} from './weatherDetails.types'
+import { WeatherDetailConfig } from "./weatherDetails.types";
 
 export const WEATHER_DETAIL_CONFIGS: WeatherDetailConfig[] = [
   {

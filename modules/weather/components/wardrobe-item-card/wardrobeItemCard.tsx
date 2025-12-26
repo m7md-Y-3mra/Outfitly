@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { Card } from "../../../../components/ui/card";
 import { Badge } from "../../../../components/ui/badge";
-import {WardrobeItemCardProps} from './wardrobeItemCard.types'
+import { WardrobeItemCardProps } from "./wardrobeItemCard.types";
 
 export const WardrobeItemCard: React.FC<WardrobeItemCardProps> = ({ item, index }) => {
   return (

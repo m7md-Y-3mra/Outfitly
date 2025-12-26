@@ -42,9 +42,10 @@ export function ProfileTabs({ activeTab, onTabChange, counts }: ProfileTabsWithC
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className={`px-6 py-3 rounded-xl flex items-center gap-2 transition-all duration-300
-                ${isActive 
-                  ? "bg-primary text-primary-foreground border-outfitly-primary dark:border-outfitly-primary"
-                  : "bg-muted text-primary-foreground border-transparent dark:bg-outfitly-bg-primary dark:text-outfitly-text-light"
+                ${
+                  isActive
+                    ? "bg-primary text-primary-foreground border-outfitly-primary dark:border-outfitly-primary"
+                    : "bg-muted text-primary-foreground border-transparent dark:bg-outfitly-bg-primary dark:text-outfitly-text-light"
                 }`}
             >
               <Icon className="w-5 h-5" />

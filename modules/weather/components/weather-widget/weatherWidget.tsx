@@ -1,23 +1,23 @@
-"use client";  // Still needed for Framer Motion
+"use client"; // Still needed for Framer Motion
 
 import React from "react";
 import { motion } from "framer-motion";
-import { MapPin} from "lucide-react";
+import { MapPin } from "lucide-react";
 import { Card } from "../../../../components/ui/card";
-import type { WeatherWidgetProps} from "./weatherWidget.types";
-import { WeatherIcon } from "../weather-icon/weatherIcon";  
+import type { WeatherWidgetProps } from "./weatherWidget.types";
+import { WeatherIcon } from "../weather-icon/weatherIcon";
 import WeatherDetails from "../weather-details/weatherDetails";
 
-
-export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
-  weather,
-  loading,
-}) => {
+export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ weather, loading }) => {
   if (!weather) return <p>No weather data available</p>;
   if (loading) return <p className="p-8">Loading weather...</p>;
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
       <Card className="p-8 border-2 border-[var(--outfitly-bg-secondary)] dark:border-[var(--outfitly-bg-tertiary)] bg-[var(--card)] shadow-2xl transition-all duration-300 relative overflow-hidden">
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Left */}
@@ -49,7 +49,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
             </div>
 
             {/* Details Grid */}
-            <WeatherDetails weather={weather}/>
+            <WeatherDetails weather={weather} />
           </div>
 
           {/* Right */}

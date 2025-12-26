@@ -39,9 +39,7 @@ export const getSeasonFromWeather = (weather: WeatherData): Season => {
   }
 
   if (temperature >= 45) {
-    return normalizedCondition === "rainy" || normalizedCondition === "drizzle"
-      ? "spring"
-      : "fall";
+    return normalizedCondition === "rainy" || normalizedCondition === "drizzle" ? "spring" : "fall";
   }
 
   return normalizedCondition === "snowy" ? "winter" : "spring";

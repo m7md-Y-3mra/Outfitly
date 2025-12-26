@@ -8,5 +8,5 @@ export interface WeatherDetailConfig {
   key: string;
   label: string;
   getValue: (weather: WeatherData) => string;
-  iconName: string; 
+  iconName: string;
 }

@@ -1,8 +1,8 @@
 // WeatherDetails.tsx
 import React from "react";
 import { WEATHER_DETAIL_CONFIGS } from "./weatherDteails.constants";
-import {getIconElement} from "./weatherDetails.utils"
-import {WeatherDetailsProps ,WeatherDetailConfig} from './weatherDetails.types'
+import { getIconElement } from "./weatherDetails.utils";
+import { WeatherDetailsProps, WeatherDetailConfig } from "./weatherDetails.types";
 
 export const WeatherDetails: React.FC<WeatherDetailsProps> = ({ weather }) => {
   return (

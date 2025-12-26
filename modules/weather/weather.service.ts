@@ -1,5 +1,3 @@
-// modules/weather/weather.service.ts
-
 import type { WeatherData } from "./weather.types";
 import { WEATHER_API_URL } from "./weather.constants";
 
@@ -15,7 +13,7 @@ export const fetchCurrentWeather = async (): Promise<WeatherData> => {
           const { latitude, longitude } = coords;
 
           const response = await fetch(
-            `${WEATHER_API_URL}?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=auto`
+            `${WEATHER_API_URL}?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=auto`,
           );
 
           if (!response.ok) {
@@ -31,7 +29,7 @@ export const fetchCurrentWeather = async (): Promise<WeatherData> => {
             temperatureCelsius: Math.round(current.temperature),
             time: current.time,
             feelsLike: Math.round(current.temperature * 1.8 + 32),
-            windSpeed: Math.round(current.windspeed * 0.621371),              
+            windSpeed: Math.round(current.windspeed * 0.621371),
             humidity: 50,
             uvIndex: 5,
             icon: "cloudy",
@@ -45,7 +43,7 @@ export const fetchCurrentWeather = async (): Promise<WeatherData> => {
       },
       (error) => {
         reject(new Error(`Geolocation error: ${error.message}`));
-      }
+      },
     );
   });
 };

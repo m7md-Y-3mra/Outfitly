@@ -12,13 +12,10 @@ import { useMemo } from "react";
 import { getSeasonFromWeather } from "./weather.utils";
 
 export default function WeatherPage() {
-  const { weather, loading: weatherLoading} = useWeather();
+  const { weather, loading: weatherLoading } = useWeather();
   const { outfits: userOutfits, items: userItems, loading: profileLoading } = useProfile();
 
-  const season = useMemo(
-    () => (weather ? getSeasonFromWeather(weather) : "fall"),
-    [weather]
-  );
+  const season = useMemo(() => (weather ? getSeasonFromWeather(weather) : "fall"), [weather]);
 
   const filteredOutfits = useMemo(() => {
     if (!userOutfits) return [];
@@ -37,16 +34,16 @@ export default function WeatherPage() {
       );
     });
   }, [userItems, season]);
-  
-  const handleScroll = (direction: "left" | "right") => {
-  const container = document.getElementById("items-scroll");
-  if (!container) return;
 
-  const scrollAmount = 300;
-  container.scrollBy({
-    left: direction === "right" ? scrollAmount : -scrollAmount,
-    behavior: "smooth",
-  });
+  const handleScroll = (direction: "left" | "right") => {
+    const container = document.getElementById("items-scroll");
+    if (!container) return;
+
+    const scrollAmount = 300;
+    container.scrollBy({
+      left: direction === "right" ? scrollAmount : -scrollAmount,
+      behavior: "smooth",
+    });
   };
   return (
     <div className="bg-background">
@@ -56,13 +53,12 @@ export default function WeatherPage() {
           subtitle="Dress perfectly for the weather conditions"
         />
         <div className="container mx-auto px-4 max-w-7xl mt-12">
-          {
-            weatherLoading?(
-              <p>...loading weather</p>  
-            ):  
-          <WeatherWidget weather={weather} loading={weatherLoading} />
-          }
-        
+          {weatherLoading ? (
+            <p>...loading weather</p>
+          ) : (
+            <WeatherWidget weather={weather} loading={weatherLoading} />
+          )}
+
           {/* Outfits Section */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -73,7 +69,6 @@ export default function WeatherPage() {
           >
             <div className="flex items-center justify-between mt-12 mb-6">
               <h2 className="mb-8 text-2xl font-extrabold tracking-wide bg-gradient-to-r from-[var(--outfitly-gradient-start)] via-[var(--outfitly-gradient-mid)] to-[var(--outfitly-gradient-end)] bg-clip-text text-transparent">
-
                 Perfect outfits for today ({season} weather):
               </h2>
             </div>
@@ -117,9 +112,9 @@ export default function WeatherPage() {
                     <WardrobeItemCard key={item.id || index} item={item} index={index} />
                   ))}
                 </div>
-              <button
-                onClick={() => handleScroll("left")}
-                className="
+                <button
+                  onClick={() => handleScroll("left")}
+                  className="
                   absolute left-0 top-1/2 -translate-y-1/2
                   rounded-full border
                   bg-card
@@ -129,13 +124,13 @@ export default function WeatherPage() {
                   transition-opacity
                   hover:opacity-100
                 "
-              >
-                ←
-              </button>
+                >
+                  ←
+                </button>
 
-              <button
-                onClick={() => handleScroll("right")}
-                className="
+                <button
+                  onClick={() => handleScroll("right")}
+                  className="
                   absolute right-0 top-1/2 -translate-y-1/2
                   rounded-full border
                   bg-card
@@ -145,10 +140,9 @@ export default function WeatherPage() {
                   transition-opacity
                   hover:opacity-100
                 "
-              >
-                →
-              </button>
-
+                >
+                  →
+                </button>
               </div>
             ) : (
               <p>No wardrobe items match this weather. Add more in your profile!</p> // <-- Fallback
