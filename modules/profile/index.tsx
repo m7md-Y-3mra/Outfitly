@@ -47,7 +47,7 @@ export function ProfilePage() {
   } = useProfile();
 
   if (loading) {
-    return <Loading />
+    return <Loading />;
   }
 
   if (!user) {

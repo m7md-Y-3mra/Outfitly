@@ -24,7 +24,6 @@ import { useAuth } from "@/providers/auth/auth.provider";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
 
-
 export function useAIGenerator() {
   const { user } = useAuth();
   const { theme } = useTheme();
