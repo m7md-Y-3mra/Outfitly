@@ -7,11 +7,11 @@ import type { WeatherData } from "../weather.types";
 export const useWeather = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [weatherLoading, setWeatherLoading] = useState(true);
-  const [weatherError, setWeatherError] = useState<Error | null>(null);
-
+  const [weatherError, setWeatherError] = useState<Error>(new Error());
   const itemsContainerRef = useRef<HTMLDivElement>(null);
   const { outfits: userOutfits, items: userItems, profileLoading } = useProfile();
 
+  
   // Fetch weather on mount
   useEffect(() => {
     let isMounted = true;
@@ -20,9 +20,9 @@ export const useWeather = () => {
       try {
         const data = await fetchCurrentWeather();
         if (isMounted) setWeather(data);
-      } catch (error) {
+      } catch {
         if (isMounted) {
-          setWeatherError(error as Error);
+          setWeatherError(new Error("Unknown weather error occurred"));
           setWeather(null);
         }
       } finally {
@@ -38,7 +38,11 @@ export const useWeather = () => {
 
   // Determine season based on fetched weather
   const season = useMemo(() => (weather ? getSeasonFromWeather(weather) : null), [weather]);
-
+  const weatherStatus = useMemo<"loading" | "ready" | "error">(() => {
+    if (weatherLoading || profileLoading) return "loading";
+    if (weatherError || !season) return "error";
+    return "ready";
+  }, [weatherLoading, profileLoading, weatherError, season]);
   // Filter outfits based on season
   const filteredOutfits = useMemo(() => {
     console.log(userOutfits)
@@ -83,12 +87,13 @@ export const useWeather = () => {
 
   return {
     weather,
+    season,
     weatherLoading,
     weatherError,
+    weatherStatus,
     profileLoading,
-    season,
-    filteredOutfits,
-    filteredItems,
+    filteredOutfits: weatherStatus === "ready" ? filteredOutfits : [],
+    filteredItems: weatherStatus === "ready" ? filteredItems : [],
     handleScroll,
     itemsContainerRef,
   };

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { AlertTriangle, RotateCw } from "lucide-react";
 
 interface Props {
-  error: Error;
+  error: Error  ;
   onRetry: () => void;
 }
 
