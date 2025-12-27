@@ -23,7 +23,6 @@ import {
 import { useAuth } from "@/providers/auth/auth.provider";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
-import { ALL_OCCASIONS_DUMMY, ITEMS_FOR_AI_DUMMY } from "../constants";
 
 export function useAIGenerator() {
   const { user } = useAuth();
@@ -76,7 +75,7 @@ export function useAIGenerator() {
     setFilteredFromDB(items);
 
     const userReqs = toUserRequirements(formData);
-    const prompt = createPrompt(ITEMS_FOR_AI_DUMMY, ALL_OCCASIONS_DUMMY, userReqs);
+    const prompt = createPrompt(items, occasions, userReqs);
 
     const aiRes = await generateAIOutfitAction(prompt);
     console.log(aiRes);
@@ -96,7 +95,7 @@ export function useAIGenerator() {
     const outfit = generatedOutfits.find((o) => o.name === name);
     if (!outfit || !filteredFromDB) return;
 
-    const itemsForView = getItemsByIds(ITEMS_FOR_AI_DUMMY, outfit.items);
+    const itemsForView = getItemsByIds(filteredFromDB, outfit.items);
 
     setViewingOutfit({
       ...outfit,

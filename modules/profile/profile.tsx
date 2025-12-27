@@ -14,6 +14,7 @@ import { ProfileTabs } from "./components/profile-taps/profileTaps";
 import { ProfileOutfitsGrid } from "./components/profile-outfits/profileOutfits";
 import { ProfileOutfitsSkeleton } from "./components/profile-outfits/ProfileOutfitsSkeleton";
 import { ProfileLikedOutfitsGrid } from "./components/profile-liked-outfits/likedOutfits";
+import Loading from "@/app/loading";
 
 function renderContent(
   activeTab: TabType,
