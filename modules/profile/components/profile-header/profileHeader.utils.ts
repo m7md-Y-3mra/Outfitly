@@ -1,4 +1,5 @@
 import type { Crop } from "react-image-crop";
+import { S3_BUCKET_NAME } from "@/config/env.config";
 
 export const getAvatarAlt = (userName: string): string =>
   userName ? `${userName.slice(0, 2).toUpperCase()}` : "U";
@@ -53,16 +54,51 @@ export const getCroppedImg = async (image: HTMLImageElement, crop: Crop): Promis
 };
 
 export const uploadAvatar = async (file: File): Promise<string> => {
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const res = await fetch("/api/upload-avatar", {
+  // 1. Get presigned URL from S3
+  const presignedResponse = await fetch("/api/s3/upload", {
     method: "POST",
-    body: formData,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      filename: file.name,
+      contentType: file.type,
+      size: file.size,
+    }),
   });
 
-  if (!res.ok) throw new Error("Upload failed");
+  if (!presignedResponse.ok) {
+    throw new Error("Failed to get presigned URL");
+  }
 
-  const data = await res.json();
-  return data.url;
+  const { presignedUrl, key } = await presignedResponse.json();
+
+  // 2. Upload file directly to S3
+  const uploadResponse = await fetch(presignedUrl, {
+    method: "PUT",
+    headers: { "Content-Type": file.type },
+    body: file,
+  });
+
+  if (!uploadResponse.ok) {
+    throw new Error("Upload to S3 failed");
+  }
+
+  // 3. Return the S3 URL
+  return `https://${S3_BUCKET_NAME}.fly.storage.tigris.dev/${key}`;
+};
+
+export const deleteAvatarFromS3 = async (avatarUrl: string): Promise<void> => {
+  if (!avatarUrl || !avatarUrl.includes(".dev/")) return;
+
+  const key = avatarUrl.split(".dev/")[1];
+  if (!key) return;
+
+  const response = await fetch("/api/s3/delete", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete avatar from S3");
+  }
 };
