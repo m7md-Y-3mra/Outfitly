@@ -16,7 +16,7 @@ export function ProfileOutfitsGrid({ outfits }: ProfileOutfitsGridProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.05 }}
           >
-            <Card className="group cursor-pointer overflow-hidden border-2 transition-all duration-300 hover:shadow-2xl bg-card border-border">
+            <Card className="group cursor-pointer overflow-hidden border-2 transition-all duration-300 hover:shadow-2xl bg-card border-border py-0">
               <div className="relative overflow-hidden">
                 <motion.img
                   src={outfit.image}
