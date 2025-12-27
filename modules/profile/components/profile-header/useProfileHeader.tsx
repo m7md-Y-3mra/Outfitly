@@ -25,7 +25,6 @@ export function useProfileHeader({
 
   const safeEditForm = editForm || user;
 
-  /* ================== HANDLERS ================== */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;

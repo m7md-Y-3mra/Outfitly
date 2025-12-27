@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-// Update profile schema
 export const profileUpdateSchema = z.object({
   name: z.string().min(1).optional(),
   bio: z.string().optional(),

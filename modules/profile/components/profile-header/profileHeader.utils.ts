@@ -1,7 +1,7 @@
 import type { Crop } from "react-image-crop";
 
 export const getAvatarAlt = (userName: string): string =>
-  userName ? `${userName.slice(0, 2).toUpperCase()}` : "User avatar";
+  userName ? `${userName.slice(0, 2).toUpperCase()}` : "U";
 
 export const normalizeWebsite = (value: string): string => {
   const trimmed = value.trim();
