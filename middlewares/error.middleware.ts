@@ -117,6 +117,7 @@ export function errorMiddleware<Args extends unknown[], Return>(
       // ---------------------------
 
       if (err instanceof Error && err.message.includes("GROQ_API_KEY")) {
+        console.log("hhhhhhh");
         return {
           success: false,
           statusCode: 500,

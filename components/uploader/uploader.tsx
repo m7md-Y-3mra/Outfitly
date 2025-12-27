@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import { Loader2, Trash2 } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function Uploader({
   onImageDelete,
@@ -19,6 +20,7 @@ export default function Uploader({
   onImageDelete: (key?: string) => void;
   initialImages?: string[];
 }) {
+  const t = useTranslations("Uploader");
   const [files, setFiles] = useState<
     Array<{
       id: string;
@@ -82,7 +84,7 @@ export default function Uploader({
       });
 
       if (!response.ok) {
-        toast.error("Failed to remove file from storage.");
+        toast.error(t("errors.failedToRemove"));
         setFiles((prevFiles) =>
           prevFiles.map((f) => (f.id === fileId ? { ...f, isDeleting: false, error: true } : f)),
         );
@@ -92,9 +94,9 @@ export default function Uploader({
       onImageDelete(fileToRemove.key);
 
       setFiles((prevFiles) => prevFiles.filter((f) => f.id !== fileId));
-      toast.success("File removed successfully");
+      toast.success(t("success.removed"));
     } catch {
-      toast.error("Failed to remove file from storage.");
+      toast.error(t("errors.failedToRemove"));
       setFiles((prevFiles) =>
         prevFiles.map((f) => (f.id === fileId ? { ...f, isDeleting: false, error: true } : f)),
       );
@@ -119,7 +121,7 @@ export default function Uploader({
       });
 
       if (!presignedResponse.ok) {
-        toast.error("Failed to get presigned URL");
+        toast.error(t("errors.failedToGetUrl"));
 
         setFiles((prevFiles) =>
           prevFiles.map((f) =>
@@ -158,7 +160,7 @@ export default function Uploader({
               ),
             );
 
-            toast.success("File uploaded successfully");
+            toast.success(t("success.uploaded"));
 
             resolve();
           } else {
@@ -175,7 +177,7 @@ export default function Uploader({
         xhr.send(file);
       });
     } catch {
-      toast.error("Something went wrong");
+      toast.error(t("errors.somethingWentWrong"));
 
       setFiles((prevFiles) =>
         prevFiles.map((f) =>
@@ -194,7 +196,7 @@ export default function Uploader({
 
       if (totalFiles > 5) {
         toast.error(
-          `Cannot add ${newFileCount} file(s). Maximum is 5 files total (currently ${currentFileCount})`,
+          t("errors.maxFilesExceeded", { count: newFileCount, current: currentFileCount }),
         );
         return;
       }
@@ -216,25 +218,28 @@ export default function Uploader({
     }
   };
 
-  const rejectedFiles = useCallback((fileRejection: FileRejection[]) => {
-    if (fileRejection.length) {
-      const toomanyFiles = fileRejection.find(
-        (rejection) => rejection.errors[0].code === "too-many-files",
-      );
+  const rejectedFiles = useCallback(
+    (fileRejection: FileRejection[]) => {
+      if (fileRejection.length) {
+        const toomanyFiles = fileRejection.find(
+          (rejection) => rejection.errors[0].code === "too-many-files",
+        );
 
-      const fileSizetoBig = fileRejection.find(
-        (rejection) => rejection.errors[0].code === "file-too-large",
-      );
+        const fileSizetoBig = fileRejection.find(
+          (rejection) => rejection.errors[0].code === "file-too-large",
+        );
 
-      if (toomanyFiles) {
-        toast.error("Too many files selected, max is 5");
+        if (toomanyFiles) {
+          toast.error(t("errors.tooManyFiles"));
+        }
+
+        if (fileSizetoBig) {
+          toast.error(t("errors.fileTooLarge"));
+        }
       }
-
-      if (fileSizetoBig) {
-        toast.error("File size exceeds 5mb limit");
-      }
-    }
-  }, []);
+    },
+    [t],
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -271,11 +276,11 @@ export default function Uploader({
         <CardContent className="flex items-center justify-center h-full w-full">
           <input {...getInputProps()} />
           {isDragActive ? (
-            <p className="text-center">Drop the files here ...</p>
+            <p className="text-center">{t("dropHint")}</p>
           ) : (
             <div className="flex flex-col items-center gap-y-3">
-              <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
-              <Button type="button">Select Files</Button>
+              <p>{t("dragHint")}</p>
+              <Button type="button">{t("selectFiles")}</Button>
             </div>
           )}
         </CardContent>
@@ -321,12 +326,12 @@ export default function Uploader({
                     )}
                     {error && (
                       <div className="absolute inset-0 bg-red-500/50 flex items-center justify-center">
-                        <div className="text-white font-medium">Error</div>
+                        <div className="text-white font-medium">{t("errors.error")}</div>
                       </div>
                     )}
                   </div>
                   <p className="text-sm text-muted-foreground truncate px-1">
-                    {isExisting ? "Existing image" : file?.name || "Image"}
+                    {isExisting ? t("existingImage") : file?.name || t("image")}
                   </p>
                 </div>
               );

@@ -5,6 +5,7 @@ import { useRouter } from "nextjs-toploader/app";
 import Image from "next/image";
 import { useDeleteWardrobeItem } from "../../hooks/useDeleteWardrobeItem";
 import { DeleteConfirmationDialog } from "../delete-confirmation-dialog";
+import { useTranslations } from "next-intl";
 
 export function WardrobeGridItem({
   item,
@@ -15,6 +16,7 @@ export function WardrobeGridItem({
   index: number;
   onDelete: (itemId: string) => void;
 }) {
+  const t = useTranslations("Common");
   const router = useRouter();
   const {
     isDeleteDialogOpen,
@@ -76,7 +78,7 @@ export function WardrobeGridItem({
               aria-label={`Edit ${item.name}`}
             >
               <Edit className="w-4 h-4" aria-hidden="true" />
-              <span>Edit</span>
+              <span>{t("edit")}</span>
             </button>
             <button
               className="py-2 px-3 rounded-lg bg-red-500/20 backdrop-blur-md text-white hover:bg-red-500/30 

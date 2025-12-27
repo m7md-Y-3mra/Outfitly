@@ -6,12 +6,14 @@ import { Sun, Moon, Menu, X, ChevronDown, ShieldAlert } from "lucide-react";
 import { Button } from "../ui/button";
 import { Logo } from "../logo/logo";
 import { useNavbar } from "./useNavbar";
-
 import CustomButton from "../custom-button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { MiniLoader } from "./miniLoader";
+import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from "./language-switcher";
 
 export function Navbar() {
+  const t = useTranslations("Navigation");
   const {
     isOpen,
     iconColor,
@@ -73,7 +75,7 @@ export function Navbar() {
             )}
 
             {/* Desktop CTA */}
-            <div className="hidden lg:flex items-center gap-4">
+            <div className="hidden lg:flex items-center">
               {isAdmin && !isAuthLoading && (
                 <Link href="/admin/issues">
                   <Button
@@ -86,6 +88,8 @@ export function Navbar() {
                   </Button>
                 </Link>
               )}
+
+              <LanguageSwitcher />
 
               <CustomButton
                 variant="ghost"
@@ -108,22 +112,22 @@ export function Navbar() {
                   <Link href="/sign-in">
                     <Button
                       variant="ghost"
-                      className="hover:bg-transparent"
+                      className="hover:bg-transparent cursor-pointer"
                       style={{ color: iconColor }}
                     >
-                      Sign In
+                      {t("signIn")}
                     </Button>
                   </Link>
 
                   <Link href="/sign-up">
                     <Button
-                      className="hover:scale-105 hover:shadow-lg transition-all"
+                      className="hover:scale-105 hover:shadow-lg transition-all cursor-pointer"
                       style={{
                         backgroundColor: NAVBAR_COLORS.primary,
                         color: NAVBAR_COLORS.textLight,
                       }}
                     >
-                      Get Started
+                      {t("signUp")}
                     </Button>
                   </Link>
                 </>
@@ -151,9 +155,9 @@ export function Navbar() {
                       </AvatarFallback>
                     </Avatar>
 
-                    <span className="max-w-[120px] truncate" style={{ color: NAVBAR_COLORS.link }}>
+                    {/* <span className="max-w-[120px] truncate" style={{ color: NAVBAR_COLORS.link }}>
                       {user?.fullName || user?.email}
-                    </span>
+                    </span> */}
 
                     <ChevronDown
                       className="w-4 h-4 opacity-80"
@@ -198,7 +202,7 @@ export function Navbar() {
                             className="block px-3 py-2 rounded-xl text-sm transition-colors"
                             style={{ color: NAVBAR_COLORS.link }}
                           >
-                            Profile
+                            {t("profile")}
                           </Link>
 
                           {isAdmin && (
@@ -208,7 +212,7 @@ export function Navbar() {
                               className="block px-3 py-2 rounded-xl text-sm transition-colors"
                               style={{ color: NAVBAR_COLORS.link }}
                             >
-                              Dashboard
+                              {t("dashboard")}
                             </Link>
                           )}
 
@@ -218,7 +222,7 @@ export function Navbar() {
                             className="w-full text-left px-3 py-2 rounded-xl text-sm transition-colors"
                             style={{ color: NAVBAR_COLORS.link }}
                           >
-                            Sign out
+                            {t("signOut")}
                           </button>
                         </div>
                       </motion.div>
@@ -230,6 +234,8 @@ export function Navbar() {
 
             {/* Mobile Icons */}
             <div className="lg:hidden flex items-center gap-2">
+              <LanguageSwitcher />
+
               <CustomButton onClick={onToggleTheme} className="p-2" style={{ color: iconColor }}>
                 {theme === "dark" ? (
                   <Sun className="w-5 h-5" style={{ color: iconColor }} />
@@ -285,29 +291,17 @@ export function Navbar() {
                     <MiniLoader color={NAVBAR_COLORS.link} />
                   </div>
                 ) : !isLoggedIn ? (
-                  <>
+                  <div className="flex flex-col gap-2">
                     <Link href="/sign-in" onClick={closeMenu}>
-                      <Button
-                        variant="ghost"
-                        className="w-full"
-                        style={{ color: NAVBAR_COLORS.primary }}
-                      >
-                        Sign In
+                      <Button variant="ghost" className="w-full cursor-pointer">
+                        {t("signIn")}
                       </Button>
                     </Link>
 
                     <Link href="/sign-up" onClick={closeMenu}>
-                      <Button
-                        className="w-full"
-                        style={{
-                          backgroundColor: NAVBAR_COLORS.primary,
-                          color: NAVBAR_COLORS.textLight,
-                        }}
-                      >
-                        Get Started
-                      </Button>
+                      <Button className="w-full cursor-pointer">{t("signUp")}</Button>
                     </Link>
-                  </>
+                  </div>
                 ) : (
                   <div
                     className="p-3 rounded-2xl space-y-3"
@@ -353,7 +347,7 @@ export function Navbar() {
                           className="w-full justify-start"
                           style={{ color: NAVBAR_COLORS.link }}
                         >
-                          Profile
+                          {t("profile")}
                         </Button>
                       </Link>
 
@@ -364,7 +358,7 @@ export function Navbar() {
                             className="w-full justify-start"
                             style={{ color: NAVBAR_COLORS.link }}
                           >
-                            Dashboard
+                            {t("dashboard")}
                           </Button>
                         </Link>
                       )}
@@ -375,7 +369,7 @@ export function Navbar() {
                         style={{ color: NAVBAR_COLORS.link }}
                         onClick={onLogout}
                       >
-                        Sign out
+                        {t("signOut")}
                       </Button>
                     </div>
                   </div>

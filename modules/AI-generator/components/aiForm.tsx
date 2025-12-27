@@ -3,10 +3,41 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Briefcase, Cloud, Palette, Edit3 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import type { AIGeneratorFormData } from "./aiGenerator";
 import SelectCard from "./selectCard";
 import { OCCASIONS, STYLES, WEATHER } from "../constants/constatnts";
+
+// Mapping from API values to translation keys
+const OCCASION_KEYS: Record<string, string> = {
+  "Work Meeting": "workMeeting",
+  "Casual Hangout": "casualHangout",
+  "Date Night": "dateNight",
+  Wedding: "wedding",
+  Party: "party",
+  "Formal Event": "formalEvent",
+  Other: "other",
+};
+
+const WEATHER_KEYS: Record<string, string> = {
+  "Sunny & Hot": "sunnyHot",
+  "Warm & Pleasant": "warmPleasant",
+  "Cool & Breezy": "coolBreezy",
+  "Cold & Windy": "coldWindy",
+  Rainy: "rainy",
+  Snowy: "snowy",
+};
+
+const STYLE_KEYS: Record<string, string> = {
+  CASUAL: "casual",
+  FORMAL: "formal",
+  WORK: "work",
+  SPORTY: "sporty",
+  STREETWEAR: "streetwear",
+  LOUNGEWEAR: "loungewear",
+  PARTY: "party",
+};
 
 export interface IFormProps {
   formData: AIGeneratorFormData;
@@ -21,6 +52,8 @@ export function AIGeneratorFiltersForm({
   onFormChange,
   onCustomOccasionChange,
 }: IFormProps) {
+  const t = useTranslations("AIGenerator");
+
   const setField = <K extends keyof AIGeneratorFormData>(key: K, value: AIGeneratorFormData[K]) => {
     onFormChange((prev) => {
       const next = { ...prev, [key]: value };
@@ -58,7 +91,7 @@ export function AIGeneratorFiltersForm({
           >
             <Briefcase className="h-4 w-4" />
           </span>
-          <span>What&apos;s the occasion?</span>
+          <span>{t("form.occasionLabel")}</span>
         </label>
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
@@ -71,7 +104,11 @@ export function AIGeneratorFiltersForm({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <SelectCard label={o.value} Icon={o.icon} selected={formData.occasion === o.value} />
+              <SelectCard
+                label={t(`occasions.${OCCASION_KEYS[o.value]}`)}
+                Icon={o.icon}
+                selected={formData.occasion === o.value}
+              />
             </motion.button>
           ))}
         </div>
@@ -88,7 +125,7 @@ export function AIGeneratorFiltersForm({
                 type="text"
                 value={customOccasion}
                 onChange={(e) => onCustomOccasionChange(e.target.value)}
-                placeholder="Please specify your occasion..."
+                placeholder={t("form.customOccasionPlaceholder")}
                 className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus-visible:ring-2"
                 style={{
                   backgroundColor: fieldBg,
@@ -115,7 +152,7 @@ export function AIGeneratorFiltersForm({
           >
             <Cloud className="h-4 w-4" />
           </span>
-          <span>What&apos;s the weather?</span>
+          <span>{t("form.weatherLabel")}</span>
         </label>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -128,7 +165,11 @@ export function AIGeneratorFiltersForm({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <SelectCard label={w.value} Icon={w.icon} selected={formData.weather === w.value} />
+              <SelectCard
+                label={t(`weather.${WEATHER_KEYS[w.value]}`)}
+                Icon={w.icon}
+                selected={formData.weather === w.value}
+              />
             </motion.button>
           ))}
         </div>
@@ -147,7 +188,7 @@ export function AIGeneratorFiltersForm({
           >
             <Palette className="h-4 w-4" />
           </span>
-          <span>Preferred style?</span>
+          <span>{t("form.styleLabel")}</span>
         </label>
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
@@ -160,7 +201,11 @@ export function AIGeneratorFiltersForm({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <SelectCard label={s.value} Icon={s.icon} selected={formData.style === s.value} />
+              <SelectCard
+                label={t(`styles.${STYLE_KEYS[s.value]}`)}
+                Icon={s.icon}
+                selected={formData.style === s.value}
+              />
             </motion.button>
           ))}
         </div>
@@ -181,7 +226,8 @@ export function AIGeneratorFiltersForm({
           </span>
 
           <span>
-            Any specific requirements? <span style={{ opacity: 0.7 }}>(Optional)</span>
+            {t("form.requirementsLabel")}{" "}
+            <span style={{ opacity: 0.7 }}>{t("form.requirementsOptional")}</span>
           </span>
         </label>
 
@@ -189,7 +235,7 @@ export function AIGeneratorFiltersForm({
           rows={3}
           value={formData.requirements}
           onChange={(e) => setField("requirements", e.target.value)}
-          placeholder="E.g., prefer darker colors, need comfortable shoes..."
+          placeholder={t("form.requirementsPlaceholder")}
           className="w-full px-4 py-3 rounded-xl border-2 resize-none transition-all duration-300 focus:outline-none focus-visible:ring-2"
           style={{
             backgroundColor: fieldBg,

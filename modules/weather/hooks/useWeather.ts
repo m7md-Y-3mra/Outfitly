@@ -1,78 +1,89 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import { fetchCurrentWeather } from "../weather.service";
-import { useProfile } from "../../profile/hooks/useProfile";
-import { getSeasonFromWeather } from "../weather.utils";
-import type { WeatherData } from "../weather.types";
+"use client";
 
-export const useWeather = () => {
-  const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [weatherLoading, setWeatherLoading] = useState(true);
-  const [weatherError, setWeatherError] = useState<Error | null>(null);
+import { useState, useEffect, useMemo } from "react";
+import { WeatherData, Outfit, WardrobeItem } from "../weather.types";
+import { mockWeather, timeBasedOutfits, suitableItems } from "../weather.constants";
+import { WeatherService } from "../weather.service";
+import { validateWeatherData } from "../weather.validation";
 
-  const itemsContainerRef = useRef<HTMLDivElement>(null);
-  const { outfits: userOutfits, items: userItems, profileLoading: profileLoading } = useProfile();
+interface UseWeatherReturn {
+  weather: WeatherData;
+  outfits: Outfit[];
+  items: WardrobeItem[];
+  handleScroll: (direction: "left" | "right") => void;
+}
 
+// Enhanced: Map weather to season primarily based on temperature (°F), with condition as tiebreaker
+const getSeasonFromWeather = (weather: WeatherData): string => {
+  const temp = weather.temperature;
+  const condition = weather.condition.toLowerCase();
+
+  // Validate temperature
+  if (typeof temp !== "number" || isNaN(temp)) {
+    return "autumn"; // Default fallback
+  }
+
+  // Temperature-based mapping
+  if (temp > 75) {
+    return "summer"; // Hot
+  } else if (temp >= 60) {
+    // Mild range: Use condition to distinguish autumn vs. summer edge
+    return condition === "sunny" ? "summer" : "autumn";
+  } else if (temp >= 45) {
+    // Cooler range: Use condition for spring vs. autumn edge
+    return condition === "rainy" || condition === "drizzle" ? "spring" : "autumn";
+  } else {
+    // Cold: Winter, but check for snowy
+    return condition === "snowy" ? "winter" : "spring";
+  }
+};
+
+export const useWeather = (): UseWeatherReturn => {
+  const [weather, setWeather] = useState<WeatherData>(mockWeather);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  // Scroll handler for wardrobe items (unchanged)
+  const handleScroll = (direction: "left" | "right") => {
+    const container = document.getElementById("items-scroll");
+    if (container) {
+      const scrollAmount = 300;
+      const newPosition =
+        direction === "right" ? scrollPosition + scrollAmount : scrollPosition - scrollAmount;
+      container.scrollTo({ left: newPosition, behavior: "smooth" });
+      setScrollPosition(newPosition);
+    }
+  };
+
+  // Fetch weather using the service and validate response
   useEffect(() => {
-    let isMounted = true;
-
-    const loadWeather = async () => {
+    const fetchWeather = async () => {
       try {
-        const data = await fetchCurrentWeather();
-        if (isMounted) setWeather(data);
-      } catch (error) {
-        if (isMounted) {
-          setWeatherError(error as Error);
-          setWeather(null);
+        const fetchedWeather = await WeatherService.fetchCurrentWeather();
+        if (validateWeatherData(fetchedWeather)) {
+          setWeather(fetchedWeather);
+        } else {
+          console.warn("Invalid weather data, using mock");
+          setWeather(mockWeather);
         }
-      } finally {
-        if (isMounted) setWeatherLoading(false);
+      } catch (error) {
+        console.error("Weather fetch failed, using mock", error);
+        setWeather(mockWeather);
       }
     };
 
-    loadWeather();
-    return () => {
-      isMounted = false;
-    };
+    fetchWeather();
   }, []);
-  const season = useMemo(() => (weather ? getSeasonFromWeather(weather) : "fall"), [weather]);
 
-  const filteredOutfits = useMemo(
-    () => userOutfits?.filter((outfit) => outfit.season === season) || [],
-    [userOutfits, season],
-  );
+  // Filter outfits and items based on weather season
+  const filteredOutfits = useMemo(() => {
+    const season = getSeasonFromWeather(weather);
+    return timeBasedOutfits.filter((outfit) => outfit.season === season);
+  }, [weather]);
 
   const filteredItems = useMemo(() => {
-    const currentSeason = season.toLowerCase();
-    return (
-      userItems?.filter((item) => {
-        const itemSeason = item.season?.toLowerCase();
-        return (
-          itemSeason === currentSeason ||
-          itemSeason === "all-year" ||
-          itemSeason?.includes(currentSeason)
-        );
-      }) || []
-    );
-  }, [userItems, season]);
+    const season = getSeasonFromWeather(weather);
+    return suitableItems.filter((item) => item.season === season);
+  }, [weather]);
 
-  const handleScroll = useCallback((direction: "left" | "right") => {
-    if (!itemsContainerRef.current) return;
-    const scrollAmount = 300;
-    itemsContainerRef.current.scrollBy({
-      left: direction === "right" ? scrollAmount : -scrollAmount,
-      behavior: "smooth",
-    });
-  }, []);
-
-  return {
-    weather,
-    weatherLoading,
-    weatherError,
-    profileLoading,
-    season,
-    filteredOutfits,
-    filteredItems,
-    handleScroll,
-    itemsContainerRef,
-  };
+  return { weather, outfits: filteredOutfits, items: filteredItems, handleScroll };
 };

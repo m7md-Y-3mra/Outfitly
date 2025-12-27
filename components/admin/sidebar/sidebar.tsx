@@ -3,13 +3,37 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sparkles } from "lucide-react";
+import { LayoutDashboard, Users, Shirt, Settings, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAVBAR_COLORS } from "../../navbar/navbar.constants";
-import { SIDEBAR_ITEMS } from "./sidebar.constants";
+import { useTranslations } from "next-intl";
 
 export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const pathname = usePathname();
+  const t = useTranslations("Admin");
+
+  const sidebarItems = [
+    {
+      icon: LayoutDashboard,
+      label: t("sidebar.dashboard"),
+      href: "/dashboard",
+    },
+    {
+      icon: Users,
+      label: t("sidebar.users"),
+      href: "/dashboard/users",
+    },
+    {
+      icon: Shirt,
+      label: t("sidebar.outfits"),
+      href: "/dashboard/outfits",
+    },
+    // {
+    //   icon: Settings,
+    //   label: t("sidebar.settings"),
+    //   href: "/dashboard/settings",
+    // },
+  ];
 
   return (
     <>
@@ -43,7 +67,7 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         >
           {/* Navigation Items */}
           <div className="p-4 flex flex-col gap-2">
-            {SIDEBAR_ITEMS.map((item) => {
+            {sidebarItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname.startsWith(item.href);
 
@@ -88,9 +112,11 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 </div>
 
                 <div className="space-y-1">
-                  <h3 className="text-white font-bold text-lg tracking-tight">Pro Admin</h3>
+                  <h3 className="text-white font-bold text-lg tracking-tight">
+                    {t("proCard.title")}
+                  </h3>
                   <p className="text-indigo-100 text-xs font-medium leading-relaxed">
-                    Access advanced analytics
+                    {t("proCard.description")}
                   </p>
                 </div>
               </div>

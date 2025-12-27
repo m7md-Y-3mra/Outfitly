@@ -1,13 +1,39 @@
 "use client";
 import { motion } from "framer-motion";
 import { Instagram, Twitter, Facebook, Mail, MapPin, Phone } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const t = useTranslations("Footer");
+
   const footerLinks = {
-    Product: ["Features", "Pricing", "AI Styling", "Wardrobe Manager", "Community"],
-    Company: ["About Us", "Careers", "Press", "Partners", "Blog"],
-    Resources: ["Help Center", "Tutorials", "API Docs", "Style Guide", "Inspiration"],
-    Legal: ["Privacy Policy", "Terms of Service", "Cookie Policy", "Licenses"],
+    [t("links.product")]: [
+      t("links.features"),
+      t("links.pricing"),
+      t("links.aiStyling"),
+      t("links.wardrobeManager"),
+      t("links.community"),
+    ],
+    [t("links.company")]: [
+      t("links.aboutUs"),
+      t("links.careers"),
+      t("links.press"),
+      t("links.partners"),
+      t("links.blog"),
+    ],
+    [t("links.resources")]: [
+      t("links.helpCenter"),
+      t("links.tutorials"),
+      t("links.apiDocs"),
+      t("links.styleGuide"),
+      t("links.inspiration"),
+    ],
+    [t("links.legal")]: [
+      t("links.privacyPolicy"),
+      t("links.termsOfService"),
+      t("links.cookiePolicy"),
+      t("links.licenses"),
+    ],
   };
 
   const socialLinks = [
@@ -91,8 +117,7 @@ export function Footer() {
                 className="opacity-70 mb-6 leading-relaxed transition-colors duration-300"
                 style={{ color: "var(--outfitly-text-primary)" }}
               >
-                Your smart wardrobe companion. Discover, create, and share amazing outfits with the
-                power of AI and community.
+                {t("brand.description")}
               </p>
 
               {/* Contact info */}
@@ -105,7 +130,7 @@ export function Footer() {
                     className="text-sm transition-colors duration-300"
                     style={{ color: "var(--outfitly-text-primary)" }}
                   >
-                    hello@outfitly.com
+                    {t("contact.email")}
                   </span>
                 </div>
                 <div className="flex items-center gap-3 opacity-70 hover:opacity-100 transition-opacity">
@@ -116,7 +141,7 @@ export function Footer() {
                     className="text-sm transition-colors duration-300"
                     style={{ color: "var(--outfitly-text-primary)" }}
                   >
-                    +1 (555) 123-4567
+                    {t("contact.phone")}
                   </span>
                 </div>
                 <div className="flex items-center gap-3 opacity-70 hover:opacity-100 transition-opacity">
@@ -127,7 +152,7 @@ export function Footer() {
                     className="text-sm transition-colors duration-300"
                     style={{ color: "var(--outfitly-text-primary)" }}
                   >
-                    San Francisco, CA
+                    {t("contact.location")}
                   </span>
                 </div>
               </div>
@@ -180,18 +205,18 @@ export function Footer() {
 
           <div className="relative z-10 p-12 text-center">
             <h3 className="text-3xl mb-4" style={{ color: "var(--outfitly-text-light)" }}>
-              Stay in Style
+              {t("newsletter.heading")}
             </h3>
             <p
               className="mb-8 opacity-90 max-w-xl mx-auto"
               style={{ color: "var(--outfitly-text-light)" }}
             >
-              Subscribe to our newsletter for the latest trends, tips, and exclusive offers
+              {t("newsletter.subtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <input
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t("newsletter.placeholder")}
                 className="flex-1 px-6 py-4 rounded-full outline-none backdrop-blur-md transition-all duration-300 focus:ring-2"
                 style={{
                   backgroundColor: "rgba(255, 255, 255, 0.2)",
@@ -206,7 +231,7 @@ export function Footer() {
                   color: "var(--outfitly-primary)",
                 }}
               >
-                Subscribe
+                {t("newsletter.button")}
               </button>
             </div>
           </div>
@@ -225,7 +250,7 @@ export function Footer() {
             className="opacity-70 text-sm transition-colors duration-300"
             style={{ color: "var(--outfitly-text-primary)" }}
           >
-            © 2024 Outfitly. All rights reserved.
+            {t("copyright")}
           </p>
 
           {/* Social links with gradients */}
@@ -257,10 +282,10 @@ export function Footer() {
             style={{ color: "var(--outfitly-text-primary)" }}
           >
             <a href="#" className="hover:opacity-100 transition-opacity">
-              Accessibility
+              {t("accessibility")}
             </a>
             <a href="#" className="hover:opacity-100 transition-opacity">
-              Sitemap
+              {t("sitemap")}
             </a>
           </div>
         </motion.div>

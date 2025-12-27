@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import type { IGeneratedOutfit } from "./aiGenerator";
 
 type IProps = {
@@ -17,8 +18,10 @@ export function AIOutfitResults({
   isGenerating,
   generatedOutfits,
   onSelectOutfit,
-  title = "AI Matched Outfits",
+  title,
 }: IProps) {
+  const t = useTranslations("AIGenerator");
+  const displayTitle = title || t("results.title");
   const outfitlyGradient =
     "linear-gradient(135deg, var(--outfitly-gradient-start) 0%, var(--outfitly-gradient-mid) 50%, var(--outfitly-gradient-end) 100%)";
 
@@ -44,7 +47,7 @@ export function AIOutfitResults({
               backgroundImage: outfitlyGradient,
             }}
           >
-            {title}
+            {displayTitle}
           </motion.h2>
 
           {/* ✅ stretch items so all cards can be equal height */}
@@ -99,7 +102,7 @@ export function AIOutfitResults({
                           color: "var(--muted-foreground)",
                         }}
                       >
-                        No image
+                        {t("results.noImage")}
                       </div>
                     )}
 
@@ -123,7 +126,9 @@ export function AIOutfitResults({
                           animate={{ x: ["-100%", "200%"] }}
                           transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
                         />
-                        <span className="relative z-10">{outfit.confidence}% Match</span>
+                        <span className="relative z-10">
+                          {outfit.confidence}% {t("results.match")}
+                        </span>
                       </div>
                     </div>
                   </div>

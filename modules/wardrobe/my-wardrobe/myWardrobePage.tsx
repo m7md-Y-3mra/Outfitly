@@ -10,11 +10,13 @@ import { ViewModeProvider } from "./provider/viewMode.provider";
 import WardrobeListLoadingFallback from "./components/wardrobe-list/wardrobeListLoadingFallback";
 import WardrobeListErrorFallback from "./components/wardrobe-list/wardrobeListErrorFallback";
 import { GetUserWardrobeItemDTO } from "../types/dto.types";
+import { getTranslations } from "next-intl/server";
 
-const Home = ({ searchParams }: { searchParams: GetUserWardrobeItemDTO }) => {
+const Home = async ({ searchParams }: { searchParams: GetUserWardrobeItemDTO }) => {
+  const t = await getTranslations("Wardrobe");
   return (
     <main className="pt-20 pb-16">
-      <PageHeader title="My Wardrobe" subtitle="Manage and organize your fashion collection" />
+      <PageHeader title={t("heading")} subtitle={t("subtitle")} />
 
       {/* Stats Section */}
       <div className="container mx-auto px-4 -mt-8 relative z-20">

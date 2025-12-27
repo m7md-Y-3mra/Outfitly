@@ -7,13 +7,23 @@ export interface SplitResult {
   revert: () => void;
 }
 
+// Regex to detect Arabic characters
+const ARABIC_REGEX = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+
+function containsArabic(text: string): boolean {
+  return ARABIC_REGEX.test(text);
+}
+
 export function splitText(element: HTMLElement, type: SplitType = "chars"): SplitResult {
   const originalHTML = element.innerHTML;
   const text = element.textContent || "";
 
   let elements: HTMLElement[] = [];
 
-  switch (type) {
+  // For Arabic text, use words instead of chars to preserve letter connectivity
+  const effectiveType = type === "chars" && containsArabic(text) ? "words" : type;
+
+  switch (effectiveType) {
     case "chars":
       elements = splitIntoChars(element, text);
       break;

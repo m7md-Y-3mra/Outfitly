@@ -9,9 +9,14 @@ import {
   createOutfit,
   findAll,
   getCount,
+  getOutfitsForDashboard,
+  getOutfitsForDashboardPaginated,
   getUniqueItemsFromOutfits,
   likeOutfit,
   unlikeOutfit,
+  getPrivateOutfitsCount,
+  getTotalLikesCount,
+  deleteOutfitById,
 } from "./outfit.repo";
 import { zodValidation } from "@/utils/zod.utils";
 import { outfitListQuerySchema } from "./validation/outfit.validation";
@@ -53,4 +58,27 @@ export const getOutfitsCount = async () => {
 
 export const getUsedItemsService = async () => {
   return await getUniqueItemsFromOutfits();
+};
+
+export const getOutfitsForDashboardService = async () => {
+  return await getOutfitsForDashboard();
+};
+
+export const getOutfitsForDashboardServicePaginated = async (
+  page: number = 1,
+  limit: number = 10,
+) => {
+  return await getOutfitsForDashboardPaginated(page, limit);
+};
+
+export const getPrivateOutfitsCountService = async () => {
+  return await getPrivateOutfitsCount();
+};
+
+export const getTotalLikesCountService = async () => {
+  return await getTotalLikesCount();
+};
+
+export const deleteOutfitService = async (id: string) => {
+  return await deleteOutfitById(id);
 };

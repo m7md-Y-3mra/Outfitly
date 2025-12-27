@@ -10,13 +10,16 @@ import { Textarea } from "../../../../components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../../../components/ui/dialog";
 import ReactCrop, { Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import Image from "next/image";
 
 import type { ExtendedProfileHeaderProps } from "./profileHeader.types";
 import { getAvatarAlt } from "./profileHeader.utils";
+import { useTheme } from "next-themes";
 import { useProfileHeader } from "./useProfileHeader";
+import Image from "next/image";
 
 export function ProfileHeader(props: ExtendedProfileHeaderProps) {
+  const { theme } = useTheme();
+
   const {
     imagePreview,
     crop,
@@ -41,11 +44,9 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
       return (
         <Image
           src={imagePreview || safeEditForm.avatarUrl}
-          alt={getAvatarAlt(user.name || "User Avatar")}
+          alt={getAvatarAlt(user.name)}
           className="w-full h-full object-cover"
-          width={100}
-          height={200}
-          loading="eager"
+          fill
         />
       );
     }
@@ -58,7 +59,14 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
       .toUpperCase();
 
     return (
-      <div className="w-full h-full flex items-center justify-center rounded-full text-primary text-2xl font-extrabold shadow-lg animate-gradient animate-float bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end">
+      <div
+        className="w-full h-full flex items-center justify-center rounded-full text-white text-2xl font-extrabold shadow-lg animate-gradient animate-float"
+        style={{
+          background: `linear-gradient( var(--outfitly-gradient-start), var(--outfitly-gradient-mid), var(--outfitly-gradient-end))`,
+          backgroundSize: "200% 200%",
+          textShadow: "1px 1px 3px rgba(0,0,0,0.4)",
+        }}
+      >
         {initials}
       </div>
     );
@@ -69,11 +77,24 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
   return (
     <>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <Card className="p-8 border-2 shadow-xl mb-8 relative overflow-hidden border-[var(--outfitly-bg-secondary)] dark:border-[var(--outfitly-bg-tertiary)] bg-card">
+        <Card
+          className="p-8 border-2 shadow-xl mb-8 relative overflow-hidden"
+          style={{
+            borderColor:
+              theme === "dark" ? "var(--outfitly-bg-tertiary)" : "var(--outfitly-bg-secondary)",
+            backgroundColor: "var(--card)",
+          }}
+        >
           <div className="flex flex-col items-center md:flex-row gap-8">
             {/* AVATAR */}
             <div className="relative w-32 h-32 md:w-40 md:h-40 flex-shrink-0">
-              <div className="w-full h-full rounded-full overflow-hidden border-4 shadow-lg transition-all duration-300 hover:shadow-2xl border-[var(--outfitly-bg-secondary)] dark:border-[var(--outfitly-primary)]  ">
+              <div
+                className="w-full h-full rounded-full overflow-hidden border-4 shadow-lg transition-all duration-300 hover:shadow-2xl"
+                style={{
+                  borderColor:
+                    theme === "dark" ? "var(--outfitly-primary)" : "var(--outfitly-bg-secondary)",
+                }}
+              >
                 {renderAvatar()}
               </div>
 
@@ -191,10 +212,11 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
 
       {/* CROP MODAL */}
       <Dialog open={isCropping} onOpenChange={setIsCropping}>
-        <DialogContent aria-describedby={undefined} className="max-w-md">
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="text-center">Crop Your Avatar</DialogTitle>
           </DialogHeader>
+
           {imagePreview && (
             <ReactCrop
               crop={crop}
@@ -205,10 +227,9 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
               <Image
                 ref={imgRef}
                 src={imagePreview}
+                alt="Avatar"
+                fill
                 className="max-w-full h-auto"
-                alt="image"
-                width={500}
-                height={500}
               />
             </ReactCrop>
           )}

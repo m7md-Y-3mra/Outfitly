@@ -3,7 +3,6 @@ import type { ExtendedProfileHeaderProps } from "./profileHeader.types";
 import {
   getCroppedImg,
   uploadAvatar,
-  deleteAvatarFromS3,
   normalizeWebsite,
   isValidWebsiteFinal,
 } from "./profileHeader.utils";
@@ -26,6 +25,7 @@ export function useProfileHeader({
 
   const safeEditForm = editForm || user;
 
+  /* ================== HANDLERS ================== */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -52,13 +52,6 @@ export function useProfileHeader({
 
   const deleteAvatar = async () => {
     try {
-      const currentAvatarUrl = safeEditForm?.avatarUrl;
-
-      // Delete from S3 if it's an S3 URL
-      if (currentAvatarUrl) {
-        await deleteAvatarFromS3(currentAvatarUrl);
-      }
-
       onUpdateForm("avatarUrl", "");
       setImagePreview(null);
 

@@ -28,14 +28,6 @@ enum WardrobeStyle {
   PARTY
 }
 
-enum Season {
-  SPRING
-  SUMMER
-  FALL
-  WINTER
-  ALL_YEAR
-}
-
 model User {
   id            String    @id @default(uuid())
   fullName      String?
@@ -278,7 +270,7 @@ model Outfit {
   isAiGenerated Boolean  @default(false)
   visibility    String   @default("private") // public, private, friends
   createdAt     DateTime @default(now())
-  season        Season?
+
   userId     String
   occasionId String?
 

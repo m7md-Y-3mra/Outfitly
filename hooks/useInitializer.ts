@@ -19,6 +19,7 @@ const useInitializer = () => {
       if (res.success) {
         const { user } = res.data;
         applySignedIn(user);
+        console.log(user, "I am res");
         setStatus("authenticated");
         return;
       }

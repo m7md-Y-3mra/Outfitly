@@ -3,10 +3,13 @@ import { motion } from "framer-motion";
 import SignInCard from "./signInCard";
 import { Logo } from "@/components/logo/logo";
 import { SocialLoginButtons } from "./socialSignIn";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function SignInPage() {
   const nav = useRouter();
+  const t = useTranslations("Auth.signIn");
+
   return (
     <div className="min-h-screen transition-colors duration-300 bg-gradient-to-br from-[var(--outfitly-bg-primary)] via-[var(--outfitly-bg-secondary)] to-[var(--outfitly-bg-primary)] relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -63,12 +66,12 @@ export default function SignInPage() {
             className="text-center"
           >
             <p className="text-[var(--outfitly-text-primary)]/60">
-              Don&apos;t have an account?{" "}
+              {t("noAccount")}{" "}
               <button
                 onClick={() => nav.push("/sign-up")}
                 className="text-[var(--outfitly-primary)] hover:text-[var(--outfitly-primary-hover)] dark:hover:text-[var(--outfitly-primary-active)] transition-colors duration-300"
               >
-                Sign Up
+                {t("signUpLink")}
               </button>
             </p>
           </motion.div>

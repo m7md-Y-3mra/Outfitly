@@ -19,7 +19,7 @@ export function ProfileLikedOutfitsGrid({ outfits }: ProfileLikedOutfitsGridProp
             <div className="relative overflow-hidden">
               <motion.img
                 src={outfit.image}
-                alt={getLikedOutfitAlt(outfit.title || "Untitled Outfit")}
+                alt={getLikedOutfitAlt(outfit.title)}
                 className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute top-3 right-3">
