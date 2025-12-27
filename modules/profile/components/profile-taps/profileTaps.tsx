@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Grid3X3, Heart } from "lucide-react";
 import { Badge } from "../../../../components/ui/badge";
 import type { ProfileTabsWithCountsProps } from "./profileTaps.types";
 import { isTabActive } from "./profileTaps.utils";

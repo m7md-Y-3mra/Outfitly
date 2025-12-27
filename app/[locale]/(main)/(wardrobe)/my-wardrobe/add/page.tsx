@@ -4,11 +4,15 @@ import { findAllCategoriesAction } from "@/modules/category/category.action";
 import { findAllBrandsAction } from "@/modules/brand/brand.action";
 import WardrobeFrom from "@/modules/wardrobe/wardrobe-form/wardrobeFrom";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Add Item",
-  description: "Add a new item to your wardrobe collection.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Wardrobe.addItem");
+  return {
+    title: t("pageTitle"),
+    description: t("pageDescription"),
+  };
+}
 
 // Server component to fetch categories
 async function CategoriesLoader() {

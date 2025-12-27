@@ -7,12 +7,14 @@ import { useRouter } from "nextjs-toploader/app";
 import { PAGE_HEADER_CLASSES } from "./pageHeader.constants";
 import { getRadialPattern } from "./pageHeader.utils";
 import { usePageHeader } from "./usePageHeader";
+import { useTranslations } from "next-intl";
 
 import type { pageHeaderProps } from "./pageHeader.types";
 
 export function PageHeader({ title, subtitle, className = "", backTo }: pageHeaderProps) {
   const router = useRouter();
   const { isDark } = usePageHeader();
+  const t = useTranslations("Common");
 
   return (
     <div className={`${PAGE_HEADER_CLASSES.wrapper} ${className}`}>
@@ -42,7 +44,7 @@ export function PageHeader({ title, subtitle, className = "", backTo }: pageHead
             className="flex items-center gap-2 text-[var(--outfitly-text-light)]/80 hover:text-[var(--outfitly-text-light)] mb-6 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span>{t("goBack")}</span>
           </motion.button>
         )}
 

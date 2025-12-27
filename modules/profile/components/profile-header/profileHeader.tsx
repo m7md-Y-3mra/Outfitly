@@ -15,6 +15,7 @@ import Image from "next/image";
 import type { ExtendedProfileHeaderProps } from "./profileHeader.types";
 import { getAvatarAlt } from "./profileHeader.utils";
 import { useProfileHeader } from "./useProfileHeader";
+import Image from "next/image";
 
 export function ProfileHeader(props: ExtendedProfileHeaderProps) {
   const {
@@ -43,9 +44,7 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
           src={imagePreview || safeEditForm.avatarUrl}
           alt={getAvatarAlt(user.name || "User Avatar")}
           className="w-full h-full object-cover"
-          width={100}
-          height={200}
-          loading="eager"
+          fill
         />
       );
     }
@@ -205,10 +204,9 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
               <Image
                 ref={imgRef}
                 src={imagePreview}
+                alt="Avatar"
+                fill
                 className="max-w-full h-auto"
-                alt="image"
-                width={500}
-                height={500}
               />
             </ReactCrop>
           )}

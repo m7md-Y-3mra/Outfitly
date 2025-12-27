@@ -1,4 +1,5 @@
 import { IPaginationQuery, IPaginationResult } from "@/@types/database.type";
+import { Outfit } from "@/app/generated/prisma/client";
 import { SortOrder } from "@/app/generated/prisma/internal/prismaNamespace";
 import { createPaginationForPrisma, createPaginationMetaData } from "@/lib/database.util";
 import prisma from "@/lib/prisma";

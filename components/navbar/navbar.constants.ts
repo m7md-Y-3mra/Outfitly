@@ -1,7 +1,7 @@
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "My Wardrobe", href: "/my-wardrobe" },
-  { label: "AI Generator", href: "/ai-generator" },
+  { label: "AI Generator", href: "/AI-generator" },
   { label: "Weather", href: "/weather" },
   { label: "Explore", href: "/explore" },
   { label: "Profile", href: "/profile" },

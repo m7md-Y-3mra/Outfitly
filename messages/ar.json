@@ -1,0 +1,466 @@
+{
+  "Common": {
+    "loading": "جاري التحميل...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "search": "بحث",
+    "filter": "تصفية",
+    "filterBy": "تصفية حسب:",
+    "export": "تصدير",
+    "goHome": "الرئيسية",
+    "goBack": "رجوع",
+    "seeAll": "عرض الكل",
+    "or": "أو",
+    "noResults": "لا توجد نتائج"
+  },
+  "Navigation": {
+    "home": "الرئيسية",
+    "explore": "استكشاف",
+    "wardrobe": "خزانتي",
+    "aiGenerator": "مصمم الذكاء الاصطناعي",
+    "weather": "الطقس",
+    "profile": "الملف الشخصي",
+    "dashboard": "لوحة التحكم",
+    "signIn": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "signOut": "تسجيل الخروج",
+    "logoutFailed": "فشل تسجيل الخروج، يرجى المحاولة مرة أخرى!",
+    "switchLanguage": "تغيير اللغة"
+  },
+  "Auth": {
+    "signIn": {
+      "title": "تسجيل الدخول",
+      "pageTitle": "تسجيل الدخول",
+      "pageDescription": "سجل دخولك إلى حسابك في Outfitly للوصول إلى خزانتك وأزيائك.",
+      "heading": "مرحباً بعودتك!",
+      "subtitle": "سجل دخولك للمتابعة إلى خزانتك",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "you@example.com",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "••••••••",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "submitButton": "تسجيل الدخول",
+      "noAccount": "ليس لديك حساب؟",
+      "signUpLink": "إنشاء حساب",
+      "continueWithGoogle": "المتابعة مع Google",
+      "continueWithFacebook": "المتابعة مع Facebook",
+      "success": "تم تسجيل الدخول بنجاح"
+    },
+    "signUp": {
+      "title": "إنشاء حساب",
+      "pageTitle": "إنشاء حساب",
+      "pageDescription": "أنشئ حسابك في Outfitly وابدأ بتنظيم خزانتك اليوم.",
+      "heading": "أنشئ حسابك",
+      "subtitle": "انضم إلى Outfitly وابدأ بتصميم خزانتك المثالية",
+      "fullName": "الاسم الكامل",
+      "fullNamePlaceholder": "محمد أحمد",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "mohammed@example.com",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "agreeToTerms": "أوافق على الشروط والأحكام",
+      "submitButton": "إنشاء حساب",
+      "hasAccount": "لديك حساب بالفعل؟",
+      "signInLink": "تسجيل الدخول",
+      "success": "تم إنشاء الحساب بنجاح"
+    },
+    "validation": {
+      "confirmPasswordRequired": "تأكيد كلمة المرور مطلوب",
+      "mustAcceptTerms": "يجب قبول الشروط والأحكام",
+      "passwordsMustMatch": "كلمتا المرور غير متطابقتين",
+      "invalidCredentials": "بيانات الدخول غير صحيحة",
+      "noTokenFound": "لم يتم العثور على رمز المصادقة"
+    }
+  },
+  "HomePage": {
+    "title": "الرئيسية",
+    "description": "اكتشف أسلوبك الشخصي مع Outfitly. نظم خزانتك، استكشف أفكار الأزياء، وارتقِ بذوقك في الموضة.",
+    "hero": {
+      "badge": "رفيقك الذكي للموضة",
+      "headingLine1": "ارتقِ",
+      "headingLine2": "برحلة أناقتك",
+      "subheading": "حمّل خزانتك، دع الذكاء الاصطناعي ينسق لك أزياء مثالية، أو صمم يدوياً. انضم إلى مجتمع نابض يشارك ويحتفي بالأناقة معاً.",
+      "ctaPrimary": "ابدأ مجاناً",
+      "ctaSecondary": "شاهد العرض",
+      "featureAI": "مدعوم بالذكاء الاصطناعي",
+      "featureAIDesc": "تنسيق ذكي",
+      "featureUsers": "+50 ألف مستخدم",
+      "featureUsersDesc": "مجتمع نشط"
+    },
+    "video": {
+      "heading": "شاهد أناقتك تنبض بالحياة",
+      "subtitle": "شاهد كيف يحوّل Outfitly تجربة خزانتك",
+      "step1": "حمّل",
+      "step2": "نظّم",
+      "step3": "نسّق",
+      "step4": "شارك",
+      "step5": "ألهم",
+      "scrollHint": "مرر لاستكشاف الرحلة"
+    },
+    "about": {
+      "aiStyling": {
+        "title": "تنسيق بالذكاء الاصطناعي",
+        "description": "يحلل ذكاؤنا الاصطناعي المتقدم خزانتك وينشئ تنسيقات أزياء مذهلة مصممة خصيصاً لأسلوبك ومناسباتك. احصل على توصيات مخصصة بناءً على الطقس والمناسبات وتفضيلاتك."
+      },
+      "manualDesign": {
+        "title": "التصميم اليدوي",
+        "description": "تحكم كاملاً بإبداعك. امزج وطابق قطعاً من خزانتك لإنشاء إطلالات فريدة تعبر عن شخصيتك. اسحب وأفلت وتصور زيك المثالي."
+      },
+      "socialCommunity": {
+        "title": "المجتمع الاجتماعي",
+        "description": "شارك أزياءك، استلهم من الآخرين، وتفاعل مع مجتمع نابض من عشاق الموضة حول العالم. تابع الصيحات، احفظ المفضلات، وابنِ شبكة أناقتك."
+      },
+      "smartWardrobe": {
+        "title": "الخزانة الذكية",
+        "description": "حمّل ونظم خزانتك بالكامل رقمياً. لا تنسَ أبداً ما تملك واستفد من كل قطعة. تتبع سجل الارتداء واكتشف القطع غير المستغلة."
+      }
+    },
+    "testimonials": {
+      "badge": "قصص حقيقية",
+      "heading": "محبوب من عشاق الموضة",
+      "subtitle": "انضم إلى الآلاف الذين حولوا رحلة أناقتهم مع Outfitly",
+      "highlight": "غيّر طريقة تنسيقي اليومية",
+      "stats": {
+        "avgRating": "متوسط التقييم",
+        "happyUsers": "مستخدم سعيد",
+        "recommend": "يوصون به"
+      }
+    }
+  },
+  "Wardrobe": {
+    "pageTitle": "خزانتي",
+    "pageDescription": "أدر قطع خزانتك. أضف وعدّل ونظم مجموعة ملابسك في مكان واحد.",
+    "heading": "خزانتي",
+    "subtitle": "أدر ونظم مجموعتك من الأزياء",
+    "searchPlaceholder": "ابحث في خزانتك...",
+    "gridView": "عرض شبكي",
+    "listView": "عرض قائمة",
+    "addNew": {
+      "title": "إضافة قطعة جديدة",
+      "description": "حمّل تفاصيل وصورة القطعة",
+      "ariaLabel": "إضافة قطعة جديدة إلى الخزانة"
+    },
+    "addItem": {
+      "pageTitle": "إضافة قطعة",
+      "pageDescription": "أضف قطعة جديدة إلى مجموعة خزانتك.",
+      "heading": "إضافة قطعة للخزانة",
+      "subtitle": "حمّل صور وتفاصيل قطعتك الجديدة"
+    },
+    "editItem": {
+      "pageTitle": "تعديل القطعة",
+      "pageDescription": "عدّل تفاصيل قطعة خزانتك.",
+      "heading": "تحديث القطعة في الخزانة",
+      "subtitle": "عدّل الصور والتفاصيل المحملة لقطعتك"
+    },
+    "form": {
+      "sectionTitle": "تفاصيل القطعة",
+      "itemName": "اسم القطعة",
+      "itemNamePlaceholder": "مثال: جاكيت دنيم أزرق",
+      "category": "الفئة",
+      "categoryPlaceholder": "اختر فئة...",
+      "brand": "الماركة",
+      "brandPlaceholder": "اختر أو اكتب ماركة...",
+      "color": "اللون",
+      "colorPlaceholder": "مثال: أزرق داكن",
+      "size": "المقاس",
+      "sizePlaceholder": "مثال: M, L, XL",
+      "season": "الموسم",
+      "seasonPlaceholder": "مثال: صيف، شتاء",
+      "style": "النمط",
+      "stylePlaceholder": "اختر نمط...",
+      "purchasedDate": "تاريخ الشراء",
+      "notes": "ملاحظات (اختياري)",
+      "notesPlaceholder": "أضف أي ملاحظات إضافية عن هذه القطعة...",
+      "saveButton": "حفظ في الخزانة",
+      "updateButton": "تحديث القطعة",
+      "saving": "جاري الحفظ",
+      "updating": "جاري التحديث"
+    },
+    "styles": {
+      "casual": "كاجوال",
+      "formal": "رسمي",
+      "work": "عمل",
+      "sporty": "رياضي",
+      "streetwear": "ستريت وير",
+      "loungewear": "ملابس منزلية",
+      "party": "حفلات"
+    },
+    "deleteDialog": {
+      "title": "حذف {itemName}؟",
+      "description": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف قطعة الخزانة نهائياً."
+    },
+    "stats": {
+      "totalItems": "إجمالي القطع",
+      "tops": "قمصان",
+      "bottoms": "بناطيل",
+      "shoes": "أحذية"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "errors": {
+      "somethingWentWrong": "حدث خطأ ما",
+      "couldNotLoad": "لم نتمكن من تحميل قطع خزانتك. قد تكون هذه مشكلة مؤقتة.",
+      "errorDetails": "تفاصيل الخطأ:",
+      "tryReloadingWardrobe": "حاول إعادة تحميل الخزانة",
+      "retry": "إعادة المحاولة",
+      "failed": "فشل",
+      "tryAgain": "حاول مرة أخرى"
+    },
+    "listCard": {
+      "addNewItem": "إضافة قطعة جديدة",
+      "uploadDescription": "حمّل قطعة جديدة لخزانتك"
+    }
+  },
+  "Explore": {
+    "pageTitle": "استكشف الأزياء",
+    "pageDescription": "استكشف أفكار الأزياء واستلهم. اكتشف أنماطاً وصيحات جديدة لترتقي بخزانتك.",
+    "heading": "استكشف الأزياء",
+    "subtitle": "اكتشف إطلالات ملهمة من المجتمع",
+    "filters": {
+      "allStyles": "جميع الأنماط",
+      "casual": "كاجوال",
+      "elegant": "أنيق",
+      "street": "ستريت",
+      "boho": "بوهو",
+      "classic": "كلاسيك",
+      "allSeasons": "جميع الفصول",
+      "spring": "ربيع",
+      "summer": "صيف",
+      "fall": "خريف",
+      "winter": "شتاء"
+    }
+  },
+  "AIGenerator": {
+    "pageTitle": "مساعد الأناقة الذكي",
+    "pageDescription": "دع الذكاء الاصطناعي يصمم لك الزي المثالي بناءً على المناسبة والطقس وتفضيلات النمط.",
+    "heading": "مساعد الأناقة الذكي",
+    "subtitle": "دع الذكاء الاصطناعي يصمم لك زيك المثالي",
+    "config": {
+      "heading": "اضبط إطلالتك المثالية",
+      "subtitle": "اختر تفضيلاتك ودع الذكاء الاصطناعي يبدع"
+    },
+    "form": {
+      "occasionLabel": "ما هي المناسبة؟",
+      "weatherLabel": "كيف حال الطقس؟",
+      "styleLabel": "النمط المفضل؟",
+      "requirementsLabel": "أي متطلبات محددة؟",
+      "requirementsOptional": "(اختياري)",
+      "customOccasionPlaceholder": "حدد مناسبتك...",
+      "requirementsPlaceholder": "مثال: أفضل الألوان الداكنة، أحتاج أحذية مريحة..."
+    },
+    "occasions": {
+      "workMeeting": "اجتماع عمل",
+      "casualHangout": "خروجة عادية",
+      "dateNight": "سهرة رومانسية",
+      "wedding": "زفاف",
+      "party": "حفلة",
+      "formalEvent": "مناسبة رسمية",
+      "other": "أخرى"
+    },
+    "weather": {
+      "sunnyHot": "مشمس وحار",
+      "warmPleasant": "دافئ ولطيف",
+      "coolBreezy": "بارد ومنعش",
+      "coldWindy": "بارد وعاصف",
+      "rainy": "ممطر",
+      "snowy": "مثلج"
+    },
+    "styles": {
+      "casual": "كاجوال",
+      "formal": "رسمي",
+      "work": "عمل",
+      "sporty": "رياضي",
+      "streetwear": "ستريت وير",
+      "loungewear": "ملابس منزلية",
+      "party": "حفلات"
+    },
+    "button": {
+      "generate": "إنشاء أزياء بالذكاء الاصطناعي",
+      "generating": "الذكاء الاصطناعي يطابق خزانتك..."
+    },
+    "results": {
+      "title": "الأزياء المطابقة بالذكاء الاصطناعي",
+      "noImage": "لا توجد صورة",
+      "match": "تطابق"
+    }
+  },
+  "Weather": {
+    "pageTitle": "أزياء الطقس",
+    "pageDescription": "احصل على توصيات الأزياء بناءً على أحوال الطقس اليوم.",
+    "heading": "أزياء طقس اليوم",
+    "subtitle": "ارتدِ ما يناسب أحوال الطقس تماماً",
+    "perfectOutfits": "أزياء مثالية لليوم:",
+    "wardrobeItems": "قطع خزانتك المناسبة لهذا الطقس:"
+  },
+  "Profile": {
+    "pageTitle": "الملف الشخصي",
+    "pageDescription": "اعرض وأدر ملفك الشخصي ومجموعات أزيائك.",
+    "heading": "الملف الشخصي",
+    "subtitle": "مجموعة أناقتك الشخصية",
+    "tabs": {
+      "myOutfits": "أزيائي",
+      "likedOutfits": "الأزياء المفضلة"
+    },
+    "loading": "جاري تحميل الملف الشخصي...",
+    "notFound": "لم يتم العثور على الملف الشخصي. الرجاء تسجيل الدخول."
+  },
+  "Dashboard": {
+    "pageTitle": "لوحة التحكم",
+    "pageDescription": "لوحة تحكم مسؤول Outfitly. أدر المستخدمين والأزياء والإعدادات.",
+    "stats": {
+      "totalUsers": "إجمالي المستخدمين",
+      "totalOutfits": "إجمالي الأزياء",
+      "engagementRate": "معدل التفاعل",
+      "activeToday": "النشطون اليوم",
+      "itemsAdded": "القطع المضافة"
+    },
+    "users": {
+      "pageTitle": "إدارة المستخدمين",
+      "pageDescription": "أدر حسابات المستخدمين في Outfitly.",
+      "heading": "إدارة المستخدمين",
+      "subtitle": "أدر وراقب جميع حسابات المستخدمين",
+      "addUser": "إضافة مستخدم"
+    },
+    "outfits": {
+      "pageTitle": "إدارة الأزياء",
+      "pageDescription": "أدر طلبات الأزياء في Outfitly.",
+      "heading": "الأزياء الأخيرة",
+      "subtitle": "راجع وأدر طلبات الأزياء"
+    },
+    "settings": {
+      "pageTitle": "الإعدادات",
+      "pageDescription": "اضبط إعدادات Outfitly.",
+      "general": {
+        "title": "الإعدادات العامة",
+        "publicRegistration": "التسجيل العام",
+        "publicRegistrationDesc": "السماح للمستخدمين الجدد بالتسجيل",
+        "contentModeration": "إشراف المحتوى",
+        "contentModerationDesc": "تفعيل الإشراف التلقائي على المحتوى",
+        "emailNotifications": "إشعارات البريد الإلكتروني",
+        "emailNotificationsDesc": "إرسال إشعارات بريدية للمسؤولين",
+        "maintenanceMode": "وضع الصيانة",
+        "maintenanceModeDesc": "وضع الموقع في وضع الصيانة"
+      },
+      "appearance": {
+        "title": "المظهر",
+        "brandColor": "لون العلامة التجارية",
+        "siteLogo": "شعار الموقع",
+        "uploadLogo": "رفع الشعار"
+      },
+      "database": {
+        "title": "قاعدة البيانات والتخزين",
+        "backup": "نسخ قاعدة البيانات احتياطياً",
+        "clearCache": "مسح ذاكرة التخزين المؤقت"
+      },
+      "saveChanges": "حفظ التغييرات"
+    }
+  },
+  "Errors": {
+    "forbidden": {
+      "code": "403",
+      "heading": "الوصول محظور",
+      "message": "ليس لديك صلاحية للوصول إلى هذا المورد."
+    },
+    "unauthorized": {
+      "code": "401",
+      "heading": "غير مصرح",
+      "message": "تحتاج إلى تسجيل الدخول للوصول إلى هذا المورد. الرجاء تسجيل الدخول للمتابعة."
+    },
+    "notFound": {
+      "code": "404",
+      "heading": "الصفحة غير موجودة",
+      "message": "الصفحة التي تبحث عنها غير موجودة."
+    },
+    "failedToLoad": "فشل في تحميل {item}"
+  },
+  "AlreadyLogged": {
+    "heading": "أنت مسجل الدخول بالفعل",
+    "message": "أنت مسجل الدخول إلى حسابك بالفعل.",
+    "goToDashboard": "الذهاب للوحة التحكم",
+    "signOut": "تسجيل الخروج"
+  },
+  "Footer": {
+    "brand": {
+      "description": "رفيقك الذكي لإدارة الخزانة. اكتشف وأنشئ وشارك أزياء مذهلة بقوة الذكاء الاصطناعي والمجتمع."
+    },
+    "contact": {
+      "email": "hello@outfitly.com",
+      "phone": "+1 (555) 123-4567",
+      "location": "سان فرانسيسكو، كاليفورنيا"
+    },
+    "links": {
+      "product": "المنتج",
+      "company": "الشركة",
+      "resources": "الموارد",
+      "legal": "قانوني",
+      "features": "المميزات",
+      "pricing": "الأسعار",
+      "aiStyling": "تنسيق الذكاء الاصطناعي",
+      "wardrobeManager": "مدير الخزانة",
+      "community": "المجتمع",
+      "aboutUs": "من نحن",
+      "careers": "الوظائف",
+      "press": "الصحافة",
+      "partners": "الشركاء",
+      "blog": "المدونة",
+      "helpCenter": "مركز المساعدة",
+      "tutorials": "الدروس",
+      "apiDocs": "توثيق API",
+      "styleGuide": "دليل الأناقة",
+      "inspiration": "إلهام",
+      "privacyPolicy": "سياسة الخصوصية",
+      "termsOfService": "شروط الخدمة",
+      "cookiePolicy": "سياسة ملفات تعريف الارتباط",
+      "licenses": "التراخيص"
+    },
+    "newsletter": {
+      "heading": "ابقَ أنيقاً",
+      "subtitle": "اشترك في نشرتنا الإخبارية للحصول على أحدث الصيحات والنصائح والعروض الحصرية",
+      "placeholder": "أدخل بريدك الإلكتروني",
+      "button": "اشتراك"
+    },
+    "copyright": "© 2024 Outfitly. جميع الحقوق محفوظة.",
+    "accessibility": "إمكانية الوصول",
+    "sitemap": "خريطة الموقع"
+  },
+  "Admin": {
+    "badge": "مسؤول",
+    "searchPlaceholder": "بحث...",
+    "sidebar": {
+      "dashboard": "لوحة التحكم",
+      "users": "المستخدمون",
+      "outfits": "الأزياء",
+      "settings": "الإعدادات"
+    },
+    "proCard": {
+      "title": "مسؤول برو",
+      "description": "الوصول إلى التحليلات المتقدمة"
+    }
+  },
+  "Uploader": {
+    "dropHint": "أفلت الملفات هنا ...",
+    "dragHint": "اسحب وأفلت الملفات هنا، أو انقر لاختيار الملفات",
+    "selectFiles": "اختر الملفات",
+    "existingImage": "صورة موجودة",
+    "image": "صورة",
+    "errors": {
+      "tooManyFiles": "عدد كبير جداً من الملفات، الحد الأقصى 5",
+      "fileTooLarge": "حجم الملف يتجاوز حد 5 ميجابايت",
+      "maxFilesExceeded": "لا يمكن إضافة {count} ملف(ات). الحد الأقصى 5 ملفات (حالياً {current})",
+      "failedToRemove": "فشل في إزالة الملف من التخزين.",
+      "failedToGetUrl": "فشل في الحصول على رابط الرفع",
+      "somethingWentWrong": "حدث خطأ ما",
+      "error": "خطأ"
+    },
+    "success": {
+      "removed": "تم إزالة الملف بنجاح",
+      "uploaded": "تم رفع الملف بنجاح"
+    }
+  }
+}

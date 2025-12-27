@@ -8,8 +8,10 @@ import useExplore from "@/modules/explore/hook/useExplore";
 import { OutfitCard } from "./outfitCard";
 import Filters from "./filters";
 import InfinteScroll from "./infinteScroll";
+import { useTranslations } from "next-intl";
 
 export default function ExplorePage() {
+  const t = useTranslations("Explore");
   const {
     outfits,
     loading,
@@ -32,10 +34,7 @@ export default function ExplorePage() {
       <Navbar />
 
       <main className="pt-20 pb-16">
-        <PageHeader
-          title="Explore Outfits"
-          subtitle="Discover inspiring looks from the community"
-        />
+        <PageHeader title={t("heading")} subtitle={t("subtitle")} />
 
         <div className="container mx-auto px-4 max-w-7xl mt-12">
           <Filters

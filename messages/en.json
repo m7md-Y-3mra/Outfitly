@@ -1,0 +1,466 @@
+{
+  "Common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "filterBy": "Filter by:",
+    "export": "Export",
+    "goHome": "Go home",
+    "goBack": "Go back",
+    "seeAll": "See All",
+    "or": "OR",
+    "noResults": "No results found"
+  },
+  "Navigation": {
+    "home": "Home",
+    "explore": "Explore",
+    "wardrobe": "My Wardrobe",
+    "aiGenerator": "AI Generator",
+    "weather": "Weather",
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "logoutFailed": "Failed to logout, please try again!",
+    "switchLanguage": "Switch language"
+  },
+  "Auth": {
+    "signIn": {
+      "title": "Sign In",
+      "pageTitle": "Sign In",
+      "pageDescription": "Sign in to your Outfitly account to access your wardrobe and outfits.",
+      "heading": "Welcome Back!",
+      "subtitle": "Sign in to continue to your wardrobe",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "forgotPassword": "Forgot Password?",
+      "submitButton": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign Up",
+      "continueWithGoogle": "Continue with Google",
+      "continueWithFacebook": "Continue with Facebook",
+      "success": "Sign in successful"
+    },
+    "signUp": {
+      "title": "Sign Up",
+      "pageTitle": "Sign Up",
+      "pageDescription": "Create your Outfitly account and start organizing your wardrobe today.",
+      "heading": "Create Your Account",
+      "subtitle": "Join Outfitly and start designing your perfect wardrobe",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "John Doe",
+      "email": "Email Address",
+      "emailPlaceholder": "john@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Confirm Password",
+      "agreeToTerms": "Agree to Terms and Conditions",
+      "submitButton": "Sign Up",
+      "hasAccount": "Already have an account?",
+      "signInLink": "Sign In",
+      "success": "User created successfully"
+    },
+    "validation": {
+      "confirmPasswordRequired": "Confirm password is required",
+      "mustAcceptTerms": "You must accept the terms",
+      "passwordsMustMatch": "Passwords must match",
+      "invalidCredentials": "Invalid credentials",
+      "noTokenFound": "No token found"
+    }
+  },
+  "HomePage": {
+    "title": "Home",
+    "description": "Discover your personal style with Outfitly. Organize your wardrobe, explore outfit ideas, and elevate your fashion game.",
+    "hero": {
+      "badge": "Your Smart Fashion Companion",
+      "headingLine1": "Elevate Your",
+      "headingLine2": "Style Journey",
+      "subheading": "Upload your wardrobe, let AI curate perfect outfits, or design manually. Join a vibrant community sharing and celebrating style together.",
+      "ctaPrimary": "Get Started Free",
+      "ctaSecondary": "Watch Demo",
+      "featureAI": "AI-Powered",
+      "featureAIDesc": "Smart Styling",
+      "featureUsers": "50K+ Users",
+      "featureUsersDesc": "Active Community"
+    },
+    "video": {
+      "heading": "See Your Style Come to Life",
+      "subtitle": "Watch how Outfitly transforms your wardrobe experience",
+      "step1": "Upload",
+      "step2": "Organize",
+      "step3": "Style",
+      "step4": "Share",
+      "step5": "Inspire",
+      "scrollHint": "Scroll to explore the journey"
+    },
+    "about": {
+      "aiStyling": {
+        "title": "AI-Powered Styling",
+        "description": "Our advanced AI analyzes your wardrobe and creates stunning outfit combinations tailored to your style and occasions. Get personalized recommendations based on weather, events, and your preferences."
+      },
+      "manualDesign": {
+        "title": "Manual Design",
+        "description": "Take full creative control. Mix and match items from your wardrobe to create unique looks that express your personality. Drag, drop, and visualize your perfect outfit."
+      },
+      "socialCommunity": {
+        "title": "Social Community",
+        "description": "Share your outfits, get inspired by others, and engage with a vibrant community of fashion enthusiasts worldwide. Follow trends, save favorites, and build your style network."
+      },
+      "smartWardrobe": {
+        "title": "Smart Wardrobe",
+        "description": "Upload and organize your entire wardrobe digitally. Never forget what you own and make the most of every piece. Track wear history and discover underutilized items."
+      }
+    },
+    "testimonials": {
+      "badge": "Real Stories",
+      "heading": "Loved by Fashion Enthusiasts",
+      "subtitle": "Join thousands who've transformed their style journey with Outfitly",
+      "highlight": "Game changer for my daily styling",
+      "stats": {
+        "avgRating": "Average Rating",
+        "happyUsers": "Happy Users",
+        "recommend": "Would Recommend"
+      }
+    }
+  },
+  "Wardrobe": {
+    "pageTitle": "My Wardrobe",
+    "pageDescription": "Manage your wardrobe items. Add, edit, and organize your clothing collection all in one place.",
+    "heading": "My Wardrobe",
+    "subtitle": "Manage and organize your fashion collection",
+    "searchPlaceholder": "Search your wardrobe...",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "addNew": {
+      "title": "Add New Item",
+      "description": "Upload item details and image",
+      "ariaLabel": "Add a new item to the wardrobe"
+    },
+    "addItem": {
+      "pageTitle": "Add Item",
+      "pageDescription": "Add a new item to your wardrobe collection.",
+      "heading": "Add Item to Wardrobe",
+      "subtitle": "Upload photos and details of your new item"
+    },
+    "editItem": {
+      "pageTitle": "Edit Item",
+      "pageDescription": "Edit your wardrobe item details.",
+      "heading": "Update Item to Wardrobe",
+      "subtitle": "Edit uploaded photos and details of your item"
+    },
+    "form": {
+      "sectionTitle": "Item Details",
+      "itemName": "Item Name",
+      "itemNamePlaceholder": "e.g., Blue Denim Jacket",
+      "category": "Category",
+      "categoryPlaceholder": "Select category...",
+      "brand": "Brand",
+      "brandPlaceholder": "Select or type brand...",
+      "color": "Color",
+      "colorPlaceholder": "e.g., Navy Blue",
+      "size": "Size",
+      "sizePlaceholder": "e.g., M, L, XL",
+      "season": "Season",
+      "seasonPlaceholder": "e.g., Summer, Winter",
+      "style": "Style",
+      "stylePlaceholder": "Select style...",
+      "purchasedDate": "Purchased Date",
+      "notes": "Notes (Optional)",
+      "notesPlaceholder": "Add any additional notes about this item...",
+      "saveButton": "Save to Wardrobe",
+      "updateButton": "Update Item",
+      "saving": "Saving",
+      "updating": "Updating"
+    },
+    "styles": {
+      "casual": "Casual",
+      "formal": "Formal",
+      "work": "Work",
+      "sporty": "Sporty",
+      "streetwear": "Streetwear",
+      "loungewear": "Loungewear",
+      "party": "Party"
+    },
+    "deleteDialog": {
+      "title": "Delete {itemName}?",
+      "description": "This action cannot be undone. This will permanently delete your wardrobe item."
+    },
+    "stats": {
+      "totalItems": "Total Items",
+      "tops": "Tops",
+      "bottoms": "Bottoms",
+      "shoes": "Shoes"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "errors": {
+      "somethingWentWrong": "Something Went Wrong",
+      "couldNotLoad": "We couldn't load your wardrobe items. This might be a temporary issue.",
+      "errorDetails": "Error Details:",
+      "tryReloadingWardrobe": "Try Reloading Wardrobe",
+      "retry": "Retry",
+      "failed": "Failed",
+      "tryAgain": "Try again"
+    },
+    "listCard": {
+      "addNewItem": "Add New Item",
+      "uploadDescription": "Upload a new piece to your wardrobe"
+    }
+  },
+  "Explore": {
+    "pageTitle": "Explore Outfits",
+    "pageDescription": "Explore outfit ideas and get inspired. Discover new styles and trends to elevate your wardrobe.",
+    "heading": "Explore Outfits",
+    "subtitle": "Discover inspiring looks from the community",
+    "filters": {
+      "allStyles": "All Styles",
+      "casual": "Casual",
+      "elegant": "Elegant",
+      "street": "Street",
+      "boho": "Boho",
+      "classic": "Classic",
+      "allSeasons": "All Seasons",
+      "spring": "Spring",
+      "summer": "Summer",
+      "fall": "Fall",
+      "winter": "Winter"
+    }
+  },
+  "AIGenerator": {
+    "pageTitle": "AI Style Assistant",
+    "pageDescription": "Let AI design your perfect outfit based on occasion, weather, and style preferences.",
+    "heading": "AI Style Assistant",
+    "subtitle": "Let artificial intelligence design your perfect outfit",
+    "config": {
+      "heading": "Configure Your Perfect Look",
+      "subtitle": "Select your preferences and let AI do the magic"
+    },
+    "form": {
+      "occasionLabel": "What's the occasion?",
+      "weatherLabel": "What's the weather?",
+      "styleLabel": "Preferred style?",
+      "requirementsLabel": "Any specific requirements?",
+      "requirementsOptional": "(Optional)",
+      "customOccasionPlaceholder": "Please specify your occasion...",
+      "requirementsPlaceholder": "E.g., prefer darker colors, need comfortable shoes..."
+    },
+    "occasions": {
+      "workMeeting": "Work Meeting",
+      "casualHangout": "Casual Hangout",
+      "dateNight": "Date Night",
+      "wedding": "Wedding",
+      "party": "Party",
+      "formalEvent": "Formal Event",
+      "other": "Other"
+    },
+    "weather": {
+      "sunnyHot": "Sunny & Hot",
+      "warmPleasant": "Warm & Pleasant",
+      "coolBreezy": "Cool & Breezy",
+      "coldWindy": "Cold & Windy",
+      "rainy": "Rainy",
+      "snowy": "Snowy"
+    },
+    "styles": {
+      "casual": "Casual",
+      "formal": "Formal",
+      "work": "Work",
+      "sporty": "Sporty",
+      "streetwear": "Streetwear",
+      "loungewear": "Loungewear",
+      "party": "Party"
+    },
+    "button": {
+      "generate": "Generate Outfits with AI",
+      "generating": "AI is Matching Your Wardrobe..."
+    },
+    "results": {
+      "title": "AI Matched Outfits",
+      "noImage": "No image",
+      "match": "Match"
+    }
+  },
+  "Weather": {
+    "pageTitle": "Weather Outfits",
+    "pageDescription": "Get outfit recommendations based on today's weather conditions.",
+    "heading": "Today's Weather Outfits",
+    "subtitle": "Dress perfectly for the weather conditions",
+    "perfectOutfits": "Perfect outfits for today:",
+    "wardrobeItems": "Your wardrobe items for this weather:"
+  },
+  "Profile": {
+    "pageTitle": "Profile",
+    "pageDescription": "View and manage your profile and outfit collections.",
+    "heading": "Profile",
+    "subtitle": "Your personal style collection",
+    "tabs": {
+      "myOutfits": "My Outfits",
+      "likedOutfits": "Liked Outfits"
+    },
+    "loading": "Loading profile...",
+    "notFound": "No profile found. Please log in."
+  },
+  "Dashboard": {
+    "pageTitle": "Dashboard",
+    "pageDescription": "Outfitly admin dashboard. Manage users, outfits, and settings.",
+    "stats": {
+      "totalUsers": "Total Users",
+      "totalOutfits": "Total Outfits",
+      "engagementRate": "Engagement Rate",
+      "activeToday": "Active Today",
+      "itemsAdded": "Items Added"
+    },
+    "users": {
+      "pageTitle": "Users Management",
+      "pageDescription": "Manage user accounts on Outfitly.",
+      "heading": "User Management",
+      "subtitle": "Manage and monitor all user accounts",
+      "addUser": "Add User"
+    },
+    "outfits": {
+      "pageTitle": "Outfits Management",
+      "pageDescription": "Manage outfit submissions on Outfitly.",
+      "heading": "Recent Outfits",
+      "subtitle": "Review and manage outfit submissions"
+    },
+    "settings": {
+      "pageTitle": "Settings",
+      "pageDescription": "Configure Outfitly settings.",
+      "general": {
+        "title": "General Settings",
+        "publicRegistration": "Public Registration",
+        "publicRegistrationDesc": "Allow new users to register",
+        "contentModeration": "Content Moderation",
+        "contentModerationDesc": "Enable automatic content moderation",
+        "emailNotifications": "Email Notifications",
+        "emailNotificationsDesc": "Send email notifications to admins",
+        "maintenanceMode": "Maintenance Mode",
+        "maintenanceModeDesc": "Put the site in maintenance mode"
+      },
+      "appearance": {
+        "title": "Appearance",
+        "brandColor": "Brand Color",
+        "siteLogo": "Site Logo",
+        "uploadLogo": "Upload Logo"
+      },
+      "database": {
+        "title": "Database & Storage",
+        "backup": "Backup Database",
+        "clearCache": "Clear Cache"
+      },
+      "saveChanges": "Save Changes"
+    }
+  },
+  "Errors": {
+    "forbidden": {
+      "code": "403",
+      "heading": "Access Forbidden",
+      "message": "You don't have permission to access this resource."
+    },
+    "unauthorized": {
+      "code": "401",
+      "heading": "Unauthorized Access",
+      "message": "You need to be authenticated to access this resource. Please sign in to continue."
+    },
+    "notFound": {
+      "code": "404",
+      "heading": "Page Not Found",
+      "message": "The page you're looking for doesn't exist."
+    },
+    "failedToLoad": "Failed to load {item}"
+  },
+  "AlreadyLogged": {
+    "heading": "Already Logged In",
+    "message": "You are already signed in to your account.",
+    "goToDashboard": "Go to Dashboard",
+    "signOut": "Sign Out"
+  },
+  "Footer": {
+    "brand": {
+      "description": "Your smart wardrobe companion. Discover, create, and share amazing outfits with the power of AI and community."
+    },
+    "contact": {
+      "email": "hello@outfitly.com",
+      "phone": "+1 (555) 123-4567",
+      "location": "San Francisco, CA"
+    },
+    "links": {
+      "product": "Product",
+      "company": "Company",
+      "resources": "Resources",
+      "legal": "Legal",
+      "features": "Features",
+      "pricing": "Pricing",
+      "aiStyling": "AI Styling",
+      "wardrobeManager": "Wardrobe Manager",
+      "community": "Community",
+      "aboutUs": "About Us",
+      "careers": "Careers",
+      "press": "Press",
+      "partners": "Partners",
+      "blog": "Blog",
+      "helpCenter": "Help Center",
+      "tutorials": "Tutorials",
+      "apiDocs": "API Docs",
+      "styleGuide": "Style Guide",
+      "inspiration": "Inspiration",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "cookiePolicy": "Cookie Policy",
+      "licenses": "Licenses"
+    },
+    "newsletter": {
+      "heading": "Stay in Style",
+      "subtitle": "Subscribe to our newsletter for the latest trends, tips, and exclusive offers",
+      "placeholder": "Enter your email",
+      "button": "Subscribe"
+    },
+    "copyright": "© 2024 Outfitly. All rights reserved.",
+    "accessibility": "Accessibility",
+    "sitemap": "Sitemap"
+  },
+  "Admin": {
+    "badge": "Admin",
+    "searchPlaceholder": "Search...",
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "outfits": "Outfits",
+      "settings": "Settings"
+    },
+    "proCard": {
+      "title": "Pro Admin",
+      "description": "Access advanced analytics"
+    }
+  },
+  "Uploader": {
+    "dropHint": "Drop the files here ...",
+    "dragHint": "Drag 'n' drop some files here, or click to select files",
+    "selectFiles": "Select Files",
+    "existingImage": "Existing image",
+    "image": "Image",
+    "errors": {
+      "tooManyFiles": "Too many files selected, max is 5",
+      "fileTooLarge": "File size exceeds 5mb limit",
+      "maxFilesExceeded": "Cannot add {count} file(s). Maximum is 5 files total (currently {current})",
+      "failedToRemove": "Failed to remove file from storage.",
+      "failedToGetUrl": "Failed to get presigned URL",
+      "somethingWentWrong": "Something went wrong",
+      "error": "Error"
+    },
+    "success": {
+      "removed": "File removed successfully",
+      "uploaded": "File uploaded successfully"
+    }
+  }
+}

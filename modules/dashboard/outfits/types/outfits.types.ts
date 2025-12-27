@@ -1,5 +1,6 @@
 export interface Outfit {
   id: number;
+  outfitId: string;
   name: string;
   creator: string;
   likes: string;

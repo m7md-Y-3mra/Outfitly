@@ -6,8 +6,14 @@ export const metadata: Metadata = {
   description: "Manage user accounts on Outfitly.",
 };
 
-const Users = () => {
-  return <UsersPage />;
+interface UsersPageProps {
+  searchParams: Promise<{ page?: string }>;
+}
+
+const Users = async ({ searchParams }: UsersPageProps) => {
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+  return <UsersPage page={page} />;
 };
 
 export default Users;

@@ -26,14 +26,22 @@ export function useProfile() {
   const [outfits, setOutfits] = useState<Outfit[]>([]);
   const [items, setItems] = useState<WardrobeItem[]>([]);
   const [likedOutfits, setLikedOutfits] = useState<Outfit[]>([]);
+  const [likedProducts, setLikedProducts] = useState<LikedProduct[]>([]);
 
+  useEffect(() => {
+    if (authUser?.id) {
+      fetchProfile();
+      fetchOutfits();
+      fetchLikedOutfits();
+      fetchLikedProducts();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authUser?.id]);
 
-  const fetchProfile = useCallback(async () => {
-    if (!authUser?.id) return;
-
+  const fetchProfile = async () => {
     try {
-      setProfileLoading(true);
-      const profile = await getUserProfile(authUser.id);
+      console.log("Fetching profile for user:", authUser?.id);
+      const profile = await getUserProfile(authUser!.id);
       if (profile) {
         setUser(profile);
         setEditForm(profile);

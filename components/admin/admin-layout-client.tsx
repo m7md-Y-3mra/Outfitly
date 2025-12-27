@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { AdminNavbar } from "@/components/admin/admin-navbar";
 import AdminSidebar from "@/components/admin/sidebar/sidebar";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayoutClient({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Initialize sidebar state based on screen size

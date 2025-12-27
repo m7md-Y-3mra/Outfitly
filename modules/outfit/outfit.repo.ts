@@ -109,3 +109,70 @@ export const getUniqueItemsFromOutfits = () => {
     distinct: ["wardrobeItemId"],
   });
 };
+
+export const getOutfitsForDashboard = () => {
+  const outfits = prisma.outfit.findMany({
+    select: {
+      id: true,
+      name: true,
+      createdAt: true,
+      visibility: true,
+      user: { select: { fullName: true } },
+      _count: {
+        select: { likedBy: true },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  return outfits;
+};
+
+export const getOutfitsForDashboardPaginated = async (page: number = 1, limit: number = 10) => {
+  const pagination = createPaginationForPrisma({ page, limit });
+
+  const [outfits, total] = await Promise.all([
+    prisma.outfit.findMany({
+      select: {
+        id: true,
+        name: true,
+        createdAt: true,
+        visibility: true,
+        user: { select: { fullName: true } },
+        _count: {
+          select: { likedBy: true },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+      ...pagination,
+    }),
+    prisma.outfit.count(),
+  ]);
+
+  return {
+    data: outfits,
+    meta: createPaginationMetaData(limit, page, total),
+  };
+};
+
+export const getPrivateOutfitsCount = () => {
+  return prisma.outfit.count({
+    where: { visibility: "private" },
+  });
+};
+
+export const getTotalLikesCount = async () => {
+  const outfits = await prisma.outfit.findMany({
+    select: {
+      _count: {
+        select: { likedBy: true },
+      },
+    },
+  });
+  return outfits.reduce((acc, o) => acc + o._count.likedBy, 0);
+};
+
+export const deleteOutfitById = (id: string) => {
+  return prisma.outfit.delete({
+    where: { id },
+  });
+};

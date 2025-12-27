@@ -1,7 +1,11 @@
+"use client";
 import { motion } from "framer-motion";
 import SignUpForm from "./signUpForm";
+import { useTranslations } from "next-intl";
 
 export function SignUpCard() {
+  const t = useTranslations("Auth.signUp");
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -39,7 +43,7 @@ export function SignUpCard() {
             mb-2
           "
         >
-          Create Your Account
+          {t("heading")}
         </h2>
 
         <p
@@ -48,7 +52,7 @@ export function SignUpCard() {
             dark:text-[var(--outfitly-text-muted)]
           "
         >
-          Join Outfitly and start designing your perfect wardrobe
+          {t("subtitle")}
         </p>
       </div>
 
