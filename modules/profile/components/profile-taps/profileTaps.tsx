@@ -1,25 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Grid3X3, Heart } from "lucide-react";
 import { Badge } from "../../../../components/ui/badge";
-import type { ProfileTabsProps } from "./profileTaps.types";
+import type { ProfileTabsWithCountsProps } from "./profileTaps.types";
 import { isTabActive } from "./profileTaps.utils";
+import {tabs} from "./profileTabs.constants"
 
-const tabs = [
-  { id: "outfits" as const, label: "My Outfits", icon: Grid3X3 },
-  { id: "liked-outfits" as const, label: "Liked Outfits", icon: Heart },
-];
 
-interface ProfileTabsWithCountsProps {
-  activeTab: ProfileTabsProps["activeTab"];
-  onTabChange: ProfileTabsProps["onTabChange"];
-  counts: {
-    outfits: number;
-    likedProducts: number;
-    likedOutfits: number;
-  };
-}
 
 export function ProfileTabs({ activeTab, onTabChange, counts }: ProfileTabsWithCountsProps) {
   return (
