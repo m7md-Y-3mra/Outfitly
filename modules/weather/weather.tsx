@@ -8,11 +8,16 @@ import { WeatherWidget } from "./components/weather-widget/weatherWidget";
 import { OutfitCard } from "./components/outfit-card/outfitCard";
 import { WardrobeItemCard } from "./components/wardrobe-item-card/wardrobeItemCard";
 import { useWeather } from "./hooks/useWeather";
+import WeatherErrorFallback from "./components/weather-error-fallback/weatherErrorFallback";
+import WeatherWidgetLoadingFallback from "./components/weather-widget/weatherWidgetLoadingFallback";
+import OutfitGridLoadingFallback from "./components/outfit-card/outfitGridLoadingFallback";
+import WardrobeCarouselLoadingFallback from "./components/wardrobe-item-card/wardrobeCarouselLoadingFallback";
 
 export default function Weather() {
   const {
     weather,
     weatherLoading,
+    weatherError,
     filteredOutfits,
     filteredItems,
     profileLoading,
@@ -31,11 +36,17 @@ export default function Weather() {
 
         <div className="container mx-auto px-4 max-w-7xl mt-12">
           {/* Weather Widget */}
-          {weatherLoading ? (
-            <p>...loading weather</p>
-          ) : (
-            <WeatherWidget weather={weather} loading={weatherLoading} />
-          )}
+            {weatherLoading ? (
+              <WeatherWidgetLoadingFallback />
+            ) : weatherError ? (
+              <WeatherErrorFallback
+                error={weatherError}
+                onRetry={() => window.location.reload()}
+              />
+            ) : (
+              <WeatherWidget weather={weather} loading={false} />
+            )}
+
 
           {/* Outfits Section */}
           <section>
@@ -48,7 +59,7 @@ export default function Weather() {
               </h2>
 
               {profileLoading ? (
-                <p>Loading your outfits...</p>
+                 <OutfitGridLoadingFallback />
               ) : filteredOutfits.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {filteredOutfits.map((outfit, index) => (
@@ -78,7 +89,7 @@ export default function Weather() {
               </div>
 
               {profileLoading ? (
-                <p>Loading your wardrobe...</p>
+                <WardrobeCarouselLoadingFallback />
               ) : filteredItems.length > 0 ? (
                 <div className="relative">
                   <div

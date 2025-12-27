@@ -7,29 +7,33 @@ import type { WeatherData } from "../weather.types";
 export const useWeather = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [weatherLoading, setWeatherLoading] = useState(true);
-  const itemsContainerRef = useRef<HTMLDivElement>(null);
+  const [weatherError, setWeatherError] = useState<Error | null>(null);
 
+  const itemsContainerRef = useRef<HTMLDivElement>(null);
   const { outfits: userOutfits, items: userItems, loading: profileLoading } = useProfile();
 
   useEffect(() => {
-    let isMounted = true;
-    const loadWeather = async () => {
-      try {
-        const data = await fetchCurrentWeather();
-        if (isMounted) setWeather(data);
-      } catch (error) {
-        console.error(error);
-        if (isMounted) setWeather(null);
-      } finally {
-        if (isMounted) setWeatherLoading(false);
-      }
-    };
-    loadWeather();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+      let isMounted = true;
 
+      const loadWeather = async () => {
+        try {
+          const data = await fetchCurrentWeather();
+          if (isMounted) setWeather(data);
+        } catch (error) {
+          if (isMounted) {
+            setWeatherError(error as Error);
+            setWeather(null);
+          }
+        } finally {
+          if (isMounted) setWeatherLoading(false);
+        }
+      };
+
+      loadWeather();
+      return () => {
+        isMounted = false;
+      };
+    }, []);
   const season = useMemo(() => (weather ? getSeasonFromWeather(weather) : "fall"), [weather]);
 
   const filteredOutfits = useMemo(
@@ -62,7 +66,8 @@ export const useWeather = () => {
 
   return {
     weather,
-    weatherLoading,
+    weatherLoading,  
+    weatherError,
     profileLoading,
     season,
     filteredOutfits,

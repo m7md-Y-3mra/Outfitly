@@ -9,7 +9,7 @@ import { WeatherIcon } from "../weather-icon/weatherIcon";
 import WeatherDetails from "../weather-details/weatherDetails";
 
 export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ weather, loading }) => {
-  if (!weather) return <p>No weather data available</p>;
+  if (!weather) return null;
   if (loading) return <p className="p-8">Loading weather...</p>;
 
   return (
