@@ -75,6 +75,18 @@ export function useProfileHeader({
     setWebsiteError(null);
   };
 
+  const validateWebsite = (): boolean => {
+    if (!safeEditForm) return true;
+
+    if (!isValidWebsiteFinal(safeEditForm.website)) {
+      setWebsiteError("Please enter a valid website (example.com)");
+      return false;
+    }
+
+    setWebsiteError(null);
+    return true;
+  };
+
   return {
     imagePreview,
     crop,
@@ -84,6 +96,7 @@ export function useProfileHeader({
     isCropping,
     setIsCropping,
     websiteError,
+    validateWebsite,
     imgRef,
     fileInputRef,
     safeEditForm,

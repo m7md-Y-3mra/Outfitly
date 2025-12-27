@@ -25,6 +25,7 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
     isCropping,
     setIsCropping,
     websiteError,
+    validateWebsite,
     imgRef,
     fileInputRef,
     safeEditForm,
@@ -161,8 +162,12 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
                       {user.website}
                     </a>
                   )}
-                  {websiteError && <p className="text-xs text-red-500 mt-1">{websiteError}</p>}
-                </div>
+                {websiteError && (
+                  <p className="text-xs text-destructive mt-1" role="alert">
+                    {websiteError}
+                  </p>
+                )}     
+               </div>
 
                 <div className="flex gap-2 items-center">
                   <Calendar size={16} className="text-muted-foreground" />
@@ -172,7 +177,13 @@ export function ProfileHeader(props: ExtendedProfileHeaderProps) {
 
               {isEditing ? (
                 <div className="flex gap-4 mt-6 justify-center md:justify-start">
-                  <Button onClick={onSaveEditing} className="px-6">
+                  <Button
+                    onClick={() => {if (!validateWebsite()) 
+                    return ;
+                    onSaveEditing() 
+                    }}
+                      className="px-6"
+                    >
                     Save Changes
                   </Button>
                   <Button variant="outline" onClick={onCancelEditing} className="px-6">
