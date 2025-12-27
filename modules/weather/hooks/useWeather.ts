@@ -58,28 +58,32 @@ export const useWeather = () => {
   const filteredOutfits = useMemo(() => {
     if (weatherStatus !== "ready" || !season) return [];
 
-    return userOutfits?.filter((outfit) => {
-      if (!outfit.season) return false;
-      const outfitSeasons = outfit.season
-        .toLowerCase()
-        .split(/[\/,]/)
-        .map((s) => s.trim());
-      return outfitSeasons.includes(season.toLowerCase()) || outfitSeasons.includes("all-year");
-    }) || [];
+    return (
+      userOutfits?.filter((outfit) => {
+        if (!outfit.season) return false;
+        const outfitSeasons = outfit.season
+          .toLowerCase()
+          .split(/[\/,]/)
+          .map((s) => s.trim());
+        return outfitSeasons.includes(season.toLowerCase()) || outfitSeasons.includes("all-year");
+      }) || []
+    );
   }, [userOutfits, season, weatherStatus]);
 
   // Filter wardrobe items based on season
   const filteredItems = useMemo(() => {
     if (weatherStatus !== "ready" || !season) return [];
 
-    return userItems?.filter((item) => {
-      if (!item.season) return false;
-      const itemSeasons = item.season
-        .toLowerCase()
-        .split(/[\/,]/)
-        .map((s) => s.trim());
-      return itemSeasons.includes(season.toLowerCase()) || itemSeasons.includes("all-year");
-    }) || [];
+    return (
+      userItems?.filter((item) => {
+        if (!item.season) return false;
+        const itemSeasons = item.season
+          .toLowerCase()
+          .split(/[\/,]/)
+          .map((s) => s.trim());
+        return itemSeasons.includes(season.toLowerCase()) || itemSeasons.includes("all-year");
+      }) || []
+    );
   }, [userItems, season, weatherStatus]);
 
   // Scroll handler for wardrobe carousel
