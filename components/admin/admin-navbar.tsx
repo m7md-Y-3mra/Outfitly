@@ -59,7 +59,7 @@ export function AdminNavbar({
             {/* Right Section: Theme -> Notifications -> Search */}
             <div className="flex items-center gap-2">
               {/* 3. Search */}
-              <div className="relative w-full max-w-[240px] hidden md:block group">
+              {/* <div className="relative w-full max-w-[240px] hidden md:block group">
                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                   <Search
                     className="h-4 w-4 opacity-50 group-focus-within:opacity-100 transition-opacity"
@@ -75,10 +75,10 @@ export function AdminNavbar({
                     color: NAVBAR_COLORS.primary,
                   }}
                 />
-              </div>
+              </div> */}
 
               {/* 2. Notifications */}
-              <Link href="/notifications" className="hidden sm:block">
+              {/* <Link href="/notifications" className="hidden sm:block">
                 <Button
                   variant="ghost"
                   className="hover:bg-transparent p-2 relative"
@@ -97,7 +97,7 @@ export function AdminNavbar({
                     3
                   </span>
                 </Button>
-              </Link>
+              </Link> */}
 
               {/* 1. Theme Toggle */}
               <CustomButton

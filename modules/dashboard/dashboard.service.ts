@@ -1,12 +1,15 @@
 "use server";
 
-import { Activity, Heart, Layers, ShoppingBag, TrendingUp, Users } from "lucide-react";
+import { Activity, Heart, ShoppingBag, Users } from "lucide-react";
 import userService from "../user/user.service";
 import { formatCompact, formatCount, formatRate } from "./utils/number.utils";
 import {
   getOutfitsCount,
   getOutfitsForDashboardService,
+  getOutfitsForDashboardServicePaginated,
   getUsedItemsService,
+  getPrivateOutfitsCountService,
+  getTotalLikesCountService,
 } from "../outfit/outfit.service";
 import { toChartData } from "./utils/charts.utils";
 import {
@@ -124,7 +127,7 @@ export const getItemsKPI = async () => {
   return {
     label: "Avgerege Items For Outfits",
     value,
-    icon: Layers,
+    iconName: "Layers" as const,
     iconBg: "bg-blue-100 dark:bg-blue-900/20",
     iconColor: "text-blue-600 dark:text-blue-400",
     progressColor: "bg-blue-100 dark:bg-blue-900/20 [&>*]:bg-blue-600 dark:[&>*]:bg-blue-400",
@@ -142,7 +145,7 @@ export const getOutfitKPI = async () => {
     label: "Outfit Usage Rate",
     value,
     progress,
-    icon: TrendingUp,
+    iconName: "TrendingUp" as const,
     iconBg: "bg-cyan-100 dark:bg-cyan-900/20",
     iconColor: "text-cyan-600 dark:text-cyan-400",
     progressColor: "bg-cyan-100 dark:bg-cyan-900/20 [&>*]:bg-cyan-600 dark:[&>*]:bg-cyan-400",
@@ -162,6 +165,21 @@ export const getUsersForTables = async () => {
   }));
 };
 
+export const getUsersForTablesPaginated = async (page: number = 1, limit: number = 10) => {
+  const { data: usersFromDB, meta } = await userService.getUsersWithOutfitsPaginated(page, limit);
+
+  const users = usersFromDB.map((u) => ({
+    id: u.id,
+    name: u.fullName ?? "—",
+    email: u.email,
+    outfits: u._count.outfits,
+    status: u.isActive ? "Active" : "Inactive",
+    joined: u.createdAt.toISOString().slice(0, 10),
+  }));
+
+  return { users, meta };
+};
+
 export const getOutfitForDashboard = async () => {
   const outfits = await getOutfitsForDashboardService();
 
@@ -174,4 +192,34 @@ export const getOutfitForDashboard = async () => {
     date: o.createdAt.toISOString().slice(0, 10),
     status: toStatus(o.visibility),
   }));
+};
+
+export const getOutfitForDashboardPaginated = async (page: number = 1, limit: number = 10) => {
+  const { data: outfits, meta } = await getOutfitsForDashboardServicePaginated(page, limit);
+
+  const mappedOutfits = outfits.map((o, idx) => ({
+    id: (page - 1) * limit + idx + 1,
+    outfitId: o.id,
+    name: o.name,
+    creator: o.user.fullName ?? "—",
+    likes: formatCompact(o._count.likedBy),
+    date: o.createdAt.toISOString().slice(0, 10),
+    status: toStatus(o.visibility),
+  }));
+
+  return { outfits: mappedOutfits, meta };
+};
+
+export const getOutfitPageStats = async () => {
+  const [totalOutfits, pendingCount, totalLikes] = await Promise.all([
+    getOutfitsCount(),
+    getPrivateOutfitsCountService(),
+    getTotalLikesCountService(),
+  ]);
+
+  return {
+    totalOutfits: formatCount(totalOutfits),
+    pendingCount: formatCount(pendingCount),
+    totalLikes: formatCompact(totalLikes),
+  };
 };

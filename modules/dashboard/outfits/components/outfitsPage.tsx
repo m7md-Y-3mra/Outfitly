@@ -1,17 +1,29 @@
-import React from "react";
 import { OutfitsStats } from "@/components/admin/outfits/outfits-stats";
 import { OutfitsTable } from "@/modules/dashboard/outfits/components/outfits/outfits-table";
+import {
+  getOutfitForDashboardPaginated,
+  getOutfitPageStats,
+} from "@/modules/dashboard/dashboard.service";
 
-const OutfitsPageWrapper = () => {
+interface OutfitsPageWrapperProps {
+  page?: number;
+}
+
+const OutfitsPageWrapper = async ({ page = 1 }: OutfitsPageWrapperProps) => {
+  const [{ outfits, meta }, stats] = await Promise.all([
+    getOutfitForDashboardPaginated(page),
+    getOutfitPageStats(),
+  ]);
+
   return (
     <div className="pt-8 space-y-8">
       {/* 1. Stats Section */}
-      <OutfitsStats />
+      <OutfitsStats stats={stats} />
 
       {/* 2. Main Content Section */}
       <div className="space-y-6">
         {/* Table Component (Includes Header) */}
-        <OutfitsTable />
+        <OutfitsTable outfits={outfits} meta={meta} />
       </div>
     </div>
   );

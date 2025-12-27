@@ -28,11 +28,11 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
       label: t("sidebar.outfits"),
       href: "/dashboard/outfits",
     },
-    {
-      icon: Settings,
-      label: t("sidebar.settings"),
-      href: "/dashboard/settings",
-    },
+    // {
+    //   icon: Settings,
+    //   label: t("sidebar.settings"),
+    //   href: "/dashboard/settings",
+    // },
   ];
 
   return (
