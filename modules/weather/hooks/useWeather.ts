@@ -10,7 +10,7 @@ export const useWeather = () => {
   const [weatherError, setWeatherError] = useState<Error | null>(null);
 
   const itemsContainerRef = useRef<HTMLDivElement>(null);
-  const { outfits: userOutfits, items: userItems, loading: profileLoading } = useProfile();
+  const { outfits: userOutfits, items: userItems, profileLoading:profileLoading} = useProfile();
 
   useEffect(() => {
       let isMounted = true;
