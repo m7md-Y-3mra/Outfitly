@@ -1,8 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
 import { PageHeader } from "@/components/page-header";
 import { useProfile } from "./hooks/useProfile";
 import type { TabType, Outfit } from "./profile.types";
@@ -69,7 +67,7 @@ export function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-background transition-colors duration-300">
-      <Navbar />
+
 
       <main className="pt-20 pb-16">
         <PageHeader title="Profile" subtitle="Your personal style collection" />
@@ -114,7 +112,6 @@ export function ProfilePage() {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 }
