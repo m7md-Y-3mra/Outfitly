@@ -303,6 +303,8 @@ export const getWardrobeItemsFiltered = async (
   filters: IGeneratorFilters,
   userId: string,
 ): Promise<FilteredItemsDTO[]> => {
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { style, weather } = filters;
   
   const items = await prisma.wardrobeItem.findMany({
