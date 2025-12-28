@@ -67,8 +67,6 @@ export function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-background transition-colors duration-300">
-
-
       <main className="pt-20 pb-16">
         <PageHeader title="Profile" subtitle="Your personal style collection" />
 
@@ -111,7 +109,6 @@ export function ProfilePage() {
           </motion.div>
         </div>
       </main>
-
     </div>
   );
 }
