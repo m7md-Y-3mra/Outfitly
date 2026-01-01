@@ -4,16 +4,26 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { SIZE_CONFIG } from "./constants";
 import { useTheme } from "next-themes";
+import { useSyncExternalStore } from "react";
+
 interface IProps {
   size?: "sm" | "md" | "lg" | "xl";
   animated?: boolean;
   linkTo?: string;
   className?: string;
-  color?: string; // optional: override color
+  color?: string;
 }
 
 export function Logo({ size = "md", animated = true, linkTo = "/", className = "" }: IProps) {
   const { theme } = useTheme();
+
+  // Fix hydration mismatch - only apply theme filter after client mount
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+
   const logo = (
     <motion.div
       className={className}
@@ -28,7 +38,7 @@ export function Logo({ size = "md", animated = true, linkTo = "/", className = "
         height={SIZE_CONFIG[size]}
         className="object-contain w-auto filter transition duration-300"
         style={{
-          filter: theme === "dark" ? "brightness(0) invert(1)" : "none",
+          filter: mounted && theme === "dark" ? "brightness(0) invert(1)" : "none",
         }}
       />
     </motion.div>

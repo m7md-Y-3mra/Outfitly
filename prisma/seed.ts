@@ -1,32 +1,154 @@
-import { WardrobeStyle } from '@/app/generated/prisma/enums';
-import prisma from '@/lib/prisma';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { WardrobeStyle } from "@/app/generated/prisma/enums";
+import prisma from "@/lib/prisma";
 
+/**
+ * =========================
+ * Config (scale it)
+ * =========================
+ */
+const CFG = {
+  ITEMS_PER_USER: 30,
+  OUTFITS_PER_USER: 250,
 
-async function main() {
-  console.log('🧹 Deleting all existing data...');
+  MIN_IMAGES_PER_ITEM: 1,
+  MAX_IMAGES_PER_ITEM: 3,
 
-  // Order matters because of foreign keys!
+  MIN_ITEMS_PER_OUTFIT: 3,
+  MAX_ITEMS_PER_OUTFIT: 7,
+
+  PUBLIC_RATIO: 0.7,
+  PURCHASED_RATIO: 0.35, // only affects `source` now (variantId is always null)
+  NOTES_RATIO: 0.15,
+
+  BATCH_SIZE: 500,
+};
+
+/**
+ * =========================
+ * Shared hashed password
+ * =========================
+ */
+const HASHED_PASSWORD =
+  "$argon2id$v=19$m=65536,t=3,p=4$j4bzKPpwk0Tt9OAf2trQ4Q$aisWdvJ6pDc2+TO8VAxacpeoD/P/WVY0SSfVj6DL074";
+
+/**
+ * =========================
+ * Static pools
+ * =========================
+ */
+const IMAGE_URLS = [
+  "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+  "https://images.unsplash.com/photo-1542272604-787c3835535d",
+  "https://images.unsplash.com/photo-1551028719-00167b16eac5",
+  "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
+  "https://images.unsplash.com/photo-1515886657613-9f3519b39692",
+  "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126",
+  "https://images.unsplash.com/photo-1590338692112-3d65e2b25890",
+  "https://images.unsplash.com/photo-1505022610485-0249ba5b3675",
+];
+
+const ITEM_TYPES = [
+  "T-Shirt",
+  "Shirt",
+  "Jeans",
+  "Pants",
+  "Jacket",
+  "Coat",
+  "Hoodie",
+  "Sneakers",
+  "Boots",
+  "Dress",
+  "Sweater",
+  "Blazer",
+  "Skirt",
+  "Shorts",
+];
+
+const ADJECTIVES = [
+  "Classic",
+  "Oversized",
+  "Slim Fit",
+  "Relaxed",
+  "Vintage",
+  "Minimal",
+  "Sport",
+  "Street",
+  "Formal",
+  "Casual",
+  "Premium",
+  "Everyday",
+];
+
+const BRANDS = ["Zara", "H&M", "Uniqlo", "Mango", "COS", "Nike", "Adidas", "Levi's"];
+const COLORS = ["Black", "White", "Beige", "Navy", "Gray", "Olive", "Brown", "Cream", "Blue"];
+const SIZES = ["XS", "S", "M", "L", "XL", "38", "39", "40", "41", "42", "43"];
+const SEASONS = ["all-year", "spring,summer", "fall,winter"];
+
+const STYLES: WardrobeStyle[] = [
+  WardrobeStyle.CASUAL,
+  WardrobeStyle.FORMAL,
+  WardrobeStyle.WORK,
+  WardrobeStyle.SPORTY,
+  WardrobeStyle.STREETWEAR,
+  WardrobeStyle.LOUNGEWEAR,
+  WardrobeStyle.PARTY,
+];
+
+/**
+ * =========================
+ * Helpers
+ * =========================
+ */
+function randInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function pick<T>(arr: T[]) {
+  return arr[randInt(0, arr.length - 1)];
+}
+function pickManyUnique<T>(arr: T[], count: number) {
+  const n = Math.min(count, arr.length);
+  const set = new Set<T>();
+  while (set.size < n) set.add(pick(arr));
+  return [...set];
+}
+function chunk<T>(arr: T[], size: number) {
+  const out: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+}
+function randomDateInLastYears(years = 2) {
+  const now = new Date();
+  const start = new Date();
+  start.setFullYear(now.getFullYear() - years);
+  const t = start.getTime() + Math.random() * (now.getTime() - start.getTime());
+  return new Date(t);
+}
+function img(url: string) {
+  return `${url}?auto=format&fit=crop&w=900`;
+}
+
+/**
+ * =========================
+ * 1) Wipe ONLY outfit/wardrobe related tables
+ * =========================
+ */
+async function wipeDB() {
+  console.log("🧹 Deleting outfit/wardrobe related data...");
+
+  // Order matters because of FKs
   const tables = [
-    'OutfitItem',
-    'WardrobeItemImage',
-    'WardrobeItem',
-    'Outfit',
-    '_FavoriteOutfits',
-    '_LikedOutfits',
-    'CartItem',
-    'OrderItem',
-    'Transaction',
-    'Order',
-    'ProductReview',
-    'ProductImage',
-    'ProductVariant',
-    'Product',
-    'UserAddress',
-    'ProductColor',
-    'Occasion',
-    'Category',
-    'Brand',
-    'User',
+    "OutfitItem",
+    "WardrobeItemImage",
+    "WardrobeItem",
+    "Outfit",
+    "_FavoriteOutfits",
+    "_LikedOutfits",
+    "Occasion",
+    "Category",
+    "Brand",
+    "User",
   ];
 
   for (const table of tables) {
@@ -34,269 +156,237 @@ async function main() {
     console.log(`   Cleared ${table}`);
   }
 
-  console.log('✅ Database wiped clean! Starting fresh seed...\n');
+  console.log("✅ Wipe done!\n");
+}
 
-  // ==============================================================
-  // 1. Brands, Categories, Colors, Occasions
-  // ==============================================================
+/**
+ * =========================
+ * 2) Lookups (Brands/Categories/Occasions)
+ * =========================
+ */
+async function seedLookups() {
   await prisma.brand.createMany({
     data: [
-      { id: 'b_nike', name: 'Nike', slug: 'nike' },
-      { id: 'b_adidas', name: 'Adidas', slug: 'adidas' },
-      { id: 'b_zara', name: 'Zara', slug: 'zara' },
-      { id: 'b_hm', name: 'H&M', slug: 'hm' },
-      { id: 'b_levis', name: "Levi's", slug: 'levis' },
-      { id: 'b_uniqlo', name: 'Uniqlo', slug: 'uniqlo' },
-      { id: 'b_mango', name: 'Mango', slug: 'mango' },
-      { id: 'b_cos', name: 'COS', slug: 'cos' },
+      { id: "b_nike", name: "Nike", slug: "nike" },
+      { id: "b_adidas", name: "Adidas", slug: "adidas" },
+      { id: "b_zara", name: "Zara", slug: "zara" },
+      { id: "b_hm", name: "H&M", slug: "hm" },
+      { id: "b_levis", name: "Levi's", slug: "levis" },
+      { id: "b_uniqlo", name: "Uniqlo", slug: "uniqlo" },
+      { id: "b_mango", name: "Mango", slug: "mango" },
+      { id: "b_cos", name: "COS", slug: "cos" },
     ],
     skipDuplicates: true,
   });
 
   await prisma.category.createMany({
     data: [
-      { id: 'c_tshirt', name: 'T-Shirts', slug: 't-shirts' },
-      { id: 'c_shirt', name: 'Shirts', slug: 'shirts' },
-      { id: 'c_jeans', name: 'Jeans', slug: 'jeans' },
-      { id: 'c_pants', name: 'Pants', slug: 'pants' },
-      { id: 'c_jacket', name: 'Jackets', slug: 'jackets' },
-      { id: 'c_coat', name: 'Coats', slug: 'coats' },
-      { id: 'c_hoodie', name: 'Hoodies', slug: 'hoodies' },
-      { id: 'c_sneakers', name: 'Sneakers', slug: 'sneakers' },
-      { id: 'c_boots', name: 'Boots', slug: 'boots' },
-      { id: 'c_dress', name: 'Dresses', slug: 'dresses' },
-    ],
-    skipDuplicates: true,
-  });
-
-  await prisma.productColor.createMany({
-    data: [
-      { id: 'col_black', name: 'Black', hexCode: '#000000' },
-      { id: 'col_white', name: 'White', hexCode: '#FFFFFF' },
-      { id: 'col_navy', name: 'Navy', hexCode: '#1e3a8a' },
-      { id: 'col_gray', name: 'Gray', hexCode: '#6b7280' },
-      { id: 'col_beige', name: 'Beige', hexCode: '#f5f5dc' },
+      { id: "c_tshirt", name: "T-Shirts", slug: "t-shirts" },
+      { id: "c_shirt", name: "Shirts", slug: "shirts" },
+      { id: "c_jeans", name: "Jeans", slug: "jeans" },
+      { id: "c_pants", name: "Pants", slug: "pants" },
+      { id: "c_jacket", name: "Jackets", slug: "jackets" },
+      { id: "c_coat", name: "Coats", slug: "coats" },
+      { id: "c_hoodie", name: "Hoodies", slug: "hoodies" },
+      { id: "c_sneakers", name: "Sneakers", slug: "sneakers" },
+      { id: "c_boots", name: "Boots", slug: "boots" },
+      { id: "c_dress", name: "Dresses", slug: "dresses" },
     ],
     skipDuplicates: true,
   });
 
   await prisma.occasion.createMany({
     data: [
-      { id: 'occ_casual', name: 'Casual' },
-      { id: 'occ_office', name: 'Office' },
-      { id: 'occ_date', name: 'Date Night' },
-      { id: 'occ_winter', name: 'Winter' },
+      { id: "occ_casual", name: "Casual" },
+      { id: "occ_office", name: "Office" },
+      { id: "occ_date", name: "Date Night" },
+      { id: "occ_winter", name: "Winter" },
     ],
     skipDuplicates: true,
   });
 
-  // ==============================================================
-  // 2. Users
-  // ==============================================================
+  console.log("✅ Seeded lookups");
+}
+
+/**
+ * =========================
+ * 3) Users (ALL same hashed pass as Moamen)
+ * =========================
+ */
+async function seedUsers() {
   await prisma.user.createMany({
     data: [
-      { id: 'u_emma', fullName: 'Emma Wilson', email: 'emma@example.com', password: 'hashed', emailVerified: true },
-      { id: 'u_liam', fullName: 'Liam Chen', email: 'liam@example.com', password: 'hashed', emailVerified: true },
-      { id: 'u_ava', fullName: 'Ava Martinez', email: 'ava@example.com', password: 'hashed', emailVerified: true },
-      { id: 'u_sophia', fullName: 'Sophia Patel', email: 'sophia@example.com', password: 'hashed', emailVerified: true },
-      { id: 'u_noah', fullName: 'Noah Kim', email: 'noah@example.com', password: 'hashed', emailVerified: true },
-      { fullName: 'Moamen Yazouri', email: 'moamen@admin.com', password: '$argon2id$v=19$m=65536,t=3,p=4$j4bzKPpwk0Tt9OAf2trQ4Q$aisWdvJ6pDc2+TO8VAxacpeoD/P/WVY0SSfVj6DL074', emailVerified: true, role: 'ADMIN' },
+      { id: "u_emma", fullName: "Emma Wilson", email: "emma@example.com", password: HASHED_PASSWORD, emailVerified: true },
+      { id: "u_liam", fullName: "Liam Chen", email: "liam@example.com", password: HASHED_PASSWORD, emailVerified: true },
+      { id: "u_ava", fullName: "Ava Martinez", email: "ava@example.com", password: HASHED_PASSWORD, emailVerified: true },
+      { id: "u_sophia", fullName: "Sophia Patel", email: "sophia@example.com", password: HASHED_PASSWORD, emailVerified: true },
+      { id: "u_noah", fullName: "Noah Kim", email: "noah@example.com", password: HASHED_PASSWORD, emailVerified: true },
+      { id: "u_moamen", fullName: "Moamen Yazouri", email: "moamen@admin.com", password: HASHED_PASSWORD, emailVerified: true, role: "ADMIN" },
     ],
     skipDuplicates: true,
   });
 
-  // ==============================================================
-  // 3. Products + Variants
-  // ==============================================================
-  await prisma.product.createMany({
-    data: [
-      { id: 'p_nike_af1', name: 'Nike Air Force 1', slug: 'nike-air-force-1', basePrice: 109.99, brandId: 'b_nike', categoryId: 'c_sneakers' },
-      { id: 'p_levis_501', name: "Levi's 501", slug: 'levis-501', basePrice: 69.5, brandId: 'b_levis', categoryId: 'c_jeans' },
-      { id: 'p_zara_blazer', name: 'Zara Oversized Blazer', slug: 'zara-oversized-blazer', basePrice: 89.9, brandId: 'b_zara', categoryId: 'c_jacket' },
-      { id: 'p_uniqlo_tee', name: 'Uniqlo AIRism Tee', slug: 'uniqlo-airism-tee', basePrice: 19.9, brandId: 'b_uniqlo', categoryId: 'c_tshirt' },
-    ],
-    skipDuplicates: true,
+  console.log("✅ Seeded users (same password)");
+}
+
+/**
+ * =========================
+ * 4) HUGE per-user wardrobe + outfits
+ * =========================
+ */
+async function seedHugePerUser() {
+  const [categoryIds, occasionIds] = await Promise.all([
+    prisma.category.findMany({ select: { id: true } }).then((x) => x.map((c) => c.id)),
+    prisma.occasion.findMany({ select: { id: true } }).then((x) => x.map((o) => o.id)),
+  ]);
+
+  const users = await prisma.user.findMany({
+    where: { role: { not: "ADMIN" } },
+    select: { id: true, fullName: true },
   });
 
-  await prisma.productVariant.createMany({
-    data: [
-      { id: 'var_nike_1', sku: 'NK-AF1-WHT-40', size: '40', colorId: 'col_white', quantity: 20, productId: 'p_nike_af1' },
-      { id: 'var_nike_2', sku: 'NK-AF1-WHT-42', size: '42', colorId: 'col_white', quantity: 15, productId: 'p_nike_af1' },
-      { id: 'var_levis_1', sku: 'LV501-32', size: '32', colorId: 'col_navy', quantity: 30, productId: 'p_levis_501' },
-      { id: 'var_zara_1', sku: 'ZARA-BLAZER-M', size: 'M', colorId: 'col_black', quantity: 12, productId: 'p_zara_blazer' },
-      { id: 'var_uniqlo_1', sku: 'UNIQLO-TEE-L', size: 'L', colorId: 'col_white', quantity: 50, productId: 'p_uniqlo_tee' },
-    ],
-    skipDuplicates: true,
-  });
+  let totalWardrobe = 0;
+  let totalImages = 0;
+  let totalOutfits = 0;
+  let totalOutfitItems = 0;
 
-  const validVariantIds = ['var_nike_1', 'var_nike_2', 'var_levis_1', 'var_zara_1', 'var_uniqlo_1'];
+  for (const user of users) {
+    console.log(`\n👤 Seeding huge data for ${user.fullName} (${user.id})`);
 
-  // ==============================================================
-  // 4. WARDROBE ITEMS – 156+ items
-  // ==============================================================
-  const wardrobeItems = [];
-  const users = ['u_emma', 'u_liam', 'u_ava', 'u_sophia', 'u_noah'];
-  const itemNames = ['Oversized Blazer', 'Mom Jeans', 'White Sneakers', 'Black Leather Jacket', 'Linen Shirt', 'Knit Sweater', 'Denim Jacket', 'Midi Dress', 'Hoodie', 'Trench Coat', 'Crop Top', 'Cargo Pants', 'Ankle Boots'];
-  const brands = ['Zara', 'H&M', 'Uniqlo', 'Mango', 'COS', 'Nike', "Levi's"];
-  const colors = ['Black', 'White', 'Beige', 'Navy', 'Gray', 'Olive'];
-  const sizes = ['XS', 'S', 'M', 'L', '38', '39', '40', '41', '42'];
-  const seasons = ['all-year', 'spring,summer', 'fall,winter'];
-  const styles: WardrobeStyle[] = [
-    WardrobeStyle.CASUAL,
-    WardrobeStyle.FORMAL,
-    WardrobeStyle.WORK,
-    WardrobeStyle.SPORTY,
-    WardrobeStyle.STREETWEAR,
-    WardrobeStyle.LOUNGEWEAR,
-    WardrobeStyle.PARTY,
-  ];
-  const catgs = await prisma.category.findMany();
-  const Categories = catgs.map(c => c.id);
+    // A) Wardrobe items
+    const wardrobeIds: string[] = [];
+    const wardrobeRows: any[] = [];
 
-  for (let i = 0; i < 156; i++) {
-    const isPurchased = Math.random() > 0.75;
-    const variantId = isPurchased ? validVariantIds[Math.floor(Math.random() * validVariantIds.length)] : null;
+    for (let i = 0; i < CFG.ITEMS_PER_USER; i++) {
+      const wid = `ward_${user.id}_${String(i + 1).padStart(5, "0")}`;
+      wardrobeIds.push(wid);
 
-    wardrobeItems.push({
-      id: `ward_${String(i + 1).padStart(3, '0')}`,
-      userId: users[Math.floor(Math.random() * users.length)],
-      categoryId: Categories[Math.floor(Math.random() * Categories.length)], // FIXED: was using users.length
-      variantId,
-      name: itemNames[Math.floor(Math.random() * itemNames.length)],
-      brand: brands[Math.floor(Math.random() * brands.length)],
-      color: colors[Math.floor(Math.random() * colors.length)],
-      size: sizes[Math.floor(Math.random() * sizes.length)],
-      season: seasons[Math.floor(Math.random() * seasons.length)],
-      style: styles[Math.floor(Math.random() * styles.length)], // ADDED: required field
-      notes: Math.random() > 0.8 ? 'My favorite!' : '',
-      source: isPurchased ? 'purchased' : Math.random() > 0.8 ? 'ai-suggested' : 'manual',
-      purchasedDate: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
-    });
-  }
+      const isPurchased = Math.random() < CFG.PURCHASED_RATIO;
 
-  await prisma.wardrobeItem.createMany({
-    data: wardrobeItems,
-    skipDuplicates: true,
-  });
+      wardrobeRows.push({
+        id: wid,
+        userId: user.id,
+        categoryId: pick(categoryIds),
 
-  // ==============================================================
-  // 5. Images for wardrobe items
-  // ==============================================================
-  const imageUrls = [
-    'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
-    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c',
-    'https://images.unsplash.com/photo-1542272604-787c3835535d',
-    'https://images.unsplash.com/photo-1551028719-00167b16eac5',
-    'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab',
-    'https://images.unsplash.com/photo-1515886657613-9f3519b39692',
-    'https://images.unsplash.com/photo-1552374196-c4e7ffc6e126',
-    'https://images.unsplash.com/photo-1590338692112-3d65e2b25890',
-    'https://images.unsplash.com/photo-1505022610485-0249ba5b3675',
-  ];
+        // ✅ No e-commerce relations:
+        variantId: null,
 
-  const wardrobeIds = wardrobeItems.map(w => w.id);
-  const imagesToInsert = [];
+        name: `${pick(ADJECTIVES)} ${pick(ITEM_TYPES)}`,
+        brand: pick(BRANDS),
+        color: pick(COLORS),
+        size: pick(SIZES),
+        season: pick(SEASONS),
+        style: pick(STYLES),
 
-  for (const wid of wardrobeIds) {
-    const count = Math.random() > 0.6 ? 2 : 1;
-    for (let j = 0; j < count; j++) {
-      imagesToInsert.push({
-        wardrobeItemId: wid,
-        imageUrl: imageUrls[Math.floor(Math.random() * imageUrls.length)] + '?auto=format&fit=crop&w=800',
-        altText: 'Wardrobe item',
-        isPrimary: j === 0,
-        displayOrder: j,
+        notes: Math.random() < CFG.NOTES_RATIO ? "Great fit, keep it." : "",
+        source: isPurchased ? "purchased" : Math.random() > 0.85 ? "ai-suggested" : "manual",
+
+        // ✅ Your schema requires purchasedDate → always provide it
+        purchasedDate: randomDateInLastYears(2),
       });
     }
+
+    for (const part of chunk(wardrobeRows, CFG.BATCH_SIZE)) {
+      await prisma.wardrobeItem.createMany({ data: part, skipDuplicates: true });
+      totalWardrobe += part.length;
+    }
+
+    // B) Wardrobe images
+    const imagesRows: any[] = [];
+    for (const wid of wardrobeIds) {
+      const count = randInt(CFG.MIN_IMAGES_PER_ITEM, CFG.MAX_IMAGES_PER_ITEM);
+      for (let j = 0; j < count; j++) {
+        imagesRows.push({
+          wardrobeItemId: wid,
+          imageUrl: img(pick(IMAGE_URLS)),
+          altText: "Wardrobe item",
+          isPrimary: j === 0,
+          displayOrder: j,
+        });
+      }
+    }
+
+    for (const part of chunk(imagesRows, CFG.BATCH_SIZE)) {
+      await prisma.wardrobeItemImage.createMany({ data: part, skipDuplicates: true });
+      totalImages += part.length;
+    }
+
+    // C) Outfits
+    const outfitIds: string[] = [];
+    const outfitsRows: any[] = [];
+
+    for (let i = 0; i < CFG.OUTFITS_PER_USER; i++) {
+      const oid = `out_${user.id}_${String(i + 1).padStart(5, "0")}`;
+      outfitIds.push(oid);
+
+      outfitsRows.push({
+        id: oid,
+        name: `${pick(["Daily", "Smart", "Weekend", "Office", "Night", "Street"])} Look #${i + 1}`,
+        description: `Generated outfit for load testing.`,
+        imageUrl: img(pick(IMAGE_URLS)),
+        visibility: Math.random() < CFG.PUBLIC_RATIO ? "public" : "private",
+        userId: user.id,
+        occasionId: pick(occasionIds),
+      });
+    }
+
+    for (const part of chunk(outfitsRows, CFG.BATCH_SIZE)) {
+      await prisma.outfit.createMany({ data: part, skipDuplicates: true });
+      totalOutfits += part.length;
+    }
+
+    // D) OutfitItems
+    const outfitItemsRows: any[] = [];
+    let oiCounter = 0;
+
+    for (const oid of outfitIds) {
+      const count = randInt(CFG.MIN_ITEMS_PER_OUTFIT, CFG.MAX_ITEMS_PER_OUTFIT);
+      const selectedWardrobe = pickManyUnique(wardrobeIds, count);
+
+      for (const wid of selectedWardrobe) {
+        oiCounter++;
+        outfitItemsRows.push({
+          id: `oi_${user.id}_${String(oiCounter).padStart(7, "0")}`,
+          outfitId: oid,
+          wardrobeItemId: wid,
+        });
+      }
+    }
+
+    for (const part of chunk(outfitItemsRows, CFG.BATCH_SIZE)) {
+      await prisma.outfitItem.createMany({ data: part, skipDuplicates: true });
+      totalOutfitItems += part.length;
+    }
+
+    console.log(`✅ Done ${user.fullName}: wardrobe=${CFG.ITEMS_PER_USER}, outfits=${CFG.OUTFITS_PER_USER}`);
   }
 
-  await prisma.wardrobeItemImage.createMany({
-    data: imagesToInsert,
-    skipDuplicates: true,
-  });
+  console.log("\n📦 HUGE SEED SUMMARY");
+  console.log(`   - Wardrobe Items: ${totalWardrobe}`);
+  console.log(`   - Wardrobe Images: ${totalImages}`);
+  console.log(`   - Outfits: ${totalOutfits}`);
+  console.log(`   - Outfit Items: ${totalOutfitItems}`);
+}
 
-  // ==============================================================
-  // 6. Sample outfits
-  // ==============================================================
-  await prisma.outfit.createMany({
-    data: [
-      {
-        id: 'outfit_01',
-        name: 'Smart Casual Friday',
-        description: 'Perfect office look',
-        imageUrl: 'https://images.unsplash.com/photo-1505022610485-0249ba5b3675',
-        visibility: 'public',
-        userId: 'u_ava',
-        occasionId: 'occ_office',
-      },
-      {
-        id: 'outfit_02',
-        name: 'Date Night',
-        description: 'Elegant and chic',
-        imageUrl: 'https://images.unsplash.com/photo-1534030347209-467a33b1e9b7',
-        visibility: 'private',
-        userId: 'u_emma',
-        occasionId: 'occ_date',
-      },
-      {
-        id: 'outfit_03',
-        name: 'Weekend Casual',
-        description: 'Comfortable and stylish',
-        imageUrl: 'https://images.unsplash.com/photo-1552374196-c4e7ffc6e126',
-        visibility: 'public',
-        userId: 'u_liam',
-        occasionId: 'occ_casual',
-      },
-    ],
-    skipDuplicates: true,
-  });
+/**
+ * =========================
+ * Main
+ * =========================
+ */
+async function main() {
+  await wipeDB();
 
-  // ==============================================================
-  // 7. OutfitItems - Connect outfits with wardrobe items
-  // ==============================================================
-  // Get wardrobe items for each user who has outfits
-  const avaItems = wardrobeItems.filter(w => w.userId === 'u_ava').slice(0, 4);
-  const emmaItems = wardrobeItems.filter(w => w.userId === 'u_emma').slice(0, 3);
-  const liamItems = wardrobeItems.filter(w => w.userId === 'u_liam').slice(0, 3);
+  await seedLookups();
+  await seedUsers();
 
-  const outfitItemsData = [
-    // Outfit 01 - Ava's Smart Casual Friday
-    ...avaItems.map((item, idx) => ({
-      id: `oi_01_${idx}`,
-      outfitId: 'outfit_01',
-      wardrobeItemId: item.id,
-    })),
-    // Outfit 02 - Emma's Date Night
-    ...emmaItems.map((item, idx) => ({
-      id: `oi_02_${idx}`,
-      outfitId: 'outfit_02',
-      wardrobeItemId: item.id,
-    })),
-    // Outfit 03 - Liam's Weekend Casual
-    ...liamItems.map((item, idx) => ({
-      id: `oi_03_${idx}`,
-      outfitId: 'outfit_03',
-      wardrobeItemId: item.id,
-    })),
-  ];
+  await seedHugePerUser();
 
-  await prisma.outfitItem.createMany({
-    data: outfitItemsData,
-    skipDuplicates: true,
-  });
-
-  console.log('\n✅ SEED COMPLETED SUCCESSFULLY!');
-  console.log(`📦 Created:`);
-  console.log(`   - 156 wardrobe items with images`);
-  console.log(`   - 3 outfits with ${outfitItemsData.length} outfit items`);
-  console.log(`   - 5 products with variants`);
-  console.log(`   - 6 users (including admin)`);
-  console.log(`   - All supporting data (brands, categories, colors, occasions)`);
+  console.log("\n✅ SEED COMPLETED SUCCESSFULLY!");
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seed failed:', e);
+    console.error("❌ Seed failed:", e);
     process.exit(1);
   })
   .finally(async () => {

@@ -12,6 +12,7 @@ import { ProfileTabs } from "./components/profile-taps/profileTaps";
 import { ProfileOutfitsGrid } from "./components/profile-outfits/profileOutfits";
 import { ProfileOutfitsSkeleton } from "./components/profile-outfits/ProfileOutfitsSkeleton";
 import { ProfileLikedOutfitsGrid } from "./components/profile-liked-outfits/likedOutfits";
+import Loading from "@/app/loading";
 
 function renderContent(
   activeTab: TabType,
@@ -57,9 +58,13 @@ export function ProfilePage() {
     updateEditForm,
   } = useProfile();
 
-  if (!profileLoading && !user) {
+  if (outfitsLoading || profileLoading) {
+    return <Loading />;
+  }
+
+  if (!user) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-background transition-colors duration-300 flex items-center justify-center">
         <div>No profile found. Please log in.</div>
       </div>
     );

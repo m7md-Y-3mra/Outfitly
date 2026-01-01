@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Heart, User } from "lucide-react";
+import { Heart, User, Shirt } from "lucide-react";
 import { IOutfit } from "../types/explore.type";
 import { ActionDispatch } from "react";
 import { Action } from "../state/explore.reducer";
@@ -14,6 +14,7 @@ interface OutfitCardProps {
 
 export const OutfitCard = ({ outfit, index, dispatch }: OutfitCardProps) => {
   const { theme, onToggleLike } = useOutfit(outfit, dispatch);
+
   return (
     <motion.div
       key={outfit.id}
@@ -27,12 +28,34 @@ export const OutfitCard = ({ outfit, index, dispatch }: OutfitCardProps) => {
           theme === "dark" ? "var(--outfitly-bg-secondary)" : "var(--outfitly-bg-white)",
       }}
     >
-      <div className="relative overflow-hidden">
-        <motion.img
-          src={outfit.image || ""}
-          alt={`Outfit by ${outfit.username}`}
-          className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
-        />
+      {/* Fixed aspect ratio image container */}
+      <div className="relative overflow-hidden aspect-[3/4] bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
+        {outfit.image ? (
+          <motion.img
+            src={outfit.image}
+            alt={`Outfit by ${outfit.username}`}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        ) : (
+          // Placeholder when no image
+          <div className="w-full h-full flex flex-col items-center justify-center">
+            <Shirt
+              className="w-20 h-20 mb-4 opacity-30"
+              style={{
+                color: theme === "dark" ? "var(--outfitly-text-light)" : "var(--outfitly-primary)",
+              }}
+            />
+            <span
+              className="text-sm opacity-50"
+              style={{
+                color:
+                  theme === "dark" ? "var(--outfitly-text-light)" : "var(--outfitly-text-primary)",
+              }}
+            >
+              No Image Available
+            </span>
+          </div>
+        )}
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -68,13 +91,13 @@ export const OutfitCard = ({ outfit, index, dispatch }: OutfitCardProps) => {
       >
         <div className="flex items-center gap-2 mb-2">
           <div
-            className="w-8 h-8 rounded-full flex items-center justify-center"
+            className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
             style={{ backgroundColor: "var(--outfitly-primary)" }}
           >
             <User className="w-4 h-4" style={{ color: "var(--outfitly-text-light)" }} />
           </div>
           <span
-            className="transition-colors duration-300"
+            className="transition-colors duration-300 truncate"
             style={{
               color: theme === "dark" ? "var(--outfitly-text-light)" : "var(--outfitly-primary)",
             }}
@@ -85,7 +108,7 @@ export const OutfitCard = ({ outfit, index, dispatch }: OutfitCardProps) => {
 
         <div className="flex items-center gap-2">
           <Heart
-            className={`w-4 h-4 ${outfit.isLiked ? "fill-current" : ""}`}
+            className={`w-4 h-4 flex-shrink-0 ${outfit.isLiked ? "fill-current" : ""}`}
             style={{
               color: outfit.isLiked
                 ? "var(--outfitly-primary)"

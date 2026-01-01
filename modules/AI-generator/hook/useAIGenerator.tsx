@@ -34,7 +34,7 @@ export function useAIGenerator() {
     requirements: "",
   });
   const isDark = theme === "dark";
-  console.log(user);
+
   const [customOccasion, setCustomOccasion] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [showResults, setShowResults] = useState(false);
@@ -50,20 +50,20 @@ export function useAIGenerator() {
       (formData.occasion !== "Other" || customOccasion.trim()),
     );
   }, [formData.occasion, formData.weather, formData.style, customOccasion]);
-
+  console.log(filteredFromDB);
   const open = Boolean(viewingOutfit);
 
-  const handleGenerate = useCallback(async () => {
-    if (!canGenerate || isGenerating) return;
+  const handleGenerate = async () => {
+    if (!canGenerate || isGenerating || !user) return;
 
     setIsGenerating(true);
     setShowResults(false);
 
     const [itemsRes, occasionsRes] = await Promise.all([
-      getItemsForGeneratorAction({ style: formData.style, weather: formData.weather }, "1"),
+      getItemsForGeneratorAction({ style: formData.style, weather: formData.weather }, user.id),
       getOccasionsForAIAction(),
     ]);
-
+    console.log(itemsRes);
     if (!itemsRes.success || !occasionsRes.success) {
       setIsGenerating(false);
       return;
@@ -71,7 +71,7 @@ export function useAIGenerator() {
 
     const items = itemsRes.data;
     const occasions = occasionsRes.data;
-    console.log(occasions);
+    console.log(items);
     setFilteredFromDB(items);
 
     const userReqs = toUserRequirements(formData);
@@ -89,7 +89,7 @@ export function useAIGenerator() {
 
     setGeneratedOutfits(outfits);
     setShowResults(true);
-  }, [canGenerate, isGenerating, formData]);
+  };
 
   const onSelectOutfit = (name: string) => {
     const outfit = generatedOutfits.find((o) => o.name === name);
@@ -122,6 +122,7 @@ export function useAIGenerator() {
     }
 
     toast.success(`${createdOutfit.data.name} Outfit created successfully!`);
+    setViewingOutfit(null);
   };
 
   const scrollToResults = () => {

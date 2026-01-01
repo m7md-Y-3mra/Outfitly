@@ -33,15 +33,18 @@ const WardrobeFrom: React.FC<WardrobeFormProps> = ({
 
   const handleImageUpload = (key?: string) => {
     const url = `https://${S3_BUCKET_NAME}.fly.storage.tigris.dev/${key}`;
-    formik.setFieldValue("imageUrls", [...formik.values.imageUrls, url]);
+    formik.setValues((prevValues) => ({
+      ...prevValues,
+      imageUrls: [...prevValues.imageUrls, url],
+    }));
   };
 
   const handleImageDelete = (key?: string) => {
     const url = `https://${S3_BUCKET_NAME}.fly.storage.tigris.dev/${key}`;
-    formik.setFieldValue(
-      "imageUrls",
-      formik.values.imageUrls.filter((imageUrl) => imageUrl !== url),
-    );
+    formik.setValues((prevValues) => ({
+      ...prevValues,
+      imageUrls: prevValues.imageUrls.filter((imageUrl) => imageUrl !== url),
+    }));
   };
 
   const handleCancel = () => {

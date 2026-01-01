@@ -2,7 +2,6 @@
 import { motion } from "framer-motion";
 import SignInCard from "./signInCard";
 import { Logo } from "@/components/logo/logo";
-import { SocialLoginButtons } from "./socialSignIn";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
@@ -52,12 +51,6 @@ export default function SignInPage() {
           </div>
 
           <SignInCard />
-
-          <SocialLoginButtons
-            onSocialLogin={() => {
-              console.log("Social Login clicked");
-            }}
-          />
 
           <motion.div
             initial={{ opacity: 0 }}

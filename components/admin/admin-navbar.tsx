@@ -47,7 +47,7 @@ export function AdminNavbar({
               </CustomButton>
 
               <div className="flex items-center gap-3">
-                <Logo size="md" animated={false} linkTo="/dashboard" />
+                <Logo size="md" animated={false} linkTo="/" />
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary uppercase tracking-wider border border-primary/20">
                   {t("badge")}
                 </span>
