@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { DashboardStats } from "@/modules/dashboard/home/components/stats/dashboard-stats";
 import { UserGrowthChart } from "@/modules/dashboard/home/components/charts/user-growth-chart";
 import { ItemsAddedThisWeekChart } from "@/modules/dashboard/home/components/charts/outfit-engagement-chart";
@@ -12,6 +13,8 @@ import {
 } from "@/modules/dashboard/dashboard.service";
 
 const HomePage = async () => {
+  await connection();
+
   const [userGrowthData, categoriesData, wardrobeData, itemsKPI, outfitKPI] = await Promise.all([
     getUsersForChart(),
     getCatsChartData(),
