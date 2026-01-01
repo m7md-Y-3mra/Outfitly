@@ -7,10 +7,11 @@ import { Button } from "../ui/button";
 import { Logo } from "../logo/logo";
 import { useNavbar } from "./useNavbar";
 import CustomButton from "../custom-button";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback } from "../ui/avatar";
 import { MiniLoader } from "./miniLoader";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./language-switcher";
+import { useSyncExternalStore } from "react";
 
 export function Navbar() {
   const t = useTranslations("Navigation");
@@ -34,7 +35,27 @@ export function Navbar() {
     isActive,
   } = useNavbar();
 
+  // Fix hydration mismatch using React 18's useSyncExternalStore
+  // This is the recommended way to check if component is mounted
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+
   const isAuthLoading = authStatus === "loading";
+
+  // Render a placeholder icon until mounted to avoid hydration mismatch
+  const ThemeIcon = mounted ? (
+    theme === "dark" ? (
+      <Sun className="w-5 h-5" style={{ color: iconColor }} />
+    ) : (
+      <Moon className="w-5 h-5" style={{ color: iconColor }} />
+    )
+  ) : (
+    // Placeholder that matches initial server render
+    <div className="w-5 h-5" />
+  );
 
   return (
     <motion.nav
@@ -98,11 +119,7 @@ export function Navbar() {
                 style={{ color: iconColor }}
                 aria-label="Toggle theme"
               >
-                {theme === "dark" ? (
-                  <Sun className="w-5 h-5" style={{ color: iconColor }} />
-                ) : (
-                  <Moon className="w-5 h-5" style={{ color: iconColor }} />
-                )}
+                {ThemeIcon}
               </CustomButton>
 
               {isAuthLoading ? (
@@ -154,10 +171,6 @@ export function Navbar() {
                         {initials}
                       </AvatarFallback>
                     </Avatar>
-
-                    {/* <span className="max-w-[120px] truncate" style={{ color: NAVBAR_COLORS.link }}>
-                      {user?.fullName || user?.email}
-                    </span> */}
 
                     <ChevronDown
                       className="w-4 h-4 opacity-80"
@@ -237,11 +250,7 @@ export function Navbar() {
               <LanguageSwitcher />
 
               <CustomButton onClick={onToggleTheme} className="p-2" style={{ color: iconColor }}>
-                {theme === "dark" ? (
-                  <Sun className="w-5 h-5" style={{ color: iconColor }} />
-                ) : (
-                  <Moon className="w-5 h-5" style={{ color: iconColor }} />
-                )}
+                {ThemeIcon}
               </CustomButton>
 
               <CustomButton onClick={toggleMenu} className="p-2" style={{ color: iconColor }}>
@@ -313,7 +322,6 @@ export function Navbar() {
                   >
                     <div className="flex items-center gap-3">
                       <Avatar className="w-10 h-10">
-                        <AvatarImage src={user?.avatarUrl ?? ""} alt={user?.fullName ?? "User"} />
                         <AvatarFallback
                           style={{
                             backgroundColor: NAVBAR_COLORS.primary,

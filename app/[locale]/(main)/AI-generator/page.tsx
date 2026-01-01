@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const AIGeneratorPage = () => {
+const AIGeneratorPage = async () => {
   return <AIGenerator />;
 };
 

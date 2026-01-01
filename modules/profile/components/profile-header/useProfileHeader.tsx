@@ -25,7 +25,6 @@ export function useProfileHeader({
 
   const safeEditForm = editForm || user;
 
-  /* ================== HANDLERS ================== */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -76,6 +75,18 @@ export function useProfileHeader({
     setWebsiteError(null);
   };
 
+  const validateWebsite = (): boolean => {
+    if (!safeEditForm) return true;
+
+    if (!isValidWebsiteFinal(safeEditForm.website)) {
+      setWebsiteError("Please enter a valid website (example.com)");
+      return false;
+    }
+
+    setWebsiteError(null);
+    return true;
+  };
+
   return {
     imagePreview,
     crop,
@@ -85,6 +96,7 @@ export function useProfileHeader({
     isCropping,
     setIsCropping,
     websiteError,
+    validateWebsite,
     imgRef,
     fileInputRef,
     safeEditForm,

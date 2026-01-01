@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-// Update profile schema
 export const profileUpdateSchema = z.object({
   name: z.string().min(1).optional(),
   bio: z.string().optional(),
@@ -9,7 +8,6 @@ export const profileUpdateSchema = z.object({
   avatarUrl: z.string().optional(),
 });
 
-// Pagination list schema
 export const profileListQuerySchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(10),

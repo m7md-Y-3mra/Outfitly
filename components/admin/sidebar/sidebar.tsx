@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, Shirt, Settings, Sparkles } from "lucide-react";
+import { LayoutDashboard, Users, Shirt, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAVBAR_COLORS } from "../../navbar/navbar.constants";
 import { useTranslations } from "next-intl";
@@ -28,11 +28,11 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
       label: t("sidebar.outfits"),
       href: "/dashboard/outfits",
     },
-    {
-      icon: Settings,
-      label: t("sidebar.settings"),
-      href: "/dashboard/settings",
-    },
+    // {
+    //   icon: Settings,
+    //   label: t("sidebar.settings"),
+    //   href: "/dashboard/settings",
+    // },
   ];
 
   return (

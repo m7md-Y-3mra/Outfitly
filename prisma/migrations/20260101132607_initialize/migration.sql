@@ -1,3 +1,9 @@
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
+
+-- CreateEnum
+CREATE TYPE "WardrobeStyle" AS ENUM ('CASUAL', 'FORMAL', 'WORK', 'SPORTY', 'STREETWEAR', 'LOUNGEWEAR', 'PARTY');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -6,10 +12,14 @@ CREATE TABLE "User" (
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "password" TEXT NOT NULL,
     "avatarUrl" TEXT,
+    "bio" TEXT,
+    "location" TEXT,
+    "website" TEXT,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "lastLogin" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "role" "UserRole" NOT NULL DEFAULT 'USER',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -187,19 +197,11 @@ CREATE TABLE "Outfit" (
     "isAiGenerated" BOOLEAN NOT NULL DEFAULT false,
     "visibility" TEXT NOT NULL DEFAULT 'private',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "season" TEXT,
     "userId" TEXT NOT NULL,
     "occasionId" TEXT,
 
     CONSTRAINT "Outfit_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "OutfitItemType" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "icon" TEXT,
-
-    CONSTRAINT "OutfitItemType_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -208,7 +210,6 @@ CREATE TABLE "OutfitItem" (
     "outfitId" TEXT NOT NULL,
     "wardrobeItemId" TEXT,
     "productVariantId" TEXT,
-    "typeId" TEXT NOT NULL,
 
     CONSTRAINT "OutfitItem_pkey" PRIMARY KEY ("id")
 );
@@ -217,10 +218,18 @@ CREATE TABLE "OutfitItem" (
 CREATE TABLE "WardrobeItem" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "productId" TEXT NOT NULL,
+    "categoryId" TEXT NOT NULL,
     "variantId" TEXT,
-    "source" TEXT NOT NULL DEFAULT 'purchased',
+    "name" TEXT NOT NULL,
+    "color" TEXT NOT NULL,
+    "size" TEXT NOT NULL,
+    "brand" TEXT NOT NULL,
+    "season" TEXT NOT NULL,
+    "notes" TEXT NOT NULL,
+    "source" TEXT NOT NULL DEFAULT 'manual',
     "addedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "purchasedDate" TIMESTAMP(3) NOT NULL,
+    "style" "WardrobeStyle" NOT NULL DEFAULT 'CASUAL',
 
     CONSTRAINT "WardrobeItem_pkey" PRIMARY KEY ("id")
 );
@@ -235,6 +244,14 @@ CREATE TABLE "WardrobeItemImage" (
     "displayOrder" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "WardrobeItemImage_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_UserFollows" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL,
+
+    CONSTRAINT "_UserFollows_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateTable
@@ -329,9 +346,6 @@ CREATE INDEX "Outfit_userId_idx" ON "Outfit"("userId");
 CREATE INDEX "Outfit_occasionId_idx" ON "Outfit"("occasionId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "OutfitItemType_name_key" ON "OutfitItemType"("name");
-
--- CreateIndex
 CREATE INDEX "OutfitItem_outfitId_idx" ON "OutfitItem"("outfitId");
 
 -- CreateIndex
@@ -341,16 +355,16 @@ CREATE INDEX "OutfitItem_wardrobeItemId_idx" ON "OutfitItem"("wardrobeItemId");
 CREATE INDEX "OutfitItem_productVariantId_idx" ON "OutfitItem"("productVariantId");
 
 -- CreateIndex
-CREATE INDEX "OutfitItem_typeId_idx" ON "OutfitItem"("typeId");
-
--- CreateIndex
 CREATE INDEX "WardrobeItem_userId_idx" ON "WardrobeItem"("userId");
 
 -- CreateIndex
-CREATE INDEX "WardrobeItem_productId_idx" ON "WardrobeItem"("productId");
+CREATE INDEX "WardrobeItem_variantId_idx" ON "WardrobeItem"("variantId");
 
 -- CreateIndex
 CREATE INDEX "WardrobeItemImage_wardrobeItemId_idx" ON "WardrobeItemImage"("wardrobeItemId");
+
+-- CreateIndex
+CREATE INDEX "_UserFollows_B_index" ON "_UserFollows"("B");
 
 -- CreateIndex
 CREATE INDEX "_FavoriteOutfits_B_index" ON "_FavoriteOutfits"("B");
@@ -422,19 +436,22 @@ ALTER TABLE "OutfitItem" ADD CONSTRAINT "OutfitItem_wardrobeItemId_fkey" FOREIGN
 ALTER TABLE "OutfitItem" ADD CONSTRAINT "OutfitItem_productVariantId_fkey" FOREIGN KEY ("productVariantId") REFERENCES "ProductVariant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OutfitItem" ADD CONSTRAINT "OutfitItem_typeId_fkey" FOREIGN KEY ("typeId") REFERENCES "OutfitItemType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "WardrobeItem" ADD CONSTRAINT "WardrobeItem_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "WardrobeItem" ADD CONSTRAINT "WardrobeItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "WardrobeItem" ADD CONSTRAINT "WardrobeItem_variantId_fkey" FOREIGN KEY ("variantId") REFERENCES "ProductVariant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "WardrobeItem" ADD CONSTRAINT "WardrobeItem_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "WardrobeItemImage" ADD CONSTRAINT "WardrobeItemImage_wardrobeItemId_fkey" FOREIGN KEY ("wardrobeItemId") REFERENCES "WardrobeItem"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_UserFollows" ADD CONSTRAINT "_UserFollows_A_fkey" FOREIGN KEY ("A") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_UserFollows" ADD CONSTRAINT "_UserFollows_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_FavoriteOutfits" ADD CONSTRAINT "_FavoriteOutfits_A_fkey" FOREIGN KEY ("A") REFERENCES "Outfit"("id") ON DELETE CASCADE ON UPDATE CASCADE;

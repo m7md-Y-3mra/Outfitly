@@ -14,4 +14,7 @@ export const getOccasionsForAIAction = errorMiddleware(getOccasionsForAI, {
   statusCode: 200,
 });
 
-export const createOutfitAction = errorMiddleware(createOutfitService);
+export const createOutfitAction = errorMiddleware(createOutfitService, {
+  statusCode: 201,
+  message: "Outfit Created Successfully!",
+});

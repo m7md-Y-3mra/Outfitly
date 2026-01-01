@@ -26,7 +26,7 @@ const CustomButton: FC<MotionButtonProps> = ({
     "transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden";
 
   const sizeClass = sizeClasses[size];
-  const isDisabled = loading || disabled; // ✅ central control
+  const isDisabled = loading || disabled;
 
   if (variant === "motion") {
     return (

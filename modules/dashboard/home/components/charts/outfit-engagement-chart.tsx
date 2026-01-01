@@ -12,17 +12,6 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart";
 
-// ✅ Dummy data from your schema idea: "Wardrobe items added this week"
-const chartData = [
-  { day: "Mon", items: 12 },
-  { day: "Tue", items: 9 },
-  { day: "Wed", items: 18 },
-  { day: "Thu", items: 14 },
-  { day: "Fri", items: 22 },
-  { day: "Sat", items: 27 },
-  { day: "Sun", items: 16 },
-];
-
 const chartConfig = {
   items: {
     label: "Items Added",
@@ -30,8 +19,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function ItemsAddedThisWeekChart() {
-  const max = Math.max(...chartData.map((d) => d.items));
+interface ItemsAddedThisWeekChartProps {
+  data: { day: string; items: number }[];
+}
+
+export function ItemsAddedThisWeekChart({ data }: ItemsAddedThisWeekChartProps) {
+  const chartData = data;
+  const max = Math.max(...chartData.map((d) => d.items), 1);
 
   return (
     <Card className="flex flex-col h-full shadow-sm border-border/40 rounded-2xl overflow-hidden">

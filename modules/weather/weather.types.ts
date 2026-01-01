@@ -15,20 +15,24 @@ export interface WeatherData {
 
 export interface Outfit {
   id: number;
-  time: string;
-  timeRange: string;
-  name: string;
+  time?: string;
+  timeRang?: string;
+  name?: string;
   image: string;
-  description: string;
-  temperature: string;
-  icon: LucideIcon;
-  season: string; // New: e.g., "summer", "winter", "autumn", "spring"
+  description?: string;
+  temperature?: string;
+  icon?: LucideIcon;
+  season?: string;
+  likes?: number;
+  title?: string;
 }
 
 export interface WardrobeItem {
-  id: number;
+  id: string;
   name: string;
   image: string;
-  category: string;
-  season: string; // New: e.g., "summer", "winter", "autumn", "spring"
+  category?: string;
+  season: string;
+  style?: string;
+  createdAt?: string;
 }

@@ -12,15 +12,6 @@ import {
 } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 
-const chartData = [
-  { month: "January", users: 1200 },
-  { month: "February", users: 2100 },
-  { month: "March", users: 1800 },
-  { month: "April", users: 3200 },
-  { month: "May", users: 4500 },
-  { month: "June", users: 5800 },
-];
-
 const chartConfig = {
   users: {
     label: "Active Users",
@@ -28,7 +19,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function UserGrowthChart() {
+interface UserGrowthChartProps {
+  data: { month: string; users: number }[];
+}
+
+export function UserGrowthChart({ data }: UserGrowthChartProps) {
+  const chartData = data;
   return (
     <Card className="flex flex-col h-full shadow-sm border-border/40 rounded-2xl overflow-hidden">
       <CardHeader className="flex flex-row items-center justify-between pb-4">

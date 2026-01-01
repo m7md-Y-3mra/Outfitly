@@ -11,41 +11,38 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const chartData = [
-  { category: "tops", visitors: 35, fill: "#4a0410" }, // Deep dark burgundy
-  { category: "bottoms", visitors: 25, fill: "#671425" }, // Burgundy
-  { category: "dresses", visitors: 20, fill: "#9e2a4b" }, // Muted rose
-  { category: "shoes", visitors: 15, fill: "#d93c66" }, // Brighter pink
-  { category: "accessories", visitors: 5, fill: "#f59e0b" }, // Mustard
-];
+const colors = ["#4a0410", "#671425", "#9e2a4b", "#d93c66", "#f59e0b", "#10b981", "#3b82f6"];
 
-const chartConfig = {
-  tops: {
-    label: "Tops",
-    color: "#4a0410",
-  },
-  bottoms: {
-    label: "Bottoms",
-    color: "#671425",
-  },
-  dresses: {
-    label: "Dresses",
-    color: "#9e2a4b",
-  },
-  shoes: {
-    label: "Shoes",
-    color: "#d93c66",
-  },
-  accessories: {
-    label: "Accessories",
-    color: "#f59e0b",
-  },
-} satisfies ChartConfig;
+interface ItemCategoriesChartProps {
+  data: { category: string; count: number }[];
+}
 
-export function ItemCategoriesChart() {
+export function ItemCategoriesChart({ data }: ItemCategoriesChartProps) {
+  const chartData = React.useMemo(() => {
+    const total = data.reduce((acc, curr) => acc + curr.count, 0);
+    return data.map((item, index) => ({
+      category: item.category.toLowerCase(),
+      visitors: total > 0 ? Math.round((item.count / total) * 100) : 0,
+      fill: colors[index % colors.length],
+    }));
+  }, [data]);
+
+  const chartConfig = React.useMemo(() => {
+    return data.reduce(
+      (acc, item, index) => {
+        acc[item.category.toLowerCase()] = {
+          label: item.category,
+          color: colors[index % colors.length],
+        };
+        return acc;
+      },
+      {} as Record<string, { label: string; color: string }>,
+    ) as ChartConfig;
+  }, [data]);
+
   const totalVisitors = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-  }, []);
+  }, [chartData]);
 
   return (
     <Card className="flex flex-col h-full shadow-sm border-border/40 rounded-2xl overflow-hidden">

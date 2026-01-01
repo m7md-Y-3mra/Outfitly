@@ -16,12 +16,11 @@ export function ProfileOutfitsGrid({ outfits }: ProfileOutfitsGridProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.05 }}
           >
-            <Card className="group cursor-pointer overflow-hidden border-2 transition-all duration-300 hover:shadow-2xl bg-card border-border">
+            <Card className="group cursor-pointer overflow-hidden border-2 transition-all duration-300 hover:shadow-2xl bg-card border-border py-0">
               <div className="relative overflow-hidden">
                 <motion.img
                   src={outfit.image}
-                  alt={getOutfitAlt(outfit.title)}
-                  className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
+                  alt={getOutfitAlt(outfit.title || "Untitled Outfit")}
                 />
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">

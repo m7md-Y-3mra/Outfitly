@@ -3,8 +3,25 @@ import { UserGrowthChart } from "@/modules/dashboard/home/components/charts/user
 import { ItemsAddedThisWeekChart } from "@/modules/dashboard/home/components/charts/outfit-engagement-chart";
 import { DashboardKPICards } from "@/modules/dashboard/home/components/kpi/kpi-stats";
 import { ItemCategoriesChart } from "@/modules/dashboard/home/components/charts/item-categories-chart";
+import {
+  getUsersForChart,
+  getCatsChartData,
+  getWardrobChartData,
+  getItemsKPI,
+  getOutfitKPI,
+} from "@/modules/dashboard/dashboard.service";
 
-const HomePage = () => {
+const HomePage = async () => {
+  const [userGrowthData, categoriesData, wardrobeData, itemsKPI, outfitKPI] = await Promise.all([
+    getUsersForChart(),
+    getCatsChartData(),
+    getWardrobChartData(),
+    getItemsKPI(),
+    getOutfitKPI(),
+  ]);
+
+  const kpiStats = [itemsKPI, outfitKPI];
+
   return (
     <div className="pt-8 space-y-8">
       {/* Top Stats Section */}
@@ -13,20 +30,20 @@ const HomePage = () => {
       {/* Middle Section: User Growth & Item Categories */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 h-full min-h-[450px]">
-          <UserGrowthChart />
+          <UserGrowthChart data={userGrowthData} />
         </div>
         <div className="lg:col-span-1 h-full min-h-[450px]">
-          <ItemCategoriesChart />
+          <ItemCategoriesChart data={categoriesData} />
         </div>
       </div>
 
       {/* Bottom Section: Engagement & KPIs */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 h-full min-h-[400px]">
-          <ItemsAddedThisWeekChart />
+          <ItemsAddedThisWeekChart data={wardrobeData} />
         </div>
         <div className="lg:col-span-1 h-full">
-          <DashboardKPICards />
+          <DashboardKPICards stats={kpiStats} />
         </div>
       </div>
     </div>
