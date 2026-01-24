@@ -37,8 +37,8 @@ export function Hero() {
         <Image
           src={HERO_BACKGROUND_IMAGE}
           alt="Fashion Background"
-          className="w-full h-full object-cover"
-          fill
+          className=""
+          fill 
         />
       </div>
 
@@ -190,7 +190,7 @@ export function Hero() {
           <div ref={ctaRef} className="flex flex-wrap justify-center gap-4 sm:gap-6 pt-4">
             <Button
               size="lg"
-              className="group px-8 sm:px-10 py-6 sm:py-7 text-base sm:text-lg rounded-full transition-all duration-300 hover:scale-105 relative overflow-hidden"
+              className="cursor-pointer group px-8 sm:px-10 py-6 sm:py-7 text-base sm:text-lg rounded-full transition-all duration-300 hover:scale-105 relative overflow-hidden"
               style={{
                 backgroundColor: "#FAF1ED",
                 color: "#671425",
@@ -216,7 +216,7 @@ export function Hero() {
 
             <Button
               size="lg"
-              className="group px-8 sm:px-10 py-6 sm:py-7 text-base sm:text-lg rounded-full transition-all duration-300 hover:scale-105 backdrop-blur-md"
+              className="cursor-pointer group px-8 sm:px-10 py-6 sm:py-7 text-base sm:text-lg rounded-full transition-all duration-300 hover:scale-105 backdrop-blur-md"
               style={{
                 background: "rgba(250, 241, 237, 0.1)",
                 border: "2px solid rgba(250, 241, 237, 0.4)",

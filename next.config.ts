@@ -3,6 +3,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  devIndicators: false,
   images: {
     remotePatterns: [
       {
@@ -23,8 +24,9 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
-  devIndicators: false,
+
 };
 
 const withNextIntl = createNextIntlPlugin();
 export default withNextIntl(nextConfig);
+// export default nextConfig;

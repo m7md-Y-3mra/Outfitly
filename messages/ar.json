@@ -217,23 +217,25 @@
       "uploadDescription": "حمّل قطعة جديدة لخزانتك"
     }
   },
-  "Explore": {
-    "pageTitle": "استكشف الأزياء",
-    "pageDescription": "استكشف أفكار الأزياء واستلهم. اكتشف أنماطاً وصيحات جديدة لترتقي بخزانتك.",
-    "heading": "استكشف الأزياء",
-    "subtitle": "اكتشف إطلالات ملهمة من المجتمع",
+   "Explore": {
+    "heading": "استكشف أزياءنا",
+    "subtitle": "اكتشف أفكارًا ملهمة للأزياء من مجتمعنا",
     "filters": {
+      "filterBy": "تصفية حسب:",
+      "season": "الموسم",
+      "style": "النمط",
+      "allSeasons": "جميع المواسم",
       "allStyles": "جميع الأنماط",
+      "spring": "الربيع",
+      "summer": "الصيف",
+      "autumn": "الخريف",
+      "winter": "الشتاء",
       "casual": "كاجوال",
-      "elegant": "أنيق",
-      "street": "ستريت",
-      "boho": "بوهو",
-      "classic": "كلاسيك",
-      "allSeasons": "جميع الفصول",
-      "spring": "ربيع",
-      "summer": "صيف",
-      "fall": "خريف",
-      "winter": "شتاء"
+      "formal": "رسمي",
+      "streetwear": "ستريت وير",
+      "bohemian": "بوهيمي",
+      "minimalist": "بسيط",
+      "vintage": "كلاسيكي"
     }
   },
   "AIGenerator": {
