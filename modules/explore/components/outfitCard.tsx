@@ -5,7 +5,6 @@ import { IOutfit } from "../types/explore.type";
 import { ActionDispatch } from "react";
 import { Action } from "../state/explore.reducer";
 import useOutfit from "../hook/useOutfit";
-import { useEffect, useState } from "react";
 
 interface OutfitCardProps {
   outfit: IOutfit;
@@ -15,14 +14,6 @@ interface OutfitCardProps {
 
 export const OutfitCard = ({ outfit, index, dispatch }: OutfitCardProps) => {
   const { theme, onToggleLike } = useOutfit(outfit, dispatch);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-
-  const isDark = mounted ? theme === "dark" : false;
 
   return (
     <motion.div
@@ -32,8 +23,9 @@ export const OutfitCard = ({ outfit, index, dispatch }: OutfitCardProps) => {
       transition={{ duration: 0.5, delay: index * 0.05 }}
       className="group relative overflow-hidden rounded-xl border-2 transition-all duration-300 shadow-lg hover:shadow-2xl"
       style={{
-        borderColor: isDark ? "var(--outfitly-primary)" : "var(--outfitly-bg-secondary)",
-        backgroundColor: isDark ? "var(--outfitly-bg-secondary)" : "var(--outfitly-bg-white)",
+        borderColor: theme === "dark" ? "var(--outfitly-primary)" : "var(--outfitly-bg-secondary)",
+        backgroundColor:
+          theme === "dark" ? "var(--outfitly-bg-secondary)" : "var(--outfitly-bg-white)",
       }}
     >
       {/* Fixed aspect ratio image container */}
@@ -45,17 +37,19 @@ export const OutfitCard = ({ outfit, index, dispatch }: OutfitCardProps) => {
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
+          // Placeholder when no image
           <div className="w-full h-full flex flex-col items-center justify-center">
             <Shirt
               className="w-20 h-20 mb-4 opacity-30"
               style={{
-                color: isDark ? "var(--outfitly-text-light)" : "var(--outfitly-primary)",
+                color: theme === "dark" ? "var(--outfitly-text-light)" : "var(--outfitly-primary)",
               }}
             />
             <span
               className="text-sm opacity-50"
               style={{
-                color: isDark ? "var(--outfitly-text-light)" : "var(--outfitly-text-primary)",
+                color:
+                  theme === "dark" ? "var(--outfitly-text-light)" : "var(--outfitly-text-primary)",
               }}
             >
               No Image Available
@@ -91,7 +85,8 @@ export const OutfitCard = ({ outfit, index, dispatch }: OutfitCardProps) => {
       <div
         className="p-4 transition-colors duration-300"
         style={{
-          backgroundColor: isDark ? "var(--outfitly-bg-secondary)" : "var(--outfitly-bg-white)",
+          backgroundColor:
+            theme === "dark" ? "var(--outfitly-bg-secondary)" : "var(--outfitly-bg-white)",
         }}
       >
         <div className="flex items-center gap-2 mb-2">
@@ -104,7 +99,7 @@ export const OutfitCard = ({ outfit, index, dispatch }: OutfitCardProps) => {
           <span
             className="transition-colors duration-300 truncate"
             style={{
-              color: isDark ? "var(--outfitly-text-light)" : "var(--outfitly-primary)",
+              color: theme === "dark" ? "var(--outfitly-text-light)" : "var(--outfitly-primary)",
             }}
           >
             @{outfit.username}
@@ -117,7 +112,7 @@ export const OutfitCard = ({ outfit, index, dispatch }: OutfitCardProps) => {
             style={{
               color: outfit.isLiked
                 ? "var(--outfitly-primary)"
-                : isDark
+                : theme === "dark"
                   ? "var(--outfitly-text-light)"
                   : "var(--outfitly-primary)",
             }}
@@ -125,7 +120,8 @@ export const OutfitCard = ({ outfit, index, dispatch }: OutfitCardProps) => {
           <span
             className="text-sm transition-colors duration-300"
             style={{
-              color: isDark ? "var(--outfitly-text-light)" : "var(--outfitly-text-primary)",
+              color:
+                theme === "dark" ? "var(--outfitly-text-light)" : "var(--outfitly-text-primary)",
             }}
           >
             {outfit.likes.toLocaleString()}

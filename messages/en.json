@@ -461,27 +461,6 @@
     "success": {
       "removed": "File removed successfully",
       "uploaded": "File uploaded successfully"
-    },
-    "Explore": {
-    "heading": "Your heading text",
-    "subtitle": "Your subtitle text",
-    "filters": {
-      "filterBy": "Filter by:",
-      "season": "Season",
-      "style": "Style",
-      "allSeasons": "All Seasons",
-      "allStyles": "All Styles",
-      "spring": "Spring",
-      "summer": "Summer",
-      "autumn": "Autumn",
-      "winter": "Winter",
-      "casual": "Casual",
-      "formal": "Formal",
-      "streetwear": "Streetwear",
-      "bohemian": "Bohemian",
-      "minimalist": "Minimalist",
-      "vintage": "Vintage"
     }
-  }
   }
 }
