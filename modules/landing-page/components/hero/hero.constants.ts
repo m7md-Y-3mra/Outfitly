@@ -52,8 +52,7 @@ export const PARALLAX_LAYERS: ParallaxLayer[] = [
   { speed: 0.6, zIndex: 3, opacity: 0.3 },
 ];
 
-export const HERO_BACKGROUND_IMAGE =
-  "https://images.unsplash.com/photo-1649361811423-a55616f7ab11?q=80&w=758&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+export const HERO_BACKGROUND_IMAGE = "/hero-image.jpg";
 
 export const PARALLAX_IMAGES = {
   layer1: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
@@ -64,12 +63,12 @@ export const PARALLAX_IMAGES = {
 export const GRADIENT_COLORS = {
   light: {
     overlay:
-      "linear-gradient(135deg, rgba(103, 20, 37, 0.65), rgba(139, 29, 53, 0.55), rgba(76, 20, 32, 0.70))",
+      "linear-gradient(135deg, rgba(103, 20, 37, 0.55), rgba(139, 29, 53, 0.45), rgba(76, 20, 32, 0.60))",
     bottom: "linear-gradient(to top, rgba(250, 241, 237, 1), transparent)",
   },
   dark: {
     overlay:
-      "linear-gradient(135deg, rgba(103, 20, 37, 0.80), rgba(139, 29, 53, 0.70), rgba(76, 20, 32, 0.85))",
+      "linear-gradient(135deg, rgba(103, 20, 37, 0.70), rgba(139, 29, 53, 0.60), rgba(76, 20, 32, 0.75))",
     bottom: "linear-gradient(to top, rgba(26, 26, 26, 1), transparent)",
   },
 } as const;
